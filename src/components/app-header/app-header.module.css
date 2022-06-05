@@ -32,11 +32,7 @@
   box-sizing: border-box;
   padding: 0 20px 0 20px;
 }
-.menuText {
-}
 .cabinet {
   composes: menuItem;
   justify-content: flex-end;
-}
-.cabinetText {
 }
