@@ -7,8 +7,11 @@ import data from './utils/data.js'
 function App() {
   return (
     <>
-        <AppHeader/>
+      <AppHeader/>
+      <main className='main'>
         <BurgerIngredients array={data}/>
+        <p className='test'>222</p>
+      </main>
     </>
   );
 }

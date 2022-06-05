@@ -1,6 +1,6 @@
 .container {
-  margin:0 auto;
   max-width: 600px;
+  justify-content: flex-end;
 }
 .title {
   margin:0;
@@ -25,4 +25,53 @@
 .scrollBlock {
   margin: 0;
   padding: 0;
+}
+.list {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  column-gap: 24px;
+  flex-wrap: wrap;
+}
+.listTitle {
+  font-family: 'JetBrainsMono';
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+}
+.cardItem {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
+  align-items: center;
+  max-width: 272px;
+}
+.cardImg {
+  width: 240px;
+  height: 120px;
+  object-fit: cover;
+}
+.cardPrice {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-family: 'Iceland';
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+}
+.cardPriceDig {
+  padding-right: 8px;
+}
+.cardName {
+  font-family: 'JetBrainsMono';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  /* or 150% */
+
+  text-align: center;
 }

@@ -22,3 +22,16 @@
   font-weight: bold;
   src: url("./fonts/JetBrainsMono-Bold.woff2") format("woff2");
 }
+.main {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+.test {
+  display: flex;
+  width: 500px;
+  justify-content: flex-start;
+}
