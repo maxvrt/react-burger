@@ -23,8 +23,19 @@
   width:calc(100%/3);
 }
 .scrollBlock {
-  margin: 0;
-  padding: 0;
+  width: 600px;
+  height: 912px;
+  overflow: auto;
+  margin-bottom: 10px;
+}
+.scrollBlock::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollBlock::-webkit-scrollbar-track {
+  background: #2F2F37;
+}
+.scrollBlock::-webkit-scrollbar-thumb {
+  background-color: #8585AD;
 }
 .list {
   margin: 0;
@@ -41,6 +52,7 @@
   line-height: 30px;
 }
 .cardItem {
+  position: relative;
   list-style-type: none;
   display: flex;
   flex-direction: column;
@@ -71,7 +83,6 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  /* or 150% */
-
   text-align: center;
 }
+

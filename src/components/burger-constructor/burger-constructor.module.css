@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  padding-top: 110px;
+}
+.singleEl {
+  margin-left: 42px;
+}
+
+.scrollBlock {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  width: 600px;
+  height: 470px;
+  overflow: auto;
+}
+.scrollBlock::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollBlock::-webkit-scrollbar-track {
+  background: #2F2F37;
+}
+.scrollBlock::-webkit-scrollbar-thumb {
+  background-color: #8585AD;
+}
+.scrollElement {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  column-gap: 8px;
+}
+.totalPrice {
+  display: flex;
+  flex-direction: row;
+  column-gap: 41.5px;
+  justify-content:flex-end;
+  align-items: center;
+  padding-top: 20px;
+  padding-right: 15px;
+}
+.priceEl {
+  display: flex;
+  flex-direction: row;
+  justify-self: end;
+  align-items: center;
+  justify-content: center;
+  column-gap: 9.5px;
+}
