@@ -22,7 +22,7 @@ export default function BurgerConstructor(props) {
          {state.filter((item) => item.type === "main").slice(0, 6).map((item, index)=>(
             <div className={burgerConstructor.scrollElement}>
               <DragIcon/>
-              <ConstructorElement
+              <ConstructorElement key={index}
                text={item.name}
                price={item.price}
                thumbnail={item.image_mobile}
