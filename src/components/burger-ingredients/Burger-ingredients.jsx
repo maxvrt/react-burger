@@ -1,9 +1,10 @@
 import React, { useEffect,useRef } from 'react';
 import burgerIngredients from './burger-ingredients.module.css';
 import { Counter, Tab, CurrencyIcon  } from '@ya.praktikum/react-developer-burger-ui-components'
-
-export default function BurgerIngredients(props) {
-  const [state, setState] = React.useState(props.array);
+import PropTypes from 'prop-types';
+import {ingredientPropType} from '../../utils/prop-types'
+export default function BurgerIngredients({array}) {
+  const [state, setState] = React.useState(array);
   const [current, setCurrent] = React.useState('one')
   const bunRef = useRef(null);
   const sauceRef = useRef(null);
@@ -77,4 +78,7 @@ export default function BurgerIngredients(props) {
         </div>
       </section>
   )
+};
+BurgerIngredients.PropType = {
+  array: ingredientPropType
 };

@@ -1,9 +1,11 @@
 import React, { useEffect,useRef } from 'react';
 import burgerConstructor from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon, LockIcon, DragIcon, DeleteIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import PropTypes from 'prop-types';
+import {ingredientPropType} from '../../utils/prop-types'
 
-export default function BurgerConstructor(props) {
-  const [state, setState] = React.useState(props.array);
+export default function BurgerConstructor({array}) {
+  const [state, setState] = React.useState(array);
 
   return (
       <section className={burgerConstructor.container}>
@@ -20,9 +22,9 @@ export default function BurgerConstructor(props) {
          </div>
          <div className={burgerConstructor.scrollBlock}>
          {state.filter((item) => item.type === "main").slice(0, 6).map((item, index)=>(
-            <div className={burgerConstructor.scrollElement}>
+            <div className={burgerConstructor.scrollElement}  key={index}>
               <DragIcon/>
-              <ConstructorElement key={index}
+              <ConstructorElement
                text={item.name}
                price={item.price}
                thumbnail={item.image_mobile}
@@ -52,4 +54,8 @@ export default function BurgerConstructor(props) {
         </div>
       </section>
   )
+};
+
+BurgerConstructor.PropType = {
+  array: ingredientPropType
 };
