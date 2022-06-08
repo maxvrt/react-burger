@@ -1,0 +1,89 @@
+.container {
+  max-width: 600px;
+  justify-content: flex-end;
+}
+.title {
+  margin:0;
+  font-family: 'JetBrainsMono';
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 40px;
+  color: #F2F2F3;
+  padding-top: 40px;
+  padding-bottom: 20px;
+}
+.tabs {
+  display: flex;
+  flex-direction: row;
+  column-gap: 0;
+  margin: 0;
+  padding: 0;
+}
+.tab {
+  list-style-type: none;
+  width:calc(100%/3);
+}
+.scrollBlock {
+  width: 600px;
+  height: 912px;
+  overflow: auto;
+  margin-bottom: 10px;
+}
+.scrollBlock::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollBlock::-webkit-scrollbar-track {
+  background: #2F2F37;
+}
+.scrollBlock::-webkit-scrollbar-thumb {
+  background-color: #8585AD;
+}
+.list {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  column-gap: 24px;
+  flex-wrap: wrap;
+}
+.listTitle {
+  font-family: 'JetBrainsMono';
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+}
+.cardItem {
+  position: relative;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
+  align-items: center;
+  max-width: 272px;
+}
+.cardImg {
+  width: 240px;
+  height: 120px;
+  object-fit: cover;
+}
+.cardPrice {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-family: 'Iceland';
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+}
+.cardPriceDig {
+  padding-right: 8px;
+}
+.cardName {
+  font-family: 'JetBrainsMono';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+}
+
