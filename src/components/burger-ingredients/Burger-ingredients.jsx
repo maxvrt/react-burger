@@ -4,18 +4,17 @@ import { Counter, Tab, CurrencyIcon  } from '@ya.praktikum/react-developer-burge
 import PropTypes from 'prop-types';
 import {ingredientPropType} from '../../utils/prop-types'
 export default function BurgerIngredients({array}) {
-  const [state, setState] = React.useState(array);
   const [current, setCurrent] = React.useState('one')
   const bunRef = useRef(null);
   const sauceRef = useRef(null);
   const mainRef = useRef(null);
   let init = false;
-  const Card = (props) => {
+  const Card = ({item}) => {
     return (
       <li className={burgerIngredients.cardItem}>
-        <img className={burgerIngredients.cardImg} src={props.item.image} />
-        <div className={burgerIngredients.cardPrice}><p className={burgerIngredients.cardPriceDig}>{props.item.price}</p><CurrencyIcon/></div>
-        <p className={burgerIngredients.cardName}>{props.item.name}</p>
+        <img className={burgerIngredients.cardImg} src={item.image} />
+        <div className={burgerIngredients.cardPrice}><p className={burgerIngredients.cardPriceDig}>{item.price}</p><CurrencyIcon/></div>
+        <p className={burgerIngredients.cardName}>{item.name}</p>
         <Counter/>
       </li>
     );
@@ -59,19 +58,19 @@ export default function BurgerIngredients({array}) {
         <div className={burgerIngredients.scrollBlock}>
           <h2 ref={bunRef} className={burgerIngredients.listTitle}>Булки</h2>
           <ul className={burgerIngredients.list}>
-            {state.filter((item) => item.type === "bun").map((item, index)=>(
+            {array.filter((item) => item.type === "bun").map((item, index)=>(
                 <Card item={item} key={item._id}/>
             ))}
           </ul>
           <h2 ref={sauceRef} className={burgerIngredients.listTitle}>Соусы</h2>
           <ul className={burgerIngredients.list}>
-            {state.filter((item) => item.type === "sauce").map((item, index)=>(
+            {array.filter((item) => item.type === "sauce").map((item, index)=>(
               <Card item={item} key={item._id}/>
             ))}
           </ul>
           <h2 ref={mainRef} className={burgerIngredients.listTitle}>Начинки</h2>
           <ul className={burgerIngredients.list}>
-            {state.filter((item) => item.type === "main").map((item, index)=>(
+            {array.filter((item) => item.type === "main").map((item, index)=>(
               <Card item={item} key={item._id}/>
             ))}
           </ul>

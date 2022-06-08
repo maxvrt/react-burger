@@ -5,12 +5,10 @@ import PropTypes from 'prop-types';
 import {ingredientPropType} from '../../utils/prop-types'
 
 export default function BurgerConstructor({array}) {
-  const [state, setState] = React.useState(array);
-
   return (
       <section className={burgerConstructor.container}>
          <div className={burgerConstructor.singleEl}>
-            {state.filter((item) => item.type === "bun").slice(0, 1).map((item, index)=>(
+            {array.filter((item) => item.type === "bun").slice(0, 1).map((item, index)=>(
               <ConstructorElement key={item._id}
                 type="top"
                 isLocked={true}
@@ -21,10 +19,11 @@ export default function BurgerConstructor({array}) {
             ))}
          </div>
          <div className={burgerConstructor.scrollBlock}>
-         {state.filter((item) => item.type === "main").slice(0, 6).map((item, index)=>(
+         {array.filter((item) => item.type === "main").slice(0, 6).map((item, index)=>(
             <div className={burgerConstructor.scrollElement}  key={item._id}>
               <DragIcon/>
               <ConstructorElement
+               isLocked={false}
                text={item.name}
                price={item.price}
                thumbnail={item.image_mobile}
@@ -33,7 +32,7 @@ export default function BurgerConstructor({array}) {
           ))}
          </div>
          <div className={burgerConstructor.singleEl}>
-            {state.filter((item) => item.type === "bun").slice(0, 1).map((item, index)=>(
+            {array.filter((item) => item.type === "bun").slice(0, 1).map((item, index)=>(
               <ConstructorElement key={item._id}
                 type="bottom"
                 isLocked={true}
