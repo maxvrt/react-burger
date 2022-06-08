@@ -60,19 +60,19 @@ export default function BurgerIngredients({array}) {
           <h2 ref={bunRef} className={burgerIngredients.listTitle}>Булки</h2>
           <ul className={burgerIngredients.list}>
             {state.filter((item) => item.type === "bun").map((item, index)=>(
-                <Card item={item} key={index}/>
+                <Card item={item} key={item._id}/>
             ))}
           </ul>
           <h2 ref={sauceRef} className={burgerIngredients.listTitle}>Соусы</h2>
           <ul className={burgerIngredients.list}>
             {state.filter((item) => item.type === "sauce").map((item, index)=>(
-              <Card item={item} key={index}/>
+              <Card item={item} key={item._id}/>
             ))}
           </ul>
           <h2 ref={mainRef} className={burgerIngredients.listTitle}>Начинки</h2>
           <ul className={burgerIngredients.list}>
             {state.filter((item) => item.type === "main").map((item, index)=>(
-              <Card item={item} key={index}/>
+              <Card item={item} key={item._id}/>
             ))}
           </ul>
         </div>
@@ -80,5 +80,5 @@ export default function BurgerIngredients({array}) {
   )
 };
 BurgerIngredients.PropType = {
-  array: ingredientPropType
+  array: PropTypes.arrayOf(ingredientPropType).isRequired
 };

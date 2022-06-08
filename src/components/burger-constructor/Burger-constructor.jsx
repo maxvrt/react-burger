@@ -11,10 +11,10 @@ export default function BurgerConstructor({array}) {
       <section className={burgerConstructor.container}>
          <div className={burgerConstructor.singleEl}>
             {state.filter((item) => item.type === "bun").slice(0, 1).map((item, index)=>(
-              <ConstructorElement key={index}
+              <ConstructorElement key={item._id}
                 type="top"
                 isLocked={true}
-                text={item.name}
+                text={item.name + ' (верх)'}
                 price={item.price}
                 thumbnail={item.image_mobile}
               />
@@ -22,7 +22,7 @@ export default function BurgerConstructor({array}) {
          </div>
          <div className={burgerConstructor.scrollBlock}>
          {state.filter((item) => item.type === "main").slice(0, 6).map((item, index)=>(
-            <div className={burgerConstructor.scrollElement}  key={index}>
+            <div className={burgerConstructor.scrollElement}  key={item._id}>
               <DragIcon/>
               <ConstructorElement
                text={item.name}
@@ -33,11 +33,11 @@ export default function BurgerConstructor({array}) {
           ))}
          </div>
          <div className={burgerConstructor.singleEl}>
-            {state.filter((item) => item.type === "bun").slice(1, 2).map((item, index)=>(
-              <ConstructorElement key={index}
+            {state.filter((item) => item.type === "bun").slice(0, 1).map((item, index)=>(
+              <ConstructorElement key={item._id}
                 type="bottom"
                 isLocked={true}
-                text={item.name}
+                text={item.name + ' (низ)'}
                 price={item.price}
                 thumbnail={item.image_mobile}
               />
@@ -57,5 +57,5 @@ export default function BurgerConstructor({array}) {
 };
 
 BurgerConstructor.PropType = {
-  array: ingredientPropType
+  array: PropTypes.arrayOf(ingredientPropType).isRequired
 };
