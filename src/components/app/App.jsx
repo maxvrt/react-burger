@@ -3,8 +3,8 @@ import AppHeader from '../app-header/App-header';
 import BurgerIngredients from '../burger-ingredients/Burger-ingredients';
 import BurgerConstructor from '../burger-constructor/Burger-constructor';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/Modal';
-//import data from '../../utils/data.js'
 import app from './app.module.css';
 
 function App() {
@@ -15,18 +15,24 @@ function App() {
     },
   };
   const [array, setArray] = React.useState([]);
-  const [isOrderDetailsOpened, setIsOrderDetailsOpened] = React.useState(false);
-
+  const [isOrderDetailsOpened, setIsOrderDetails] = React.useState(false);
+  const [ingredientDetailsOpened, setIsIngredientDetails] = React.useState(false);
+  const [ingredient, setIngredient] = React.useState({});
   // Закрытие всех модалок
   const closeAllModals = () => {
-    setIsOrderDetailsOpened(false);
+    setIsOrderDetails(false);
+    setIsIngredientDetails(false);
   };
   const handleEscKeydown = (event) => {
     event.key === "Escape" && closeAllModals();
   };
-  const testModal = ()=>{
-    setIsOrderDetailsOpened(true);
+  const displayOrdering = ()=>{
+    setIsOrderDetails(true);
   }
+  const displayDesc = ()=>{
+    setIsIngredientDetails(true);
+  }
+
 
   useEffect(() => {
     fetch(`${config.baseUrl}`, {headers: config.headers})
@@ -46,18 +52,27 @@ function App() {
     <>
       <AppHeader/>
       <main className={app.main}>
-        <BurgerIngredients array={array}/>
-        <BurgerConstructor array={array}/>
+        <BurgerIngredients onClickDesc={displayDesc} array={array}/>
+        <BurgerConstructor onClickOrder={displayOrdering} array={array}/>
       </main>
-      <p onClick={testModal}>тест модалки</p>
       {isOrderDetailsOpened &&
+        <Modal
+          title=""
+          onOverlayClick={closeAllModals}
+          onEscKeydown={handleEscKeydown}
+          onCloseClick={closeAllModals}
+        >
+          <OrderDetails/>
+        </Modal>
+      }
+       {ingredientDetailsOpened &&
         <Modal
           title="Детали ингредиента"
           onOverlayClick={closeAllModals}
           onEscKeydown={handleEscKeydown}
+          onCloseClick={closeAllModals}
         >
           <IngredientDetails/>
-          {/*<OrderDetails ... />  вложенное содержимое, идет в пропс children */}
         </Modal>
       }
 

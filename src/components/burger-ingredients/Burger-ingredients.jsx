@@ -3,15 +3,16 @@ import burgerIngredients from './burger-ingredients.module.css';
 import { Counter, Tab, CurrencyIcon  } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
 import {ingredientPropType} from '../../utils/prop-types'
-export default function BurgerIngredients({array}) {
-  const [current, setCurrent] = React.useState('one')
+export default function BurgerIngredients({array, onClickDesc}) {
+  const [current, setCurrent] = React.useState('one');
+
   const bunRef = useRef(null);
   const sauceRef = useRef(null);
   const mainRef = useRef(null);
   let init = false;
   const Card = ({item}) => {
     return (
-      <li className={burgerIngredients.cardItem}>
+      <li className={burgerIngredients.cardItem} onClick={onClickDesc}>
         <img className={burgerIngredients.cardImg} src={item.image} />
         <div className={burgerIngredients.cardPrice}><p className={burgerIngredients.cardPriceDig}>{item.price}</p><CurrencyIcon/></div>
         <p className={burgerIngredients.cardName}>{item.name}</p>
@@ -34,6 +35,7 @@ export default function BurgerIngredients({array}) {
     }
     console.log(`Состояние current: ${current}`);
   }, [current])
+
 
   return (
       <section className={burgerIngredients.container}>
@@ -59,7 +61,7 @@ export default function BurgerIngredients({array}) {
           <h2 ref={bunRef} className={burgerIngredients.listTitle}>Булки</h2>
           <ul className={burgerIngredients.list}>
             {array.filter((item) => item.type === "bun").map((item, index)=>(
-                <Card item={item} key={item._id}/>
+                <Card item={item} key={item._id} />
             ))}
           </ul>
           <h2 ref={sauceRef} className={burgerIngredients.listTitle}>Соусы</h2>

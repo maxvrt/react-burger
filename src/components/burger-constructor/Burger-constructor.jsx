@@ -4,7 +4,7 @@ import { ConstructorElement, Button, CurrencyIcon, LockIcon, DragIcon, DeleteIco
 import PropTypes from 'prop-types';
 import {ingredientPropType} from '../../utils/prop-types'
 
-export default function BurgerConstructor({array}) {
+export default function BurgerConstructor({array, onClickOrder}) {
   return (
       <section className={burgerConstructor.container}>
          <div className={burgerConstructor.singleEl}>
@@ -47,7 +47,7 @@ export default function BurgerConstructor({array}) {
             <p className="text text_type_digits-medium">610</p>
             <CurrencyIcon type="primary"/>
           </div>
-          <Button type="primary" size="large">
+          <Button onClick={onClickOrder} type="primary" size="large">
             Оформить заказ
           </Button>
         </div>
