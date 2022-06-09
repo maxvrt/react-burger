@@ -9,4 +9,4 @@ const ModalOverlay = ({ onClick }) => {
   );
 };
 
-export default {ModalOverlay}
+export default ModalOverlay
