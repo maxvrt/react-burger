@@ -18,7 +18,10 @@ const Modal = ({title, onOverlayClick, onEscKeydown, children }) => {
   return createPortal(
     (<>
       <div className={styles.modal}>
-        <h3>{title}</h3>
+        <div className={styles.head}>
+          <h2 className={styles.title}>{title}</h2>
+          <CloseIcon/>
+        </div>
         {children}
       </div>
 

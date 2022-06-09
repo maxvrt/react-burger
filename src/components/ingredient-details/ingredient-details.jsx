@@ -12,14 +12,14 @@ export default function IngredientDetails({item}) {
       <img src="https://code.s3.yandex.net/react/code/bun-01.png" alt="" className={ingredientDetails.img}/>
       <p className={ingredientDetails.name}>имя</p>
       <div className={ingredientDetails.table}>
-        <div className="item">Калории, ккал</div>
-        <div className="item">Белки, г</div>
-        <div className="item">Жиры, г</div>
-        <div className="item">Углеводы, г</div>
-        <div className="item">1</div>
-        <div className="item">2</div>
-        <div className="item">3</div>
-        <div className="item">4</div>
+        <div className={ingredientDetails.item}>Калории,ккал</div>
+        <div className={ingredientDetails.item}>Белки, г</div>
+        <div className={ingredientDetails.item}>Жиры, г</div>
+        <div className={ingredientDetails.item}>Углеводы, г</div>
+        <div className={ingredientDetails.digit}>1</div>
+        <div className={ingredientDetails.digit}>2</div>
+        <div className={ingredientDetails.digit}>3</div>
+        <div className={ingredientDetails.digit}>4</div>
       </div>
     </div>
 )
