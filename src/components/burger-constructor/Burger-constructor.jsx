@@ -55,6 +55,6 @@ export default function BurgerConstructor({array, onClickOrder}) {
   )
 };
 
-BurgerConstructor.PropType = {
+BurgerConstructor.propTypes = {
   array: PropTypes.arrayOf(ingredientPropType).isRequired
 };

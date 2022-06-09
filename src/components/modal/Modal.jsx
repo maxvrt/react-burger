@@ -33,4 +33,12 @@ const Modal = ({title, onOverlayClick, onEscKeydown, children, onCloseClick }) =
   );
 };
 
+Modal.propTypes = {
+  title: PropTypes.string.isRequired,
+  onOverlayClick: PropTypes.func.isRequired,
+  onEscKeydown: PropTypes.func.isRequired,
+  children: PropTypes.element.isRequired,
+  onCloseClick: PropTypes.func.isRequired
+};
+
 export default Modal;

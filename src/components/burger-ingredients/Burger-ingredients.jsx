@@ -11,8 +11,9 @@ export default function BurgerIngredients({array, onClickDesc}) {
   const mainRef = useRef(null);
   let init = false;
   const Card = ({item}) => {
+    const handleClick = ()=> onClickDesc(item);
     return (
-      <li className={burgerIngredients.cardItem} onClick={onClickDesc}>
+      <li className={burgerIngredients.cardItem} onClick={handleClick}>
         <img className={burgerIngredients.cardImg} src={item.image} />
         <div className={burgerIngredients.cardPrice}><p className={burgerIngredients.cardPriceDig}>{item.price}</p><CurrencyIcon/></div>
         <p className={burgerIngredients.cardName}>{item.name}</p>
@@ -61,7 +62,7 @@ export default function BurgerIngredients({array, onClickDesc}) {
           <h2 ref={bunRef} className={burgerIngredients.listTitle}>Булки</h2>
           <ul className={burgerIngredients.list}>
             {array.filter((item) => item.type === "bun").map((item, index)=>(
-                <Card item={item} key={item._id} />
+                <Card item={item} key={item._id}/>
             ))}
           </ul>
           <h2 ref={sauceRef} className={burgerIngredients.listTitle}>Соусы</h2>
@@ -80,6 +81,6 @@ export default function BurgerIngredients({array, onClickDesc}) {
       </section>
   )
 };
-BurgerIngredients.PropType = {
+BurgerIngredients.propTypes = {
   array: PropTypes.arrayOf(ingredientPropType).isRequired
 };

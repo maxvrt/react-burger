@@ -1,6 +1,5 @@
 import React, { useEffect,useRef } from 'react';
 import orderDetails from './order-details.module.css';
-import { CloseIcon  } from '@ya.praktikum/react-developer-burger-ui-components'
 import doneImg from "../../images/done.png";
 
 

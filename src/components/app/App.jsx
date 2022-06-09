@@ -29,7 +29,8 @@ function App() {
   const displayOrdering = ()=>{
     setIsOrderDetails(true);
   }
-  const displayDesc = ()=>{
+  const displayDesc = (item)=>{
+    setIngredient(item);
     setIsIngredientDetails(true);
   }
 
@@ -52,7 +53,7 @@ function App() {
     <>
       <AppHeader/>
       <main className={app.main}>
-        <BurgerIngredients onClickDesc={displayDesc} array={array}/>
+        <BurgerIngredients onClickDesc={displayDesc} array={array} />
         <BurgerConstructor onClickOrder={displayOrdering} array={array}/>
       </main>
       {isOrderDetailsOpened &&
@@ -72,7 +73,7 @@ function App() {
           onEscKeydown={handleEscKeydown}
           onCloseClick={closeAllModals}
         >
-          <IngredientDetails/>
+          <IngredientDetails data={ingredient}/>
         </Modal>
       }
 
