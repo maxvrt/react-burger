@@ -10,6 +10,7 @@ import config from '../../utils/config';
 
 function App() {
   const [array, setArray] = useState([]);
+  const [oneBun, setBun] = useState({});
   const [isOrderDetailsOpened, setIsOrderDetails] = useState(false);
   const [ingredientDetailsOpened, setIsIngredientDetails] = useState(false);
   const [ingredient, setIngredient] = useState({});
@@ -17,9 +18,6 @@ function App() {
   const closeAllModals = () => {
     setIsOrderDetails(false);
     setIsIngredientDetails(false);
-  };
-  const handleEscKeydown = (event) => {
-    event.key === "Escape" && closeAllModals();
   };
   const displayOrdering = ()=>{
     setIsOrderDetails(true);
@@ -37,6 +35,8 @@ function App() {
       return Promise.reject(`Ошибка: ${res.status}: ${res}`);
     }).then((data) => {
       setArray(data.data);
+      const bun = data.data.find(a=> a.type === "bun");
+      setBun(bun);
     }).catch((err) => {
       console.log('Ошибка. Запрос не выполнен: ' + err);
     });
@@ -48,14 +48,14 @@ function App() {
       <AppHeader/>
       <main className={app.main}>
         <BurgerIngredients onClickDesc={displayDesc} array={array} />
-        <BurgerConstructor onClickOrder={displayOrdering} array={array}/>
+        <BurgerConstructor onClickOrder={displayOrdering} array={array} oneBun={oneBun}/>
       </main>
       {isOrderDetailsOpened &&
         <Modal
           title=""
           onOverlayClick={closeAllModals}
-          onEscKeydown={handleEscKeydown}
           onCloseClick={closeAllModals}
+          escCloseModal={closeAllModals}
         >
           <OrderDetails/>
         </Modal>
@@ -64,8 +64,8 @@ function App() {
         <Modal
           title="Детали ингредиента"
           onOverlayClick={closeAllModals}
-          onEscKeydown={handleEscKeydown}
           onCloseClick={closeAllModals}
+          escCloseModal={closeAllModals}
         >
           <IngredientDetails data={ingredient}/>
         </Modal>
