@@ -6,11 +6,14 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/Modal';
 import app from './app.module.css';
-import config from '../../utils/config';
+import {getIngredients} from '../../utils/api';
+import BurgerIngredientsContext from "../../context/burger-ingredients-context";
+import OrderDetailsContext from "../../context/order-details-context";
 
 function App() {
   const [array, setArray] = useState([]);
   const [oneBun, setBun] = useState({});
+  //const [arrIds, setArrIds] = useState([]);
   const [isOrderDetailsOpened, setIsOrderDetails] = useState(false);
   const [ingredientDetailsOpened, setIsIngredientDetails] = useState(false);
   const [ingredient, setIngredient] = useState({});
@@ -19,16 +22,17 @@ function App() {
     setIsOrderDetails(false);
     setIsIngredientDetails(false);
   };
-  const displayOrdering = ()=>{
-    setIsOrderDetails(true);
-  }
+  //todo кнопка оформления заказа
+  // const displayOrdering = ()=>{
+  //   setIsOrderDetails(true);
+  // }
   const displayDesc = (item)=>{
     setIngredient(item);
     setIsIngredientDetails(true);
   }
 
   useEffect(() => {
-    fetch(`${config.baseUrl}`, {headers: config.headers})
+    getIngredients()
     .then(res =>  {if (res.ok) {
       return res.json();
       }
@@ -47,8 +51,14 @@ function App() {
     <>
       <AppHeader/>
       <main className={app.main}>
-        <BurgerIngredients onClickDesc={displayDesc} array={array} />
-        <BurgerConstructor onClickOrder={displayOrdering} array={array} oneBun={oneBun}/>
+        {/* замена пропсов на контекст */}
+        <OrderDetailsContext.Provider value={setIsOrderDetails}>
+        <BurgerIngredientsContext.Provider value={array}>
+          <BurgerIngredients onClickDesc={displayDesc}/>
+          <BurgerConstructor oneBun={oneBun}/>
+          {/* onClickOrder={displayOrdering} */}
+        </BurgerIngredientsContext.Provider>
+        </OrderDetailsContext.Provider>
       </main>
       {isOrderDetailsOpened &&
         <Modal

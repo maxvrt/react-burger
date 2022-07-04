@@ -3,8 +3,31 @@ import burgerConstructor from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon, LockIcon, DragIcon, DeleteIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
 import {ingredientPropType} from '../../utils/prop-types'
+import BurgerIngredientsContext from "../../context/burger-ingredients-context";
+import OrderDetailsContext from "../../context/order-details-context";
+import { useContext } from "react";
+import {postOrder, getResponse, catchError} from '../../utils/api';
 
-export default function BurgerConstructor({array, oneBun, onClickOrder}) {
+export default function BurgerConstructor({oneBun}) { //, onClickOrder
+  const array = useContext(BurgerIngredientsContext);
+  const setIsOrderDetails = useContext(OrderDetailsContext);
+  const arrNoBunOrder = array.filter((item) => item.type !== "bun").slice(0, 6);
+  const arrIds = arrNoBunOrder.map(item=> item._id);
+  let totalPrice = arrNoBunOrder.reduce(function (previousValue, item) {return previousValue + item.price},0);
+  totalPrice = totalPrice + oneBun.price*2;
+  console.log(totalPrice);
+  const [modalData, setModalData] = useState(null);
+
+  const onClickOrder = () => {
+    postOrder(arrIds) // сохраняем ингредиенты на сервер
+    .then(res => getResponse(res))
+    .then(data => {
+        console.log(data);
+        //setModalData(data); // полученный ответ помещаем в стейт для модалки
+        // в ответе номер заказа лежит в data.order.number
+        setIsOrderDetails(true);
+      }).catch(err => catchError(err));;
+  };
 
   return (
       <section className={burgerConstructor.container}>
@@ -18,8 +41,8 @@ export default function BurgerConstructor({array, oneBun, onClickOrder}) {
               />
          </div>
          <div className={burgerConstructor.scrollBlock}>
-         {array.filter((item) => item.type !== "bun").slice(0, 6).map((item, index)=>(
-            <div className={burgerConstructor.scrollElement}  key={index}>
+         {arrNoBunOrder.map((item, index)=>(
+            <div className={burgerConstructor.scrollElement} key={index}>
               <DragIcon/>
               <ConstructorElement
                isLocked={false}
@@ -53,5 +76,5 @@ export default function BurgerConstructor({array, oneBun, onClickOrder}) {
 };
 
 BurgerConstructor.propTypes = {
-  array: PropTypes.arrayOf(ingredientPropType).isRequired
+  //array: PropTypes.arrayOf(ingredientPropType).isRequired
 };

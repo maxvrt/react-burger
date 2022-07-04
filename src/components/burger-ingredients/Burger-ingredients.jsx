@@ -3,13 +3,17 @@ import burgerIngredients from './burger-ingredients.module.css';
 import { Counter, Tab, CurrencyIcon  } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
 import {ingredientPropType} from '../../utils/prop-types'
-export default function BurgerIngredients({array, onClickDesc}) {
-  const [current, setCurrent] = React.useState('bun');
+import { useContext } from "react";
+import BurgerIngredientsContext from "../../context/burger-ingredients-context";
 
+export default function BurgerIngredients({onClickDesc}) {
+  const [current, setCurrent] = React.useState('bun');
+  const array = useContext(BurgerIngredientsContext);
   const bunRef = useRef(null);
   const sauceRef = useRef(null);
   const mainRef = useRef(null);
   let init = false;
+
   const Card = ({item}) => {
     const handleClick = ()=> onClickDesc(item);
     return (
@@ -80,6 +84,7 @@ export default function BurgerIngredients({array, onClickDesc}) {
       </section>
   )
 };
+
 BurgerIngredients.propTypes = {
-  array: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired
+  //array: PropTypes.arrayOf(ingredientPropType).isRequired
 };
