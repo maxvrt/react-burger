@@ -8,19 +8,25 @@ return (
       <nav className={appHeader.menuWrapper}>
         <ul className={appHeader.menuList}>
           <li className={appHeader.menuItem}>
-            <BurgerIcon type="primary" />
-            <p className="text text_type_main-default">Конструктор</p>
+            <a href="#" className={appHeader.link}>
+              <BurgerIcon type="primary" />
+              <p className="text text_type_main-default">Конструктор</p>
+            </a>
             </li>
           <li className={appHeader.menuItem}>
-            <ListIcon type="secondary" />
-            <p className="text text_type_main-default">Лента заказов</p>
+            <a href="#" className={appHeader.link}>
+              <ListIcon type="secondary" />
+              <p className={`${appHeader.lent} text text_type_main-default`}>Лента заказов</p>
+            </a>
           </li>
         </ul>
       </nav>
       <Logo/>
       <div className={appHeader.cabinet}>
-        <ProfileIcon type="secondary" />
-        <p className="text text_type_main-default">Личный кабинет</p>
+        <a href="#" className={appHeader.link}>
+          <ProfileIcon type="secondary" />
+          <p className="text text_type_main-default">Личный кабинет</p>
+        </a>
       </div>
     </div>
   </header>

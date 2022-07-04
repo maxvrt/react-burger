@@ -59,7 +59,10 @@
   flex-direction: column;
   row-gap: 4px;
   align-items: center;
-  max-width: 272px;
+  width: 272px;
+}
+.cardItem:hover {
+  cursor: pointer;
 }
 .cardImg {
   width: 240px;

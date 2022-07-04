@@ -1,30 +1,28 @@
-import React, { useEffect,useRef } from 'react';
+import React, { useEffect,useRef, useMemo, useState } from 'react';
 import burgerConstructor from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon, LockIcon, DragIcon, DeleteIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
 import {ingredientPropType} from '../../utils/prop-types'
 
-export default function BurgerConstructor({array}) {
-  const [state, setState] = React.useState(array);
+export default function BurgerConstructor({array, oneBun, onClickOrder}) {
 
   return (
       <section className={burgerConstructor.container}>
          <div className={burgerConstructor.singleEl}>
-            {state.filter((item) => item.type === "bun").slice(0, 1).map((item, index)=>(
-              <ConstructorElement key={item._id}
+              <ConstructorElement
                 type="top"
                 isLocked={true}
-                text={item.name + ' (верх)'}
-                price={item.price}
-                thumbnail={item.image_mobile}
+                text={oneBun.name + ' (верх)'}
+                price={oneBun.price}
+                thumbnail={oneBun.image_mobile}
               />
-            ))}
          </div>
          <div className={burgerConstructor.scrollBlock}>
-         {state.filter((item) => item.type === "main").slice(0, 6).map((item, index)=>(
-            <div className={burgerConstructor.scrollElement}  key={item._id}>
+         {array.filter((item) => item.type !== "bun").slice(0, 6).map((item, index)=>(
+            <div className={burgerConstructor.scrollElement}  key={index}>
               <DragIcon/>
               <ConstructorElement
+               isLocked={false}
                text={item.name}
                price={item.price}
                thumbnail={item.image_mobile}
@@ -33,22 +31,20 @@ export default function BurgerConstructor({array}) {
           ))}
          </div>
          <div className={burgerConstructor.singleEl}>
-            {state.filter((item) => item.type === "bun").slice(0, 1).map((item, index)=>(
-              <ConstructorElement key={item._id}
+              <ConstructorElement
                 type="bottom"
                 isLocked={true}
-                text={item.name + ' (низ)'}
-                price={item.price}
-                thumbnail={item.image_mobile}
+                text={oneBun.name + ' (низ)'}
+                price={oneBun.price}
+                thumbnail={oneBun.image_mobile}
               />
-            ))}
          </div>
         <div className={burgerConstructor.totalPrice}>
           <div className={burgerConstructor.priceEl}>
             <p className="text text_type_digits-medium">610</p>
             <CurrencyIcon type="primary"/>
           </div>
-          <Button type="primary" size="large">
+          <Button onClick={onClickOrder} type="primary" size="large">
             Оформить заказ
           </Button>
         </div>
@@ -56,6 +52,6 @@ export default function BurgerConstructor({array}) {
   )
 };
 
-BurgerConstructor.PropType = {
+BurgerConstructor.propTypes = {
   array: PropTypes.arrayOf(ingredientPropType).isRequired
 };

@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 43px 120px 43px;
+  color: #F2F2F3;
+}
+
+.digits {
+  margin: 0;
+  font-family: 'Iceland';
+  font-weight: 400;
+  font-size: 144px;
+  line-height: 120px;
+  padding-top: 39px;
+  padding-bottom: 32px;
+}
+.name {
+  margin: 0;
+  font-family: 'JetBrainsMono';
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  padding-bottom: 60px;
+}
+.img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  padding-bottom: 60px;
+}
+.cooking {
+  margin: 0;
+  font-family: 'JetBrainsMono';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  padding-bottom: 8px;
+}
+.waiting {
+  margin: 0;
+  font-family: 'JetBrainsMono';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #8585AD;
+}
