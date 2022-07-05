@@ -30,20 +30,32 @@ function App() {
     setIngredient(item);
     setIsIngredientDetails(true);
   }
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch({
+      type: GET_INGREDIENTS
+    });
     getIngredients()
-    .then(res =>  {if (res.ok) {
-      return res.json();
+    .then(res =>  {
+      if (res.ok) {
+        return res.json();
       }
       return Promise.reject(`Ошибка: ${res.status}: ${res}`);
     }).then((data) => {
-      setArray(data.data);
+      //setArray(data.data);
+      dispatch({
+        type: GET_INGREDIENTS_SUCCESS,
+        payload: data.data
+      });
       const bun = data.data.find(a=> a.type === "bun");
       setBun(bun);
     }).catch((err) => {
+      dispatch({
+        type: GET_INGREDIENTS_ERROR
+      });
       console.log('Ошибка. Запрос не выполнен: ' + err);
-    });
+    })
   }, []);
 
 
