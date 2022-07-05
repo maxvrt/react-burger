@@ -13,11 +13,15 @@ export default function BurgerConstructor({oneBun}) { //, onClickOrder
   const array = useContext(BurgerIngredientsContext);
   const setIsOrderDetails = useContext(OrderDetailsContext);
   const setModalData = useContext(ModalDataContext);
-  const arrNoBunOrder = array.filter((item) => item.type !== "bun").slice(0, 6);
-  const arrIds = arrNoBunOrder.map(item=> item._id);
-  let totalPrice = arrNoBunOrder.reduce(function (previousValue, item) {return previousValue + item.price},0);
-  totalPrice = totalPrice + oneBun.price*2;
-  //console.log(totalPrice);
+  let arrIds = [];
+  let totalPrice = 0;
+  let arrNoBunOrder = [];
+  if (array.length > 0){
+    arrNoBunOrder = array.filter((item) => item.type !== "bun").slice(0, 6);
+    arrIds = arrNoBunOrder.map(item=> item._id);
+    totalPrice = arrNoBunOrder.reduce(function (sum, item) {return sum + item.price},0);
+    totalPrice = totalPrice + oneBun?.price*2;
+  }
 
   const onClickOrder = () => {
     postOrder(arrIds) // сохраняем ингредиенты на сервер
@@ -35,9 +39,9 @@ export default function BurgerConstructor({oneBun}) { //, onClickOrder
               <ConstructorElement
                 type="top"
                 isLocked={true}
-                text={oneBun.name + ' (верх)'}
-                price={oneBun.price}
-                thumbnail={oneBun.image_mobile}
+                text={oneBun?.name + ' (верх)'}
+                price={oneBun?.price}
+                thumbnail={oneBun?.image_mobile}
               />
          </div>
          <div className={burgerConstructor.scrollBlock}>
@@ -57,9 +61,9 @@ export default function BurgerConstructor({oneBun}) { //, onClickOrder
               <ConstructorElement
                 type="bottom"
                 isLocked={true}
-                text={oneBun.name + ' (низ)'}
-                price={oneBun.price}
-                thumbnail={oneBun.image_mobile}
+                text={oneBun?.name + ' (низ)'}
+                price={oneBun?.price}
+                thumbnail={oneBun?.image_mobile}
               />
          </div>
         <div className={burgerConstructor.totalPrice}>
@@ -76,5 +80,5 @@ export default function BurgerConstructor({oneBun}) { //, onClickOrder
 };
 
 BurgerConstructor.propTypes = {
-  oneBun: PropTypes.object.isRequired
+  //oneBun: PropTypes.object.isRequired
 };
