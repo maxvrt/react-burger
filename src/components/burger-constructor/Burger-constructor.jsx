@@ -5,25 +5,25 @@ import PropTypes from 'prop-types';
 import {ingredientPropType} from '../../utils/prop-types'
 import BurgerIngredientsContext from "../../context/burger-ingredients-context";
 import OrderDetailsContext from "../../context/order-details-context";
+import ModalDataContext from "../../context/modal-data-context";
 import { useContext } from "react";
 import {postOrder, getResponse, catchError} from '../../utils/api';
 
 export default function BurgerConstructor({oneBun}) { //, onClickOrder
   const array = useContext(BurgerIngredientsContext);
   const setIsOrderDetails = useContext(OrderDetailsContext);
+  const setModalData = useContext(ModalDataContext);
   const arrNoBunOrder = array.filter((item) => item.type !== "bun").slice(0, 6);
   const arrIds = arrNoBunOrder.map(item=> item._id);
   let totalPrice = arrNoBunOrder.reduce(function (previousValue, item) {return previousValue + item.price},0);
   totalPrice = totalPrice + oneBun.price*2;
-  console.log(totalPrice);
-  const [modalData, setModalData] = useState(null);
+  //console.log(totalPrice);
 
   const onClickOrder = () => {
     postOrder(arrIds) // сохраняем ингредиенты на сервер
     .then(res => getResponse(res))
     .then(data => {
-        console.log(data);
-        //setModalData(data); // полученный ответ помещаем в стейт для модалки
+        setModalData(data); // полученный ответ помещаем в стейт для модалки
         // в ответе номер заказа лежит в data.order.number
         setIsOrderDetails(true);
       }).catch(err => catchError(err));;
@@ -64,7 +64,7 @@ export default function BurgerConstructor({oneBun}) { //, onClickOrder
          </div>
         <div className={burgerConstructor.totalPrice}>
           <div className={burgerConstructor.priceEl}>
-            <p className="text text_type_digits-medium">610</p>
+            <p className="text text_type_digits-medium">{totalPrice}</p>
             <CurrencyIcon type="primary"/>
           </div>
           <Button onClick={onClickOrder} type="primary" size="large">
@@ -76,5 +76,5 @@ export default function BurgerConstructor({oneBun}) { //, onClickOrder
 };
 
 BurgerConstructor.propTypes = {
-  //array: PropTypes.arrayOf(ingredientPropType).isRequired
+  oneBun: PropTypes.object.isRequired
 };

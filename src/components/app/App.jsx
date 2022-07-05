@@ -9,6 +9,7 @@ import app from './app.module.css';
 import {getIngredients} from '../../utils/api';
 import BurgerIngredientsContext from "../../context/burger-ingredients-context";
 import OrderDetailsContext from "../../context/order-details-context";
+import ModalDataContext from "../../context/modal-data-context";
 
 function App() {
   const [array, setArray] = useState([]);
@@ -17,15 +18,14 @@ function App() {
   const [isOrderDetailsOpened, setIsOrderDetails] = useState(false);
   const [ingredientDetailsOpened, setIsIngredientDetails] = useState(false);
   const [ingredient, setIngredient] = useState({});
+  const [modalData, setModalData] = useState(null);
   // Закрытие всех модалок
   const closeAllModals = () => {
     setIsOrderDetails(false);
     setIsIngredientDetails(false);
   };
-  //todo кнопка оформления заказа
-  // const displayOrdering = ()=>{
-  //   setIsOrderDetails(true);
-  // }
+  // кнопка оформления заказа перенесена в burgerConstructor
+
   const displayDesc = (item)=>{
     setIngredient(item);
     setIsIngredientDetails(true);
@@ -51,14 +51,14 @@ function App() {
     <>
       <AppHeader/>
       <main className={app.main}>
-        {/* замена пропсов на контекст */}
+        <ModalDataContext.Provider value={setModalData}>
         <OrderDetailsContext.Provider value={setIsOrderDetails}>
         <BurgerIngredientsContext.Provider value={array}>
           <BurgerIngredients onClickDesc={displayDesc}/>
           <BurgerConstructor oneBun={oneBun}/>
-          {/* onClickOrder={displayOrdering} */}
         </BurgerIngredientsContext.Provider>
         </OrderDetailsContext.Provider>
+        </ModalDataContext.Provider>
       </main>
       {isOrderDetailsOpened &&
         <Modal
@@ -67,7 +67,7 @@ function App() {
           onCloseClick={closeAllModals}
           escCloseModal={closeAllModals}
         >
-          <OrderDetails/>
+          <OrderDetails data={modalData}/>
         </Modal>
       }
        {ingredientDetailsOpened &&
