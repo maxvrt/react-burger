@@ -1,4 +1,4 @@
-import React, {useEffect, useState}  from 'react';
+import {useEffect, useState}  from 'react';
 import AppHeader from '../app-header/App-header';
 import BurgerIngredients from '../burger-ingredients/Burger-ingredients';
 import BurgerConstructor from '../burger-constructor/Burger-constructor';
@@ -6,15 +6,22 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/Modal';
 import app from './app.module.css';
-import {getIngredients} from '../../utils/api';
 import BurgerIngredientsContext from "../../context/burger-ingredients-context";
 import OrderDetailsContext from "../../context/order-details-context";
 import ModalDataContext from "../../context/modal-data-context";
+import { useSelector, useDispatch } from 'react-redux';
+import { requestIngredients } from "../../services/reducers/reducers";
 
 function App() {
-  const [array, setArray] = useState([]);
-  const [oneBun, setBun] = useState({});
-  //const [arrIds, setArrIds] = useState([]);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(requestIngredients());
+  }, [dispatch]);
+  //const [array, setArray] = useState([]);
+  const array = useSelector(store =>  (store.ingredients.ingredients));
+  const oneBun = useSelector(store =>  (store.ingredients.bun));
+  //const [oneBun, setBun] = useState({});
+  const [arrIds, setArrIds] = useState([]);
   const [isOrderDetailsOpened, setIsOrderDetails] = useState(false);
   const [ingredientDetailsOpened, setIsIngredientDetails] = useState(false);
   const [ingredient, setIngredient] = useState({});
@@ -30,35 +37,6 @@ function App() {
     setIngredient(item);
     setIsIngredientDetails(true);
   }
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch({
-      type: GET_INGREDIENTS
-    });
-    getIngredients()
-    .then(res =>  {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}: ${res}`);
-    }).then((data) => {
-      //setArray(data.data);
-      dispatch({
-        type: GET_INGREDIENTS_SUCCESS,
-        payload: data.data
-      });
-      const bun = data.data.find(a=> a.type === "bun");
-      setBun(bun);
-    }).catch((err) => {
-      dispatch({
-        type: GET_INGREDIENTS_ERROR
-      });
-      console.log('Ошибка. Запрос не выполнен: ' + err);
-    })
-  }, []);
-
-
   return (
     <>
       <AppHeader/>
@@ -66,7 +44,9 @@ function App() {
         <ModalDataContext.Provider value={setModalData}>
         <OrderDetailsContext.Provider value={setIsOrderDetails}>
         <BurgerIngredientsContext.Provider value={array}>
+        {array && (
           <BurgerIngredients onClickDesc={displayDesc}/>
+        )}
           <BurgerConstructor oneBun={oneBun}/>
         </BurgerIngredientsContext.Provider>
         </OrderDetailsContext.Provider>

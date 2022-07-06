@@ -5,10 +5,13 @@ import PropTypes from 'prop-types';
 import {ingredientPropType} from '../../utils/prop-types'
 import { useContext } from "react";
 import BurgerIngredientsContext from "../../context/burger-ingredients-context";
+import { useSelector, useDispatch } from 'react-redux';
 
 export default function BurgerIngredients({onClickDesc}) {
   const [current, setCurrent] = React.useState('bun');
-  const array = useContext(BurgerIngredientsContext);
+  //const array = useContext(BurgerIngredientsContext);
+  const array = useSelector(store =>  (store.ingredients.ingredients));
+  console.log(array);
   const bunRef = useRef(null);
   const sauceRef = useRef(null);
   const mainRef = useRef(null);
@@ -61,6 +64,7 @@ export default function BurgerIngredients({onClickDesc}) {
             </Tab>
           </li>
         </ul>
+        {array && (
         <div className={burgerIngredients.scrollBlock}>
           <h2 ref={bunRef} className={burgerIngredients.listTitle}>Булки</h2>
           <ul className={burgerIngredients.list}>
@@ -80,7 +84,7 @@ export default function BurgerIngredients({onClickDesc}) {
               <Card item={item} key={item._id}/>
             ))}
           </ul>
-        </div>
+        </div>)}
       </section>
   )
 };
