@@ -8,29 +8,34 @@ import OrderDetailsContext from "../../context/order-details-context";
 import ModalDataContext from "../../context/modal-data-context";
 import { useContext } from "react";
 import {postOrder, getResponse, catchError} from '../../utils/api';
+import { useSelector, useDispatch } from 'react-redux';
+import {addOrder} from '../../services/reducers/reducers'
 
-export default function BurgerConstructor({oneBun}) { //, onClickOrder
-  const array = useContext(BurgerIngredientsContext);
-  const setIsOrderDetails = useContext(OrderDetailsContext);
-  const setModalData = useContext(ModalDataContext);
+export default function BurgerConstructor() {
+  const oneBun = useSelector(store =>  (store.ingredients.bun));
+  const array = useSelector(store =>  (store.ingredients.ingredients));
+  const arrNoBunOrder = useSelector(store =>  (store.ingredients.selectedIngredients));
+  //const dispatch = useDispatch();
+
+  // const setIsOrderDetails = useContext(OrderDetailsContext);
+  // const setModalData = useContext(ModalDataContext);
   let arrIds = [];
   let totalPrice = 0;
-  let arrNoBunOrder = [];
   if (array.length > 0){
-    arrNoBunOrder = array.filter((item) => item.type !== "bun").slice(0, 6);
     arrIds = arrNoBunOrder.map(item=> item._id);
     totalPrice = arrNoBunOrder.reduce(function (sum, item) {return sum + item.price},0);
     totalPrice = totalPrice + oneBun?.price*2;
   }
-
+  const dispatch = useDispatch();
   const onClickOrder = () => {
-    postOrder(arrIds) // сохраняем ингредиенты на сервер
-    .then(res => getResponse(res))
-    .then(data => {
-        setModalData(data); // полученный ответ помещаем в стейт для модалки
-        // в ответе номер заказа лежит в data.order.number
-        setIsOrderDetails(true);
-      }).catch(err => catchError(err));;
+    dispatch(addOrder(arrIds));
+    // postOrder(arrIds) // сохраняем ингредиенты на сервер
+    // .then(res => getResponse(res))
+    // .then(data => {
+    //     setModalData(data); // полученный ответ помещаем в стейт для модалки
+    //     // в ответе номер заказа лежит в data.order.number
+    //     setIsOrderDetails(true);
+    //   }).catch(err => catchError(err));
   };
 
   return (

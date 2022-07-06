@@ -11,11 +11,12 @@ export default function BurgerIngredients({onClickDesc}) {
   const [current, setCurrent] = React.useState('bun');
   //const array = useContext(BurgerIngredientsContext);
   const array = useSelector(store =>  (store.ingredients.ingredients));
-  console.log(array);
+  //console.log(array);
   const bunRef = useRef(null);
   const sauceRef = useRef(null);
   const mainRef = useRef(null);
   let init = false;
+  const dispatch = useDispatch();
 
   const Card = ({item}) => {
     const handleClick = ()=> onClickDesc(item);

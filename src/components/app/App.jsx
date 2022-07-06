@@ -17,59 +17,62 @@ function App() {
   useEffect(() => {
     dispatch(requestIngredients());
   }, [dispatch]);
-  //const [array, setArray] = useState([]);
-  const array = useSelector(store =>  (store.ingredients.ingredients));
-  const oneBun = useSelector(store =>  (store.ingredients.bun));
-  //const [oneBun, setBun] = useState({});
+  const array = useSelector(store => (store.ingredients.ingredients));
+  const oneBun = useSelector(store => (store.ingredients.bun));
+  const ingredientModal = useSelector(store => (store.ingredients.ingredientDesc));
+  const isOpenModal = useSelector(store => (store.ingredients.ingredientModal));
   const [arrIds, setArrIds] = useState([]);
-  const [isOrderDetailsOpened, setIsOrderDetails] = useState(false);
-  const [ingredientDetailsOpened, setIsIngredientDetails] = useState(false);
-  const [ingredient, setIngredient] = useState({});
+  //const [isOrderDetailsOpened, setIsOrderDetails] = useState(false);
+  const isOpenModalOrder = useSelector(store => (store.ingredients.orderModal));
   const [modalData, setModalData] = useState(null);
+
+  const orderData = useSelector(store =>  (store.ingredients.orderData));
+  const isOrderModal = useSelector(store =>  (store.ingredients.orderModal));
   // Закрытие всех модалок
   const closeAllModals = () => {
-    setIsOrderDetails(false);
-    setIsIngredientDetails(false);
+    dispatch({type:'INGREDIENT_MODAL_DEL' });
+    dispatch({type:'ORDER_MODAL_DEL' });
+    //setIsOrderDetails(false);
   };
   // кнопка оформления заказа перенесена в burgerConstructor
 
+  // нажатие по элементу списка
   const displayDesc = (item)=>{
-    setIngredient(item);
-    setIsIngredientDetails(true);
+    dispatch({type:'INGREDIENT_MODAL_ADD', payload: item });
+    // setIngredient(item);
+    // setIsIngredientDetails(true);
   }
   return (
     <>
       <AppHeader/>
       <main className={app.main}>
         <ModalDataContext.Provider value={setModalData}>
-        <OrderDetailsContext.Provider value={setIsOrderDetails}>
         <BurgerIngredientsContext.Provider value={array}>
         {array && (
           <BurgerIngredients onClickDesc={displayDesc}/>
         )}
           <BurgerConstructor oneBun={oneBun}/>
         </BurgerIngredientsContext.Provider>
-        </OrderDetailsContext.Provider>
         </ModalDataContext.Provider>
       </main>
-      {isOrderDetailsOpened &&
+      {isOrderModal &&
         <Modal
           title=""
           onOverlayClick={closeAllModals}
           onCloseClick={closeAllModals}
           escCloseModal={closeAllModals}
         >
-          <OrderDetails data={modalData}/>
+          <OrderDetails data={orderData}/>
         </Modal>
       }
-       {ingredientDetailsOpened &&
+       {isOpenModal &&
         <Modal
           title="Детали ингредиента"
           onOverlayClick={closeAllModals}
           onCloseClick={closeAllModals}
           escCloseModal={closeAllModals}
         >
-          <IngredientDetails data={ingredient}/>
+          <IngredientDetails data={ingredientModal}/>
         </Modal>
       }
 
