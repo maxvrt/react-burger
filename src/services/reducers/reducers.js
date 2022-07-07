@@ -3,7 +3,8 @@ import {
   GET_INGREDIENTS_SUCCESS,
   GET_INGREDIENTS_ERROR,
   SET_BUN,
-  INGREDIENTS_CONSTRUCTOR,
+  MASS_ADD_INGREDIENTS,
+  ADD_INGREDIENT,
   INGREDIENT_MODAL_ADD,
   INGREDIENT_MODAL_DEL,
   ORDER_MODAL_ADD,
@@ -49,11 +50,11 @@ export function requestIngredients() {
         type: SET_BUN,
         payload: bun
       });
-      const selectedIng = data.data.filter((item) => item.type !== "bun").slice(0, 6);
-      dispatch({
-        type: INGREDIENTS_CONSTRUCTOR,
-        payload: selectedIng
-      });
+      // const selectedIng = data.data.filter((item) => item.type !== "bun").slice(0, 6);
+      // dispatch({
+      //   type: MASS_ADD_INGREDIENTS,
+      //   payload: selectedIng
+      // });
     }).catch((err) => {
       dispatch({
         type: GET_INGREDIENTS_ERROR
@@ -116,10 +117,16 @@ export const ingredientsReducer = (state = initialIngredients, action) => {
         ingredientsError: true,
       };
     }
-    case INGREDIENTS_CONSTRUCTOR: {
+    case MASS_ADD_INGREDIENTS: {
       return {
         ...state,
         selectedIngredients: action.payload,
+      };
+    }
+    case ADD_INGREDIENT: {
+      return {
+        ...state,
+        selectedIngredients: [...state.selectedIngredients, action.data],
       };
     }
     case INGREDIENT_MODAL_ADD: {

@@ -10,15 +10,29 @@ import { useContext } from "react";
 import {postOrder, getResponse, catchError} from '../../utils/api';
 import { useSelector, useDispatch } from 'react-redux';
 import {addOrder} from '../../services/reducers/reducers'
-
+import { useDrop } from "react-dnd";
+import {SET_BUN, ADD_INGREDIENT}  from '../../services/actions/all-actions';
 export default function BurgerConstructor() {
   const oneBun = useSelector(store =>  (store.ingredients.bun));
   const array = useSelector(store =>  (store.ingredients.ingredients));
   const arrNoBunOrder = useSelector(store =>  (store.ingredients.selectedIngredients));
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  // const setIsOrderDetails = useContext(OrderDetailsContext);
-  // const setModalData = useContext(ModalDataContext);
+  const Inner = ({item, index}) => {
+
+    return (
+      <div className={burgerConstructor.scrollElement} key={index}>
+        <DragIcon/>
+        <ConstructorElement
+        isLocked={false}
+        text={item.name}
+        price={item.price}
+        thumbnail={item.image_mobile}
+        />
+      </div>
+    );
+  };
+
   let arrIds = [];
   let totalPrice = 0;
   if (array.length > 0){
@@ -26,17 +40,26 @@ export default function BurgerConstructor() {
     totalPrice = arrNoBunOrder.reduce(function (sum, item) {return sum + item.price},0);
     totalPrice = totalPrice + oneBun?.price*2;
   }
-  const dispatch = useDispatch();
+
   const onClickOrder = () => {
     dispatch(addOrder(arrIds));
-    // postOrder(arrIds) // сохраняем ингредиенты на сервер
-    // .then(res => getResponse(res))
-    // .then(data => {
-    //     setModalData(data); // полученный ответ помещаем в стейт для модалки
-    //     // в ответе номер заказа лежит в data.order.number
-    //     setIsOrderDetails(true);
-    //   }).catch(err => catchError(err));
   };
+  const [, dropTarget] = useDrop({
+    accept: 'ingredients',
+    drop(item) {
+      if (item.item.type === 'bun') {
+        dispatch({
+          type: SET_BUN,
+          data: item.item,
+        });
+      } else {
+        dispatch({
+          type: ADD_INGREDIENT,
+          data: { ...item.item, id: Math.random().toString(36).slice(2) },
+        });
+      }
+    },
+  });
 
   return (
       <section className={burgerConstructor.container}>
@@ -49,19 +72,15 @@ export default function BurgerConstructor() {
                 thumbnail={oneBun?.image_mobile}
               />
          </div>
-         <div className={burgerConstructor.scrollBlock}>
-         {arrNoBunOrder.map((item, index)=>(
-            <div className={burgerConstructor.scrollElement} key={index}>
-              <DragIcon/>
-              <ConstructorElement
-               isLocked={false}
-               text={item.name}
-               price={item.price}
-               thumbnail={item.image_mobile}
-              />
+         {arrNoBunOrder.length > 0 ? (
+            <div className={burgerConstructor.scrollBlock} ref={dropTarget}>
+            {arrNoBunOrder.map((item, index)=>(
+              <Inner item={item} index={index} />
+              ))}
             </div>
-          ))}
-         </div>
+          ) : (
+            <div className={burgerConstructor.empty} ref={dropTarget}>Ингредиенты</div>
+          )}
          <div className={burgerConstructor.singleEl}>
               <ConstructorElement
                 type="bottom"

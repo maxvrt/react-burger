@@ -11,6 +11,8 @@ import OrderDetailsContext from "../../context/order-details-context";
 import ModalDataContext from "../../context/modal-data-context";
 import { useSelector, useDispatch } from 'react-redux';
 import { requestIngredients } from "../../services/reducers/reducers";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,11 +41,10 @@ function App() {
   // нажатие по элементу списка
   const displayDesc = (item)=>{
     dispatch({type:'INGREDIENT_MODAL_ADD', payload: item });
-    // setIngredient(item);
-    // setIsIngredientDetails(true);
   }
   return (
     <>
+    <DndProvider backend={HTML5Backend}>
       <AppHeader/>
       <main className={app.main}>
         <ModalDataContext.Provider value={setModalData}>
@@ -75,7 +76,7 @@ function App() {
           <IngredientDetails data={ingredientModal}/>
         </Modal>
       }
-
+    </DndProvider>
     </>
   );
 }

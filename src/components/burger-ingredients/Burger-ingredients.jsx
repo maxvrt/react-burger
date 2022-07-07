@@ -6,6 +6,7 @@ import {ingredientPropType} from '../../utils/prop-types'
 import { useContext } from "react";
 import BurgerIngredientsContext from "../../context/burger-ingredients-context";
 import { useSelector, useDispatch } from 'react-redux';
+import { useDrag } from "react-dnd";
 
 export default function BurgerIngredients({onClickDesc}) {
   const [current, setCurrent] = React.useState('bun');
@@ -17,11 +18,14 @@ export default function BurgerIngredients({onClickDesc}) {
   const mainRef = useRef(null);
   let init = false;
   const dispatch = useDispatch();
-
   const Card = ({item}) => {
     const handleClick = ()=> onClickDesc(item);
+    const [, dragRef] = useDrag({
+      type: 'ingredients',
+      item: { item }
+    });
     return (
-      <li className={burgerIngredients.cardItem} onClick={handleClick}>
+      <li className={burgerIngredients.cardItem} onClick={handleClick} ref={dragRef}>
         <img className={burgerIngredients.cardImg} src={item.image} />
         <div className={burgerIngredients.cardPrice}><p className={burgerIngredients.cardPriceDig}>{item.price}</p><CurrencyIcon/></div>
         <p className={burgerIngredients.cardName}>{item.name}</p>

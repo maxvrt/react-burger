@@ -7,7 +7,16 @@
 .singleEl {
   margin-left: 42px;
 }
-
+.empty {
+  margin-left: 42px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90px;
+  width: 540px;
+  background: #2f2f37;
+}
 .scrollBlock {
   display: flex;
   flex-direction: column;
