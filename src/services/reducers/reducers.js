@@ -45,11 +45,11 @@ export function requestIngredients() {
         type: GET_INGREDIENTS_SUCCESS,
         payload: data.data
       });
-      const bun = data.data.find(a=> a.type === "bun");
-      dispatch({
-        type: SET_BUN,
-        payload: bun
-      });
+      // const bun = data.data.find(a=> a.type === "bun");
+      // dispatch({
+      //   type: SET_BUN,
+      //   payload: bun
+      // });
       // const selectedIng = data.data.filter((item) => item.type !== "bun").slice(0, 6);
       // dispatch({
       //   type: MASS_ADD_INGREDIENTS,
@@ -126,7 +126,7 @@ export const ingredientsReducer = (state = initialIngredients, action) => {
     case ADD_INGREDIENT: {
       return {
         ...state,
-        selectedIngredients: [...state.selectedIngredients, action.data],
+        selectedIngredients: [...state.selectedIngredients, action.payload],
       };
     }
     case INGREDIENT_MODAL_ADD: {

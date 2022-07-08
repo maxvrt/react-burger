@@ -20,7 +20,7 @@ function App() {
     dispatch(requestIngredients());
   }, [dispatch]);
   const array = useSelector(store => (store.ingredients.ingredients));
-  const oneBun = useSelector(store => (store.ingredients.bun));
+  //const oneBun = useSelector(store => (store.ingredients.bun));
   const ingredientModal = useSelector(store => (store.ingredients.ingredientDesc));
   const isOpenModal = useSelector(store => (store.ingredients.ingredientModal));
   const [arrIds, setArrIds] = useState([]);
@@ -52,7 +52,7 @@ function App() {
         {array && (
           <BurgerIngredients onClickDesc={displayDesc}/>
         )}
-          <BurgerConstructor oneBun={oneBun}/>
+          <BurgerConstructor/>
         </BurgerIngredientsContext.Provider>
         </ModalDataContext.Provider>
       </main>

@@ -18,6 +18,7 @@ export default function BurgerIngredients({onClickDesc}) {
   const mainRef = useRef(null);
   let init = false;
   const dispatch = useDispatch();
+
   const Card = ({item}) => {
     const handleClick = ()=> onClickDesc(item);
     const [, dragRef] = useDrag({

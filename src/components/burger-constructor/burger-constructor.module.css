@@ -16,6 +16,17 @@
   height: 90px;
   width: 540px;
   background: #2f2f37;
+  font-family: 'JetBrainsMono';
+  font-size: 26px;
+  line-height: 40px;
+}
+.emptyTop {
+  composes: empty;
+  border-radius: 90px 90px 50px 50px;
+}
+.emptyBottom {
+  composes: empty;
+  border-radius: 50px 50px 90px 90px;
 }
 .scrollBlock {
   display: flex;
