@@ -11,9 +11,12 @@ import {
   ORDER_MODAL_DEL,
   GET_ORDER_NUMBER,
   UPD_ORDER_NUMBER,
-  ORDER_ERROR
+  ORDER_ERROR,
+  DELETE_ITEM,
+  MOVE_ELEMENT
 } from '../actions/all-actions';
 import {getIngredients, postOrder, getResponse, catchError} from '../../utils/api';
+import update from 'react-addons-update'
 
 const initialIngredients = {
   ingredients: [],
@@ -21,7 +24,6 @@ const initialIngredients = {
   selectedIngredients: [],
   bun: {},
   ingredientObject: {},
-  bunType:'',
   ingredientModal: false,
   ingredientDesc: {},
   orderModal: false,
@@ -150,6 +152,30 @@ export const ingredientsReducer = (state = initialIngredients, action) => {
         orderModal: false
       };
     }
+    case DELETE_ITEM: {
+      return {
+        ...state,
+        selectedIngredients: [...state.selectedIngredients].filter(
+          (item) => {
+            return item.id !== action.payload;
+          }
+        ),
+      };
+    }
+    case MOVE_ELEMENT: {
+      const hoverElement = state.selectedIngredients[action.payload.itemIndex];
+      const selectedIngredients = update(state.selectedIngredients, {
+        $splice: [
+          [action.payload.itemIndex, 1],
+          [action.payload.selectedIndex, 0, hoverElement],
+        ],
+      });
+      return {
+        ...state,
+        selectedIngredients,
+      };
+    }
+
     default: {
       return state;
     }
