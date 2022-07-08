@@ -19,10 +19,9 @@ export default function BurgerConstructor() {
   const arrNoBunOrder = useSelector(store =>  (store.ingredients.selectedIngredients));
   const dispatch = useDispatch();
 
-  const Inner = ({item, index}) => {
-
+  const Inner = ({item}) => {
     return (
-      <div className={burgerConstructor.scrollElement} key={index}>
+      <div className={burgerConstructor.scrollElement}>
         <DragIcon/>
         <ConstructorElement
         isLocked={false}
@@ -39,7 +38,7 @@ export default function BurgerConstructor() {
   if (arrNoBunOrder.length > 0){
     arrIds = arrNoBunOrder.map(item=> item._id);
     totalPrice = arrNoBunOrder.reduce(function (sum, item) {return sum + item.price},0);
-    totalPrice = totalPrice + oneBun?.price*2;
+    if(oneBun.price>0) totalPrice = totalPrice + oneBun?.price*2;
   };
   const onClickOrder = () => {
     dispatch(addOrder(arrIds));
@@ -80,8 +79,8 @@ export default function BurgerConstructor() {
         )}
         {arrNoBunOrder.length > 0 ? (
           <div className={burgerConstructor.scrollBlock}>
-            {arrNoBunOrder.map((item, index)=>(
-              <Inner item={item} index={index} />
+            {arrNoBunOrder.map((item)=>(
+              <Inner item={item} key={Math.random().toString(36).slice(2)}/>
             ))}
           </div>
         ) : (
