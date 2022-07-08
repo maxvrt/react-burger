@@ -33,7 +33,7 @@
   flex-direction: column;
   row-gap: 16px;
   width: 600px;
-  height: 470px;
+  height: 370px;
   overflow: auto;
 }
 .scrollBlock::-webkit-scrollbar {

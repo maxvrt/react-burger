@@ -19,17 +19,17 @@ function App() {
   useEffect(() => {
     dispatch(requestIngredients());
   }, [dispatch]);
-  const array = useSelector(store => (store.ingredients.ingredients));
+  const array = useSelector(store => (store.rootIngredients.ingredients));
   //const oneBun = useSelector(store => (store.ingredients.bun));
-  const ingredientModal = useSelector(store => (store.ingredients.ingredientDesc));
-  const isOpenModal = useSelector(store => (store.ingredients.ingredientModal));
+  const ingredientModal = useSelector(store => (store.rootIngredients.ingredientDesc));
+  const isOpenModal = useSelector(store => (store.rootIngredients.ingredientModal));
   const [arrIds, setArrIds] = useState([]);
   //const [isOrderDetailsOpened, setIsOrderDetails] = useState(false);
-  const isOpenModalOrder = useSelector(store => (store.ingredients.orderModal));
+  const isOpenModalOrder = useSelector(store => (store.rootIngredients.orderModal));
   const [modalData, setModalData] = useState(null);
 
-  const orderData = useSelector(store =>  (store.ingredients.orderData));
-  const isOrderModal = useSelector(store =>  (store.ingredients.orderModal));
+  const orderData = useSelector(store =>  (store.rootIngredients.orderData));
+  const isOrderModal = useSelector(store =>  (store.rootIngredients.orderModal));
   // Закрытие всех модалок
   const closeAllModals = () => {
     dispatch({type:'INGREDIENT_MODAL_DEL' });

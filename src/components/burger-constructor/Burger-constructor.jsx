@@ -12,11 +12,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import {addOrder} from '../../services/reducers/reducers'
 import { useDrop } from "react-dnd";
 import {SET_BUN, ADD_INGREDIENT}  from '../../services/actions/all-actions';
+import { useInView } from 'react-intersection-observer';
 
 export default function BurgerConstructor() {
-  const oneBun = useSelector(store =>  (store.ingredients.bun));
-  //const array = useSelector(store =>  (store.ingredients.ingredients));
-  const arrNoBunOrder = useSelector(store =>  (store.ingredients.selectedIngredients));
+  const oneBun = useSelector(store =>  (store.rootIngredients.bun));
+  const arrNoBunOrder = useSelector(store =>  (store.rootIngredients.selectedIngredients));
   const dispatch = useDispatch();
 
   const Inner = ({item}) => {
@@ -35,7 +35,7 @@ export default function BurgerConstructor() {
 
   let arrIds = [];
   let totalPrice = 0;
-  if (arrNoBunOrder.length > 0){
+  if (arrNoBunOrder.length > 0 || JSON.stringify(oneBun) !== '{}'){
     arrIds = arrNoBunOrder.map(item=> item._id);
     totalPrice = arrNoBunOrder.reduce(function (sum, item) {return sum + item.price},0);
     if(oneBun.price>0) totalPrice = totalPrice + oneBun?.price*2;
@@ -53,12 +53,13 @@ export default function BurgerConstructor() {
           payload: item.item,
         });
       } else {
-        const idItem = Math.random().toString(36).slice(2);
+        const idItem = Math.random().toString(36).slice(3);
         dispatch({
           type: ADD_INGREDIENT,
           payload: { ...item.item, id: idItem },
         });
       }
+      console.log(item);
     },
   });
 
@@ -80,7 +81,7 @@ export default function BurgerConstructor() {
         {arrNoBunOrder.length > 0 ? (
           <div className={burgerConstructor.scrollBlock}>
             {arrNoBunOrder.map((item)=>(
-              <Inner item={item} key={Math.random().toString(36).slice(2)}/>
+              <Inner item={item} key={Math.random().toString(36).slice(3)}/>
             ))}
           </div>
         ) : (

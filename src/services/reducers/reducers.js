@@ -17,7 +17,6 @@ import {getIngredients, postOrder, getResponse, catchError} from '../../utils/ap
 
 const initialIngredients = {
   ingredients: [],
-  ingredientsLoading: false,
   ingredientsError: false,
   selectedIngredients: [],
   bun: {},
@@ -45,16 +44,6 @@ export function requestIngredients() {
         type: GET_INGREDIENTS_SUCCESS,
         payload: data.data
       });
-      // const bun = data.data.find(a=> a.type === "bun");
-      // dispatch({
-      //   type: SET_BUN,
-      //   payload: bun
-      // });
-      // const selectedIng = data.data.filter((item) => item.type !== "bun").slice(0, 6);
-      // dispatch({
-      //   type: MASS_ADD_INGREDIENTS,
-      //   payload: selectedIng
-      // });
     }).catch((err) => {
       dispatch({
         type: GET_INGREDIENTS_ERROR
