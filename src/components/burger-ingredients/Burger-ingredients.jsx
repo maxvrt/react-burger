@@ -17,22 +17,21 @@ export default function BurgerIngredients({onClickDesc}) {
   const [sauceRef, inViewSauce] = useInView();
   const [mainRef, inViewMain] = useInView();
 
+  // Элемент в списке ингредиентов
   const Card = ({item}) => {
     const handleClick = ()=> onClickDesc(item);
     const [, dragRef] = useDrag({
       type: 'ingredients',
       item: { item }
     });
-    const initialIngredients = useSelector((store) => store.rootIngredients);
+    const {selectedIngredients, bun} = useSelector((store) => store.rootIngredients);
     const count = useMemo(
       () =>(count = 0) => {
-         if(initialIngredients.selectedIngredients)
-            initialIngredients.selectedIngredients.forEach((element)=>{
-              if (element._id === item._id) count++;
-            })
-          return count;
+         if(selectedIngredients) selectedIngredients.forEach((element)=>{ if (element._id === item._id) count++; });
+         if (bun && bun._id === item._id) count = 2;
+         return count;
         },
-      [initialIngredients]
+      [selectedIngredients, bun]
     );
     return (
       <li className={burgerIngredients.cardItem} onClick={handleClick} ref={dragRef}>
