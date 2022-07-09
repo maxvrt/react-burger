@@ -19,12 +19,9 @@ function App() {
   useEffect(() => {
     dispatch(requestIngredients());
   }, [dispatch]);
-  const array = useSelector(store => (store.rootIngredients.ingredients));
-  //const oneBun = useSelector(store => (store.ingredients.bun));
+  const arrayIngredients = useSelector(store => (store.rootIngredients.ingredients));
   const ingredientModal = useSelector(store => (store.rootIngredients.ingredientDesc));
   const isOpenModal = useSelector(store => (store.rootIngredients.ingredientModal));
-  const [arrIds, setArrIds] = useState([]);
-  //const [isOrderDetailsOpened, setIsOrderDetails] = useState(false);
   const isOpenModalOrder = useSelector(store => (store.rootIngredients.orderModal));
   const [modalData, setModalData] = useState(null);
 
@@ -34,9 +31,7 @@ function App() {
   const closeAllModals = () => {
     dispatch({type:'INGREDIENT_MODAL_DEL' });
     dispatch({type:'ORDER_MODAL_DEL' });
-    //setIsOrderDetails(false);
   };
-  // кнопка оформления заказа перенесена в burgerConstructor
 
   // нажатие по элементу списка
   const displayDesc = (item)=>{
@@ -48,8 +43,8 @@ function App() {
       <AppHeader/>
       <main className={app.main}>
         <ModalDataContext.Provider value={setModalData}>
-        <BurgerIngredientsContext.Provider value={array}>
-        {array && (
+        <BurgerIngredientsContext.Provider value={Ingredients}>
+        {Ingredients && (
           <BurgerIngredients onClickDesc={displayDesc}/>
         )}
           <BurgerConstructor/>
