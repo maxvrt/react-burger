@@ -43,8 +43,8 @@ function App() {
       <AppHeader/>
       <main className={app.main}>
         <ModalDataContext.Provider value={setModalData}>
-        <BurgerIngredientsContext.Provider value={Ingredients}>
-        {Ingredients && (
+        <BurgerIngredientsContext.Provider value={arrayIngredients}>
+        {arrayIngredients && (
           <BurgerIngredients onClickDesc={displayDesc}/>
         )}
           <BurgerConstructor/>
