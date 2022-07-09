@@ -32,18 +32,38 @@ export default function BurgerConstructor() {
 
     const [, drop] = useDrop({
       accept: 'el',
-      hover(item) {
+      hover(item, monitor) {
         if (!ref.current) {
           return;
         }
-        const itemIndex = item.index;
-        const selectedIndex = index;
-        console.log(selectedIndex + '.  itemIndex: ' + itemIndex);
+        const dragIndex = item.index;
+        const hoverIndex = index;
+        // Don't replace items with themselves
+        if (dragIndex === hoverIndex) {
+          return;
+        }
+        // Determine rectangle on screen
+        const hoverBoundingRect = ref.current?.getBoundingClientRect();
+        // Get vertical middle
+        const hoverMiddleY =
+          (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+        // Determine mouse position
+        const clientOffset = monitor.getClientOffset();
+        // Get pixels to the top
+        const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+          return;
+        }
+        // Dragging upwards
+        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+          return;
+        }
+
         dispatch({
           type: 'MOVE_ELEMENT',
-          payload: { itemIndex, selectedIndex },
+          payload: { from: dragIndex, to: hoverIndex },
         });
-        item.index = selectedIndex;
+        item.index = hoverIndex;
       },
     });
     const [, drag] = useDrag({
@@ -92,7 +112,7 @@ export default function BurgerConstructor() {
           payload: { ...item.item, id: idItem },
         });
       }
-      console.log(item);
+      //console.log(item);
     },
   });
 
@@ -113,9 +133,11 @@ export default function BurgerConstructor() {
         )}
         {arrNoBunOrder.length > 0 ? (
           <div className={burgerConstructor.scrollBlock}>
-            {arrNoBunOrder.map((item, index)=>(
-              <Inner item={item} index={index} key={`${item.id}_${index}`}/>
-            ))}
+            {
+              arrNoBunOrder.map((item, index)=>{
+                return <Inner item={item} index={index} key={`${item.id}_${index}`}/>
+              })
+            }
           </div>
         ) : (
             <div className={burgerConstructor.empty}>Ингредиенты</div>
@@ -138,9 +160,11 @@ export default function BurgerConstructor() {
             <p className="text text_type_digits-medium">{totalPrice}</p>
             <CurrencyIcon type="primary"/>
           </div>
+          {arrNoBunOrder.length === 0 ? <div className={burgerConstructor.disableOrder}>Оформить заказ</div> :
           <Button onClick={onClickOrder} type="primary" size="large">
             Оформить заказ
           </Button>
+          }
         </div>
       </section>
   )

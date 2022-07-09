@@ -71,7 +71,8 @@ export function addOrder(arrIds) {
       //setIsOrderDetails(true);
     }).catch((err) => {
       dispatch({
-        type: ORDER_ERROR
+        type: ORDER_ERROR,
+        payload: 'Ошибка. Попробуйте добавить больше ингредиентов.'
       });
       console.log('Ошибка. Запрос не выполнен: ' + err);
     })
@@ -163,16 +164,16 @@ export const ingredientsReducer = (state = initialIngredients, action) => {
       };
     }
     case MOVE_ELEMENT: {
-      const hoverElement = state.selectedIngredients[action.payload.itemIndex];
-      const selectedIngredients = update(state.selectedIngredients, {
-        $splice: [
-          [action.payload.itemIndex, 1],
-          [action.payload.selectedIndex, 0, hoverElement],
-        ],
-      });
+      const ingredients = [...state.selectedIngredients];
+      ingredients.splice(
+        action.payload.to,
+        0,
+        ingredients.splice(action.payload.from, 1)[0]
+      );
+      console.log(ingredients);
       return {
         ...state,
-        selectedIngredients,
+        selectedIngredients: ingredients,
       };
     }
 
