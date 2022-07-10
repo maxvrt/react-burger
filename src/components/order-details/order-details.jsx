@@ -1,10 +1,10 @@
 import React, { useEffect,useRef } from 'react';
 import orderDetails from './order-details.module.css';
 import doneImg from "../../images/done.png";
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
-export default function OrderDetails({data}) {
-
+export default function OrderDetails() {
+  const data = useSelector(store =>  (store.rootIngredients.orderData));
   return (
     <div className={orderDetails.container}>
       <h2 className={orderDetails.digits}>{data.order.number}</h2>
@@ -15,6 +15,3 @@ export default function OrderDetails({data}) {
     </div>
 )
 }
-OrderDetails.propTypes = {
-  data: PropTypes.object.isRequired
-};

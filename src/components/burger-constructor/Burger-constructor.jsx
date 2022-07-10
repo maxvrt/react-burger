@@ -1,17 +1,10 @@
 import React, { useEffect,useRef, useMemo, useState } from 'react';
 import burgerConstructor from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon, LockIcon, DragIcon, DeleteIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import PropTypes from 'prop-types';
-import {ingredientPropType} from '../../utils/prop-types'
-import BurgerIngredientsContext from "../../context/burger-ingredients-context";
-import OrderDetailsContext from "../../context/order-details-context";
-import ModalDataContext from "../../context/modal-data-context";
-import { useContext } from "react";
-import {postOrder, getResponse, catchError} from '../../utils/api';
 import { useSelector, useDispatch } from 'react-redux';
-import {addOrder} from '../../services/reducers/reducers'
+import {addOrder} from '../../services/actions/all-actions'
 import { useDrop, useDrag } from "react-dnd";
-import {SET_BUN, ADD_INGREDIENT}  from '../../services/actions/all-actions';
+import {SET_BUN, ADD_INGREDIENT, DELETE_ITEM, MOVE_ELEMENT}  from '../../services/actions/all-actions';
 import { useInView } from 'react-intersection-observer';
 
 export default function BurgerConstructor() {
@@ -21,11 +14,11 @@ export default function BurgerConstructor() {
 
   const Inner = ({item, index}) => {
     const ref = useRef(null);
-    const itemId = item.id;
+    const itemId = item.uuid;
 
     const deleteItem = (id) => {
       dispatch({
-        type: 'DELETE_ITEM',
+        type: DELETE_ITEM,
         payload: id,
       });
     };
@@ -37,6 +30,7 @@ export default function BurgerConstructor() {
           return;
         }
         const dragIndex = item.index;
+        //console.log(item);
         const hoverIndex = index;
         // Don't replace items with themselves
         if (dragIndex === hoverIndex) {
@@ -60,10 +54,13 @@ export default function BurgerConstructor() {
         }
 
         dispatch({
-          type: 'MOVE_ELEMENT',
+          type: MOVE_ELEMENT,
           payload: { from: dragIndex, to: hoverIndex },
         });
+
         item.index = hoverIndex;
+
+
       },
     });
     const [, drag] = useDrag({
@@ -73,6 +70,7 @@ export default function BurgerConstructor() {
     drag(drop(ref));
 
     return (
+      <React.Fragment>
       <div className={burgerConstructor.scrollElement} ref={ref}>
         <DragIcon/>
         <ConstructorElement
@@ -83,6 +81,7 @@ export default function BurgerConstructor() {
         handleClose={() => deleteItem(itemId)}
         />
       </div>
+      </React.Fragment>
     );
   };
 
@@ -109,7 +108,7 @@ export default function BurgerConstructor() {
         const idItem = Math.random().toString(36).slice(2);
         dispatch({
           type: ADD_INGREDIENT,
-          payload: { ...item.item, id: idItem },
+          payload: { ...item.item, uuid:idItem },
         });
       }
       //console.log(item);
@@ -131,11 +130,11 @@ export default function BurgerConstructor() {
         ) : (
           <div className={burgerConstructor.emptyTop}>Булка</div>
         )}
-        {arrNoBunOrder.length > 0 ? (
+        {arrNoBunOrder.length  ? (
           <div className={burgerConstructor.scrollBlock}>
             {
               arrNoBunOrder.map((item, index)=>{
-                return <Inner item={item} index={index} key={`${item.id}_${index}`}/>
+                return <Inner item={item} index={index} key={`${item.uuid}`}/>
               })
             }
           </div>

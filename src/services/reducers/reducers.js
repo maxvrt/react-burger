@@ -13,10 +13,10 @@ import {
   UPD_ORDER_NUMBER,
   ORDER_ERROR,
   DELETE_ITEM,
-  MOVE_ELEMENT
+  MOVE_ELEMENT,
+  UPD
 } from '../actions/all-actions';
-import {getIngredients, postOrder, getResponse, catchError} from '../../utils/api';
-import update from 'react-addons-update'
+
 
 const initialIngredients = {
   ingredients: [],
@@ -29,58 +29,18 @@ const initialIngredients = {
   orderModal: false,
   orderError: false,
   orderData: {},
+  upd:0,
 };
-export function requestIngredients() {
-  return (dispatch) => {
-    dispatch({
-      type: GET_INGREDIENTS
-    });
-    getIngredients()
-    .then(res =>  {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}: ${res}`);
-    }).then((data) => {
-      dispatch({
-        type: GET_INGREDIENTS_SUCCESS,
-        payload: data.data
-      });
-    }).catch((err) => {
-      dispatch({
-        type: GET_INGREDIENTS_ERROR
-      });
-      console.log('Ошибка. Запрос не выполнен: ' + err);
-    })
-  }
-};
-export function addOrder(arrIds) {
-  return (dispatch) => {
-    console.log(arrIds);
-    postOrder(arrIds) // сохраняем ингредиенты на сервер
-    .then(res => getResponse(res))
-    .then(data => {
-      dispatch({
-        type: GET_ORDER_NUMBER,
-        payload: data
-      });
-      dispatch({
-        type: ORDER_MODAL_ADD
-      });
-      //setModalData(data); // полученный ответ помещаем в стейт для модалки
-      //setIsOrderDetails(true);
-    }).catch((err) => {
-      dispatch({
-        type: ORDER_ERROR,
-        payload: 'Ошибка. Попробуйте добавить больше ингредиентов.'
-      });
-      console.log('Ошибка. Запрос не выполнен: ' + err);
-    })
-  }
-}
+
 
 export const ingredientsReducer = (state = initialIngredients, action) => {
   switch (action.type) {
+    case UPD: {
+      return {
+        ...state,
+        upd:true
+      };
+    }
     case GET_INGREDIENTS: {
       return {
         ...state,
@@ -158,7 +118,7 @@ export const ingredientsReducer = (state = initialIngredients, action) => {
         ...state,
         selectedIngredients: [...state.selectedIngredients].filter(
           (item) => {
-            return item.id !== action.payload;
+            return item.uuid !== action.payload;
           }
         ),
       };
@@ -170,7 +130,6 @@ export const ingredientsReducer = (state = initialIngredients, action) => {
         0,
         ingredients.splice(action.payload.from, 1)[0]
       );
-      console.log(ingredients);
       return {
         ...state,
         selectedIngredients: ingredients,

@@ -2,9 +2,6 @@ import { useEffect, useRef, useState, useMemo } from 'react';
 import burgerIngredients from './burger-ingredients.module.css';
 import { Counter, Tab, CurrencyIcon  } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
-import {ingredientPropType} from '../../utils/prop-types'
-import { useContext } from "react";
-import BurgerIngredientsContext from "../../context/burger-ingredients-context";
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrag } from "react-dnd";
 import { useInView } from 'react-hook-inview';
