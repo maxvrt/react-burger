@@ -19,13 +19,13 @@ const RegisterPage = () => {
     setPasswordVal(e.target.value);
   };
 
-  const register = e => {
+  const submit = e => {
     e.preventDefault();
   }
 
   return (
     <div className={styles.container}>
-      <form className={styles.form} onSubmit={register}>
+      <form className={styles.form} onSubmit={submit}>
           <h2 className={styles.title}>Регистрация</h2>
           <Input
             placeholder={'Имя'}

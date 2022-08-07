@@ -1,4 +1,4 @@
-import {getIngredients, postOrder, getResponse, catchError} from '../../utils/api';
+import {getIngredients, postOrder, getResponse, postForgotPassword, catchError} from '../../utils/api';
 
 export const GET_INGREDIENTS = "GET_INGREDIENTS";
 export const GET_INGREDIENTS_SUCCESS = "GET_INGREDIENTS_SUCCESS";
@@ -18,6 +18,32 @@ export const MOVE_ELEMENT = "MOVE_ELEMENT";
 export const DELETE_ITEM = "DELETE_ITEM";
 export const UPD = "UPD";
 
+export const POST_FORGOT_PASS = "POST_FORGOT_PASS";
+export const POST_FORGOT_PASS_SUCCESS = "POST_FORGOT_PASS_SUCCESS";
+export const POST_FORGOT_PASS_ERROR = "POST_FORGOT_PASS_ERROR";
+
+
+export function postForgotPass(email) {
+  return (dispatch) => {
+    dispatch({
+      type: POST_FORGOT_PASS
+    });
+    postForgotPassword(email)
+    .then(res => getResponse(res))
+    .then((data) => {
+      dispatch({
+        type: POST_FORGOT_PASS_SUCCESS,
+        payload: data.data
+      });
+    }).catch((err) => {
+      dispatch({
+        type: POST_FORGOT_PASS_ERROR
+      });
+      console.log('Ошибка. Запрос не выполнен: ' + err);
+    })
+  }
+};
+
 export function requestIngredients() {
   return (dispatch) => {
     dispatch({
@@ -28,7 +54,7 @@ export function requestIngredients() {
     .then((data) => {
       dispatch({
         type: GET_INGREDIENTS_SUCCESS,
-        payload: data.data
+        payload: data
       });
     }).catch((err) => {
       dispatch({

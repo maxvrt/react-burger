@@ -13,6 +13,9 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { INGREDIENT_MODAL_DEL, ORDER_MODAL_DEL, INGREDIENT_MODAL_ADD } from "../../services/actions/all-actions";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import RegisterPage from '../../pages/register-page/register-page';
+import LoginPage from '../../pages/login-page/login-page';
+import ForgotPage from '../../pages/forgot-page/forgot-page';
+import ResetPage from '../../pages/reset-page/reset-page';
 
 function App() {
   const dispatch = useDispatch();
@@ -51,16 +54,16 @@ function App() {
             </DndProvider>
           </Route>
           <Route exact path="/login">
-            LoginPage
+            <LoginPage/>
           </Route>
           <Route exact path="/register">
             <RegisterPage/>
           </Route>
           <Route exact path="/forgot-password">
-            ForgotPage
+            <ForgotPage/>
           </Route>
           <Route exact path="/reset-password">
-            ResetPage
+            <ResetPage/>
           </Route>
           <Route>
             Page404

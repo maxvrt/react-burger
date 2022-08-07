@@ -10,13 +10,19 @@ import {
   ORDER_MODAL_ADD,
   ORDER_MODAL_DEL,
   GET_ORDER_NUMBER,
-  UPD_ORDER_NUMBER,
-  ORDER_ERROR,
   DELETE_ITEM,
   MOVE_ELEMENT,
-  UPD
+  UPD,
+  POST_FORGOT_PASS,
+  POST_FORGOT_PASS_SUCCESS,
+  POST_FORGOT_PASS_ERROR
 } from '../actions/all-actions';
 
+const initialAuth = {
+  postForgotPass: false,
+  postForgotPassSuccess: false,
+  postForgotPassError: false
+};
 
 const initialIngredients = {
   ingredients: [],
@@ -32,6 +38,37 @@ const initialIngredients = {
   upd:0,
 };
 
+export const authReducer = (state = initialAuth, action) => {
+  switch (action.type) {
+    case POST_FORGOT_PASS:  {
+      return {
+        ...state,
+        postForgotPass: true,
+        postForgotPassSuccess: false,
+        postForgotPassError: false
+      }
+    }
+    case POST_FORGOT_PASS_SUCCESS:  {
+      return {
+        ...state,
+        postForgotPass: false,
+        postForgotPassSuccess: true,
+        postForgotPassError: false
+      }
+    }
+    case POST_FORGOT_PASS_ERROR:  {
+      return {
+        ...state,
+        postForgotPass: false,
+        postForgotPassSuccess: false,
+        postForgotPassError: true
+      }
+    }
+    default: {
+      return state;
+    }
+  }
+}
 
 export const ingredientsReducer = (state = initialIngredients, action) => {
   switch (action.type) {

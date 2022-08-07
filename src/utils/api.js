@@ -4,6 +4,15 @@ const config = {
     "Content-Type": "application/json",
   },
 };
+
+export function postForgotPassword(email) {
+  return fetch(`${config.baseUrl}/password-reset`, {method: 'POST', headers: config.headers,
+    body: JSON.stringify({
+      email: email
+    })
+  })
+}
+
 export function getIngredients() {
   return fetch(`${config.baseUrl}/ingredients`, {headers: config.headers})
 }
