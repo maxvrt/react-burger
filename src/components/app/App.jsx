@@ -11,6 +11,8 @@ import { requestIngredients } from "../../services/actions/all-actions";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { INGREDIENT_MODAL_DEL, ORDER_MODAL_DEL, INGREDIENT_MODAL_ADD } from "../../services/actions/all-actions";
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import RegisterPage from '../../pages/register-page/register-page';
 
 function App() {
   const dispatch = useDispatch();
@@ -34,37 +36,61 @@ function App() {
     dispatch({type:INGREDIENT_MODAL_ADD, payload: item });
   }
   return (
-    <>
-    <DndProvider backend={HTML5Backend}>
+    <div className={app.page}>
       <AppHeader/>
-      <main className={app.main}>
-        {arrayIngredients && (
-          <BurgerIngredients onClickDesc={displayDesc}/>
-        )}
-          <BurgerConstructor/>
-      </main>
-      {isOrderModal &&
-        <Modal
-          title=""
-          onOverlayClick={closeAllModals}
-          onCloseClick={closeAllModals}
-          escCloseModal={closeAllModals}
-        >
-          <OrderDetails/>
-        </Modal>
-      }
-       {isOpenModal &&
-        <Modal
-          title="Детали ингредиента"
-          onOverlayClick={closeAllModals}
-          onCloseClick={closeAllModals}
-          escCloseModal={closeAllModals}
-        >
-          <IngredientDetails data={ingredientModal}/>
-        </Modal>
-      }
-    </DndProvider>
-    </>
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <DndProvider backend={HTML5Backend}>
+              <main className={app.main}>
+                {arrayIngredients && (
+                  <BurgerIngredients onClickDesc={displayDesc}/>
+                )}
+                  <BurgerConstructor/>
+              </main>
+            </DndProvider>
+          </Route>
+          <Route exact path="/login">
+            LoginPage
+          </Route>
+          <Route exact path="/register">
+            <RegisterPage/>
+          </Route>
+          <Route exact path="/forgot-password">
+            ForgotPage
+          </Route>
+          <Route exact path="/reset-password">
+            ResetPage
+          </Route>
+          <Route>
+            Page404
+          </Route>
+
+        </Switch>
+
+        {isOrderModal &&
+          <Modal
+            title=""
+            onOverlayClick={closeAllModals}
+            onCloseClick={closeAllModals}
+            escCloseModal={closeAllModals}
+          >
+            <OrderDetails/>
+          </Modal>
+        }
+        {isOpenModal &&
+          <Modal
+            title="Детали ингредиента"
+            onOverlayClick={closeAllModals}
+            onCloseClick={closeAllModals}
+            escCloseModal={closeAllModals}
+          >
+            <IngredientDetails data={ingredientModal}/>
+          </Modal>
+        }
+
+      </Router>
+    </div>
   );
 }
 

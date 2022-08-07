@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 80px;
+}
+.form {
+  composes: container;
+  row-gap: 24px;
+}
+.title {
+  padding: 0;
+  margin: 0;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  color: #F2F2F3;
+  text-align: center;
+  padding-top: 180px;
+}
+.footer {
+  display: flex;
+  flex-direction: row;
+  column-gap: 8px;
+  color: #8585AD;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  align-items: baseline;
+}
+.link {
+  text-decoration: none;
+  color: #4C4CFF;
+}
