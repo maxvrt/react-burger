@@ -33,7 +33,7 @@ export function postForgotPass(email) {
     .then((data) => {
       dispatch({
         type: POST_FORGOT_PASS_SUCCESS,
-        payload: data.data
+        payload: data.message
       });
     }).catch((err) => {
       dispatch({
@@ -54,7 +54,7 @@ export function requestIngredients() {
     .then((data) => {
       dispatch({
         type: GET_INGREDIENTS_SUCCESS,
-        payload: data
+        payload: data.data
       });
     }).catch((err) => {
       dispatch({

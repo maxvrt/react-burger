@@ -21,7 +21,8 @@ import {
 const initialAuth = {
   postForgotPass: false,
   postForgotPassSuccess: false,
-  postForgotPassError: false
+  postForgotPassError: false,
+  message: 'nothing'
 };
 
 const initialIngredients = {
@@ -53,7 +54,8 @@ export const authReducer = (state = initialAuth, action) => {
         ...state,
         postForgotPass: false,
         postForgotPassSuccess: true,
-        postForgotPassError: false
+        postForgotPassError: false,
+        message: action.payload
       }
     }
     case POST_FORGOT_PASS_ERROR:  {

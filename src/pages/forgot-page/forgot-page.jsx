@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 const ForgotPage = () => {
   const [emailVal, setEmailVal] = useState('');
   const dispatch = useDispatch();
-  const forgotPassSuccess = useSelector(store =>  (store.rootAuth.postForgotPassSuccess));
+  const { forgotPassSuccess, successMessage } = useSelector(store =>  ({forgotPassSuccess: store.rootAuth.postForgotPassSuccess, successMessage: store.rootAuth.message}));
 
   const onChangeEmail = e => {
     setEmailVal(e.target.value);
@@ -20,6 +20,7 @@ const ForgotPage = () => {
   }
 
   if (forgotPassSuccess) {
+    console.log(successMessage);
     return (
       <Redirect
         to={{
@@ -28,7 +29,7 @@ const ForgotPage = () => {
       />
     );
   }
-  
+
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={submit}>

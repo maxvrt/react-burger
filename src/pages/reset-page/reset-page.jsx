@@ -2,10 +2,12 @@ import styles from './reset-page.module.css';
 import { Button, PasswordInput, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ForgotPage = () => {
   const [passwordVal, setPasswordVal] = useState('');
   const [codeVal, setCodeVal] = useState('');
+  const successMessage = useSelector(store =>  (store.rootAuth.message));
 
   const onChangePassword = e => {
     setPasswordVal(e.target.value);
@@ -20,6 +22,7 @@ const ForgotPage = () => {
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={submit}>
+        <p>{successMessage}</p>
           <h2 className={styles.title}>Восстановление пароля</h2>
           <PasswordInput
             placeholder={'Введите новый пароль'}
