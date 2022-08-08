@@ -22,7 +22,6 @@ const ForgotPage = () => {
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={submit}>
-        <p>{successMessage}</p>
           <h2 className={styles.title}>Восстановление пароля</h2>
           <PasswordInput
             placeholder={'Введите новый пароль'}

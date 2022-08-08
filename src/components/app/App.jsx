@@ -16,6 +16,7 @@ import RegisterPage from '../../pages/register-page/register-page';
 import LoginPage from '../../pages/login-page/login-page';
 import ForgotPage from '../../pages/forgot-page/forgot-page';
 import ResetPage from '../../pages/reset-page/reset-page';
+import ProfilePage from '../../pages/profile-page/profile-page';
 
 function App() {
   const dispatch = useDispatch();
@@ -64,6 +65,9 @@ function App() {
           </Route>
           <Route exact path="/reset-password">
             <ResetPage/>
+          </Route>
+          <Route exact path="/profile">
+            <ProfilePage/>
           </Route>
           <Route>
             Page404
