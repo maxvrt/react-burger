@@ -15,6 +15,15 @@ export function postRegistration(name, email, pass) {
   })
 }
 
+export const postLoginUser = (email, pass) => {
+  return fetch(`${config.baseUrl}/auth/login`, { method: 'POST', headers: config.headers,
+     body: JSON.stringify({
+        email: email,
+        password: pass
+     }),
+  })
+}
+
 export function postForgotPassword(email) {
   return fetch(`${config.baseUrl}/password-reset`, {method: 'POST', headers: config.headers,
     body: JSON.stringify({

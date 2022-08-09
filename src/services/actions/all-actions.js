@@ -1,4 +1,4 @@
-import {getIngredients, postOrder, getResponse, postForgotPassword, postRegistration} from '../../utils/api';
+import {getIngredients, postOrder, getResponse, postForgotPassword, postRegistration, postLoginUser} from '../../utils/api';
 
 export const GET_INGREDIENTS = "GET_INGREDIENTS";
 export const GET_INGREDIENTS_SUCCESS = "GET_INGREDIENTS_SUCCESS";
@@ -24,7 +24,9 @@ export const POST_FORGOT_PASS_ERROR = "POST_FORGOT_PASS_ERROR";
 export const POST_REGISTER = "POST_REGISTER";
 export const POST_REGISTER_SUCCESS = "POST_REGISTER_SUCCESS";
 export const POST_REGISTER_ERROR = "POST_REGISTER_ERROR";
-
+export const POST_LOGIN = "POST_LOGIN";
+export const POST_LOGIN_SUCCESS = "POST_LOGIN_SUCCESS";
+export const POST_LOGIN_ERROR = "POST_LOGIN_ERROR";
 
 export function postRegister(name, email, pass) {
   return (dispatch) => {
@@ -34,7 +36,6 @@ export function postRegister(name, email, pass) {
     postRegistration(name, email, pass)
     .then(res => getResponse(res))
     .then((data) => {
-      console.log(data);
       dispatch({
         type: POST_REGISTER_SUCCESS,
         payload: data
@@ -42,6 +43,28 @@ export function postRegister(name, email, pass) {
     }).catch((err) => {
       dispatch({
         type: POST_REGISTER_ERROR
+      });
+      console.log('Ошибка. Запрос не выполнен: ' + err);
+    })
+  }
+};
+
+export function postLogin(email, pass) {
+  return (dispatch) => {
+    dispatch({
+      type: POST_LOGIN
+    });
+    postLoginUser(email, pass)
+    .then(res => getResponse(res))
+    .then((data) => {
+      console.log(data);
+      dispatch({
+        type: POST_LOGIN_SUCCESS,
+        payload: data
+      });
+    }).catch((err) => {
+      dispatch({
+        type: POST_LOGIN_ERROR
       });
       console.log('Ошибка. Запрос не выполнен: ' + err);
     })

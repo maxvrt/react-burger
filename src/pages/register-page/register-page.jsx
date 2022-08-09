@@ -3,7 +3,8 @@ import { Logo, Button, Input, EmailInput, PasswordInput} from '@ya.praktikum/rea
 import { Link, Redirect } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {postRegister} from '../../services/actions/all-actions'
+import { setCookie } from '../../utils/cookie'
+import { postRegister } from '../../services/actions/all-actions'
 
 const RegisterPage = () => {
   const [nameVal, setNameVal] = useState('');
@@ -27,8 +28,12 @@ const RegisterPage = () => {
     dispatch(postRegister(nameVal, emailVal, passwordVal))
   }
 
-  if (registerSuccess) {
-    console.log(authData +"11111111111");
+  if (registerSuccess && authData.accessToken) {
+    const accessToken = authData.accessToken.split('Bearer ')[1];
+    const refreshToken = authData.refreshToken;
+    console.log(accessToken + " и refreshToken: " + refreshToken);
+    setCookie('token', accessToken);
+    setCookie('refreshToken', refreshToken);
     return (
       <Redirect
         to={{

@@ -2,10 +2,15 @@ import styles from './login-page.module.css';
 import { Button, EmailInput, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect } from 'react-router-dom';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCookie } from '../../utils/cookie'
+import { postLogin } from '../../services/actions/all-actions'
 
 const LoginPage = () => {
   const [emailVal, setEmailVal] = useState('');
   const [passwordVal, setPasswordVal] = useState('');
+  const dispatch = useDispatch();
+  const { loginSuccess, authData } = useSelector(store =>  ({loginSuccess: store.rootAuth.postLoginSuccess, authData: store.rootAuth.authData}));
 
   const onChangeEmail = e => {
     setEmailVal(e.target.value);
@@ -16,6 +21,22 @@ const LoginPage = () => {
 
   const submit = e => {
     e.preventDefault();
+    dispatch(postLogin(emailVal, passwordVal));
+  }
+
+  if (loginSuccess && authData.accessToken) {
+    const accessToken = authData.accessToken.split('Bearer ')[1];
+    const refreshToken = authData.refreshToken;
+    console.log("Авторизация - OK: " + accessToken + " и refreshToken: " + refreshToken);
+    setCookie('token', accessToken);
+    setCookie('refreshToken', refreshToken);
+    return (
+      <Redirect
+        to={{
+          pathname: '/'
+        }}
+      />
+    );
   }
 
   return (

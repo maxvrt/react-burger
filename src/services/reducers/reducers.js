@@ -18,7 +18,10 @@ import {
   POST_FORGOT_PASS_ERROR,
   POST_REGISTER,
   POST_REGISTER_SUCCESS,
-  POST_REGISTER_ERROR
+  POST_REGISTER_ERROR,
+  POST_LOGIN,
+  POST_LOGIN_SUCCESS,
+  POST_LOGIN_ERROR,
 } from '../actions/all-actions';
 
 const initialAuth = {
@@ -29,6 +32,9 @@ const initialAuth = {
   postRegister: false,
   postRegisterSuccess: false,
   postRegisterError: false,
+  postLogin: false,
+  postLoginSuccess: false,
+  postLoginError: false,
   authData: {},
 };
 
@@ -73,7 +79,7 @@ export const authReducer = (state = initialAuth, action) => {
         postForgotPassError: true
       }
     }
-    
+
     case POST_REGISTER:  {
       return {
         ...state,
@@ -94,9 +100,34 @@ export const authReducer = (state = initialAuth, action) => {
     case POST_REGISTER_ERROR:  {
       return {
         ...state,
-        postForgotPass: false,
-        postForgotPassSuccess: false,
-        postForgotPassError: true
+        postRegister: false,
+        postRegisterSuccess: false,
+        postRegisterError: true
+      }
+    }
+    case POST_LOGIN:  {
+      return {
+        ...state,
+        postLogin: true,
+        postLoginSuccess: false,
+        postLoginError: false
+      }
+    }
+    case POST_LOGIN_SUCCESS:  {
+      return {
+        ...state,
+        postLogin: false,
+        postLoginSuccess: true,
+        postLoginError: false,
+        authData: action.payload
+      }
+    }
+    case POST_LOGIN_ERROR:  {
+      return {
+        ...state,
+        postLogin: false,
+        postLoginSuccess: false,
+        postLoginError: true
       }
     }
     default: {
