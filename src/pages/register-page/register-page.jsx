@@ -3,11 +3,14 @@ import { Logo, Button, Input, EmailInput, PasswordInput} from '@ya.praktikum/rea
 import { Link, Redirect } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import {postRegister} from '../../services/actions/all-actions'
 
 const RegisterPage = () => {
   const [nameVal, setNameVal] = useState('');
   const [emailVal, setEmailVal] = useState('');
   const [passwordVal, setPasswordVal] = useState('');
+  const { registerSuccess, authData } = useSelector(store =>  ({registerSuccess: store.rootAuth.postRegisterSuccess, authData: store.rootAuth.authData}));
+  const dispatch = useDispatch();
 
   const onChangeName = e => {
     setNameVal(e.target.value);
@@ -21,6 +24,18 @@ const RegisterPage = () => {
 
   const submit = e => {
     e.preventDefault();
+    dispatch(postRegister(nameVal, emailVal, passwordVal))
+  }
+
+  if (registerSuccess) {
+    console.log(authData +"11111111111");
+    return (
+      <Redirect
+        to={{
+          pathname: '/'
+        }}
+      />
+    );
   }
 
   return (

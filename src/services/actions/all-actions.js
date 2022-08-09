@@ -1,4 +1,4 @@
-import {getIngredients, postOrder, getResponse, postForgotPassword, catchError} from '../../utils/api';
+import {getIngredients, postOrder, getResponse, postForgotPassword, postRegistration} from '../../utils/api';
 
 export const GET_INGREDIENTS = "GET_INGREDIENTS";
 export const GET_INGREDIENTS_SUCCESS = "GET_INGREDIENTS_SUCCESS";
@@ -21,7 +21,32 @@ export const UPD = "UPD";
 export const POST_FORGOT_PASS = "POST_FORGOT_PASS";
 export const POST_FORGOT_PASS_SUCCESS = "POST_FORGOT_PASS_SUCCESS";
 export const POST_FORGOT_PASS_ERROR = "POST_FORGOT_PASS_ERROR";
+export const POST_REGISTER = "POST_REGISTER";
+export const POST_REGISTER_SUCCESS = "POST_REGISTER_SUCCESS";
+export const POST_REGISTER_ERROR = "POST_REGISTER_ERROR";
 
+
+export function postRegister(name, email, pass) {
+  return (dispatch) => {
+    dispatch({
+      type: POST_REGISTER
+    });
+    postRegistration(name, email, pass)
+    .then(res => getResponse(res))
+    .then((data) => {
+      console.log(data);
+      dispatch({
+        type: POST_REGISTER_SUCCESS,
+        payload: data
+      });
+    }).catch((err) => {
+      dispatch({
+        type: POST_REGISTER_ERROR
+      });
+      console.log('Ошибка. Запрос не выполнен: ' + err);
+    })
+  }
+};
 
 export function postForgotPass(email) {
   return (dispatch) => {

@@ -5,6 +5,16 @@ const config = {
   },
 };
 
+export function postRegistration(name, email, pass) {
+  return fetch(`${config.baseUrl}/auth/register`, {method: 'POST', headers: config.headers,
+    body: JSON.stringify({
+      email: email,
+      password: pass,
+      name: name
+    })
+  })
+}
+
 export function postForgotPassword(email) {
   return fetch(`${config.baseUrl}/password-reset`, {method: 'POST', headers: config.headers,
     body: JSON.stringify({

@@ -15,14 +15,21 @@ import {
   UPD,
   POST_FORGOT_PASS,
   POST_FORGOT_PASS_SUCCESS,
-  POST_FORGOT_PASS_ERROR
+  POST_FORGOT_PASS_ERROR,
+  POST_REGISTER,
+  POST_REGISTER_SUCCESS,
+  POST_REGISTER_ERROR
 } from '../actions/all-actions';
 
 const initialAuth = {
   postForgotPass: false,
   postForgotPassSuccess: false,
   postForgotPassError: false,
-  message: 'nothing'
+  message: 'nothing',
+  postRegister: false,
+  postRegisterSuccess: false,
+  postRegisterError: false,
+  authData: {},
 };
 
 const initialIngredients = {
@@ -59,6 +66,32 @@ export const authReducer = (state = initialAuth, action) => {
       }
     }
     case POST_FORGOT_PASS_ERROR:  {
+      return {
+        ...state,
+        postForgotPass: false,
+        postForgotPassSuccess: false,
+        postForgotPassError: true
+      }
+    }
+    
+    case POST_REGISTER:  {
+      return {
+        ...state,
+        postRegister: true,
+        postRegisterSuccess: false,
+        postRegisterError: false
+      }
+    }
+    case POST_REGISTER_SUCCESS:  {
+      return {
+        ...state,
+        postRegister: false,
+        postRegisterSuccess: true,
+        postRegisterError: false,
+        authData: action.payload
+      }
+    }
+    case POST_REGISTER_ERROR:  {
       return {
         ...state,
         postForgotPass: false,
