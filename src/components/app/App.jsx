@@ -11,18 +11,41 @@ import { requestIngredients } from "../../services/actions/all-actions";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { INGREDIENT_MODAL_DEL, ORDER_MODAL_DEL, INGREDIENT_MODAL_ADD } from "../../services/actions/all-actions";
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import RegisterPage from '../../pages/register-page/register-page';
 import LoginPage from '../../pages/login-page/login-page';
 import ForgotPage from '../../pages/forgot-page/forgot-page';
 import ResetPage from '../../pages/reset-page/reset-page';
 import ProfilePage from '../../pages/profile-page/profile-page';
+import { getCookie, setCookie } from '../../utils/cookie'
+import { runRefreshToken } from '../../services/actions/all-actions'
 
 function App() {
   const dispatch = useDispatch();
+  const token = getCookie('token');
+  const { tokenSuccess, tokenData } = useSelector(store =>  ({tokenSuccess: store.rootAuth.postTokenSuccess, tokenData: store.rootAuth.tokenData}));
+
+  useEffect(() => {
+    const refreshToken = getCookie('refreshToken');
+    // нужно ли обновление токена?
+    if (!token && refreshToken) {
+      dispatch(runRefreshToken(refreshToken));
+    };
+  }, [token]);
+
   useEffect(() => {
     dispatch(requestIngredients());
   }, [dispatch]);
+
+  // обновление токена
+  if (tokenSuccess) {
+    const accessToken = tokenData.accessToken.split('Bearer ')[1];
+    const refreshToken = tokenData.refreshToken;
+    console.log("новый токен : " + accessToken);
+    setCookie('token', accessToken);
+    setCookie('refreshToken', refreshToken);
+  }
+
   const arrayIngredients = useSelector(store => (store.rootIngredients.ingredients));
   const ingredientModal = useSelector(store => (store.rootIngredients.ingredientDesc));
   const isOpenModal = useSelector(store => (store.rootIngredients.ingredientModal));
@@ -39,6 +62,7 @@ function App() {
   const displayDesc = (item)=>{
     dispatch({type:INGREDIENT_MODAL_ADD, payload: item });
   }
+
   return (
     <div className={app.page}>
       <AppHeader/>

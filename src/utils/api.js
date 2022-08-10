@@ -1,3 +1,5 @@
+import { getCookie, setCookie } from './cookie'
+
 const config = {
   baseUrl: "https://norma.nomoreparties.space/api",
   headers: {
@@ -23,7 +25,13 @@ export const postLoginUser = (email, pass) => {
      }),
   })
 }
-
+export const postToken = (refreshToken) => {
+  return fetch(`${config.baseUrl}/auth/token`, { method: 'POST', headers: config.headers,
+     body: JSON.stringify({
+      token: refreshToken
+     }),
+  })
+}
 export function postForgotPassword(email) {
   return fetch(`${config.baseUrl}/password-reset`, {method: 'POST', headers: config.headers,
     body: JSON.stringify({

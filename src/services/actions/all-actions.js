@@ -1,4 +1,4 @@
-import {getIngredients, postOrder, getResponse, postForgotPassword, postRegistration, postLoginUser} from '../../utils/api';
+import {getIngredients, postOrder, getResponse, postForgotPassword, postRegistration, postLoginUser, postToken} from '../../utils/api';
 
 export const GET_INGREDIENTS = "GET_INGREDIENTS";
 export const GET_INGREDIENTS_SUCCESS = "GET_INGREDIENTS_SUCCESS";
@@ -27,6 +27,9 @@ export const POST_REGISTER_ERROR = "POST_REGISTER_ERROR";
 export const POST_LOGIN = "POST_LOGIN";
 export const POST_LOGIN_SUCCESS = "POST_LOGIN_SUCCESS";
 export const POST_LOGIN_ERROR = "POST_LOGIN_ERROR";
+export const POST_TOKEN = "POST_TOKEN";
+export const POST_TOKEN_SUCCESS = "POST_TOKEN_SUCCESS";
+export const POST_TOKEN_ERROR = "POST_TOKEN_ERROR";
 
 export function postRegister(name, email, pass) {
   return (dispatch) => {
@@ -57,7 +60,6 @@ export function postLogin(email, pass) {
     postLoginUser(email, pass)
     .then(res => getResponse(res))
     .then((data) => {
-      console.log(data);
       dispatch({
         type: POST_LOGIN_SUCCESS,
         payload: data
@@ -66,7 +68,29 @@ export function postLogin(email, pass) {
       dispatch({
         type: POST_LOGIN_ERROR
       });
-      console.log('Ошибка. Запрос не выполнен: ' + err);
+      console.log('Ошибка. Запрос ЛОГИНА не выполнен: ' + err);
+    })
+  }
+};
+
+export function runRefreshToken(refreshToken) {
+  return (dispatch) => {
+    dispatch({
+      type: POST_TOKEN
+    });
+    postToken(refreshToken)
+    .then(res => getResponse(res))
+    .then((data) => {
+      console.log('обновление токена' + data);
+      dispatch({
+        type: POST_TOKEN_SUCCESS,
+        payload: data
+      });
+    }).catch((err) => {
+      dispatch({
+        type: POST_TOKEN_ERROR
+      });
+      console.log(err);
     })
   }
 };
@@ -87,7 +111,7 @@ export function postForgotPass(email) {
       dispatch({
         type: POST_FORGOT_PASS_ERROR
       });
-      console.log('Ошибка. Запрос не выполнен: ' + err);
+      console.log('Ошибка. Запрос ВОССТАНОВЛЕНИЯ П. не выполнен: ' + err);
     })
   }
 };

@@ -22,6 +22,9 @@ import {
   POST_LOGIN,
   POST_LOGIN_SUCCESS,
   POST_LOGIN_ERROR,
+  POST_TOKEN,
+  POST_TOKEN_SUCCESS,
+  POST_TOKEN_ERROR,
 } from '../actions/all-actions';
 
 const initialAuth = {
@@ -36,6 +39,7 @@ const initialAuth = {
   postLoginSuccess: false,
   postLoginError: false,
   authData: {},
+  tokenData: {},
 };
 
 const initialIngredients = {
@@ -128,6 +132,31 @@ export const authReducer = (state = initialAuth, action) => {
         postLogin: false,
         postLoginSuccess: false,
         postLoginError: true
+      }
+    }
+    case POST_TOKEN:  {
+      return {
+        ...state,
+        postToken: true,
+        postTokenSuccess: false,
+        postTokenError: false
+      }
+    }
+    case POST_TOKEN_SUCCESS:  {
+      return {
+        ...state,
+        postToken: false,
+        postTokenSuccess: true,
+        postTokenError: false,
+        tokenData: action.payload
+      }
+    }
+    case POST_TOKEN_ERROR:  {
+      return {
+        ...state,
+        postToken: false,
+        postTokenSuccess: false,
+        postTokenError: true
       }
     }
     default: {
