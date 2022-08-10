@@ -16,7 +16,6 @@ export function postRegistration(name, email, pass) {
     })
   })
 }
-
 export const postLoginUser = (email, pass) => {
   return fetch(`${config.baseUrl}/auth/login`, { method: 'POST', headers: config.headers,
      body: JSON.stringify({
@@ -33,10 +32,17 @@ export const postToken = (refreshToken) => {
   })
 }
 export function postForgotPassword(email) {
-  return fetch(`${config.baseUrl}/password-reset`, {method: 'POST', headers: config.headers,
+  return fetch(`${config.baseUrl}/password-reset`, { method: 'POST', headers: config.headers,
     body: JSON.stringify({
       email: email
     })
+  })
+}
+export function postLogOut(refreshToken) {
+  return fetch(`${config.baseUrl}/auth/logout`, { method: 'POST', headers: config.headers,
+     body: JSON.stringify({
+        token: refreshToken
+     })
   })
 }
 

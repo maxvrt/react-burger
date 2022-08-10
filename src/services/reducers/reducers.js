@@ -25,6 +25,9 @@ import {
   POST_TOKEN,
   POST_TOKEN_SUCCESS,
   POST_TOKEN_ERROR,
+  POST_LOGOUT,
+  POST_LOGOUT_SUCCESS,
+  POST_LOGOUT_ERROR
 } from '../actions/all-actions';
 
 const initialAuth = {
@@ -38,6 +41,9 @@ const initialAuth = {
   postLogin: false,
   postLoginSuccess: false,
   postLoginError: false,
+  postLogout: false,
+  postLogoutSuccess: false,
+  postLogoutError: false,
   authData: {},
   tokenData: {},
 };
@@ -83,7 +89,6 @@ export const authReducer = (state = initialAuth, action) => {
         postForgotPassError: true
       }
     }
-
     case POST_REGISTER:  {
       return {
         ...state,
@@ -157,6 +162,30 @@ export const authReducer = (state = initialAuth, action) => {
         postToken: false,
         postTokenSuccess: false,
         postTokenError: true
+      }
+    }
+    case POST_LOGOUT:  {
+      return {
+        ...state,
+        postLogout: true,
+        postLogoutSuccess: false,
+        postLogoutError: false
+      }
+    }
+    case POST_LOGOUT_SUCCESS:  {
+      return {
+        ...state,
+        postLogout: false,
+        postLogoutSuccess: true,
+        postLogoutError: false
+      }
+    }
+    case POST_LOGOUT_ERROR:  {
+      return {
+        ...state,
+        postLogout: false,
+        postLogoutSuccess: false,
+        postLogoutError: true
       }
     }
     default: {

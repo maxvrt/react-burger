@@ -1,4 +1,5 @@
-import {getIngredients, postOrder, getResponse, postForgotPassword, postRegistration, postLoginUser, postToken} from '../../utils/api';
+import {getIngredients, postOrder, getResponse, postForgotPassword, postRegistration, postLoginUser, postToken, postLogOut} from '../../utils/api';
+import {delCookie} from '../../utils/cookie';
 
 export const GET_INGREDIENTS = "GET_INGREDIENTS";
 export const GET_INGREDIENTS_SUCCESS = "GET_INGREDIENTS_SUCCESS";
@@ -27,6 +28,9 @@ export const POST_REGISTER_ERROR = "POST_REGISTER_ERROR";
 export const POST_LOGIN = "POST_LOGIN";
 export const POST_LOGIN_SUCCESS = "POST_LOGIN_SUCCESS";
 export const POST_LOGIN_ERROR = "POST_LOGIN_ERROR";
+export const POST_LOGOUT = "POST_LOGOUT";
+export const POST_LOGOUT_SUCCESS = "POST_LOGOUT_SUCCESS";
+export const POST_LOGOUT_ERROR = "POST_LOGOUT_ERROR";
 export const POST_TOKEN = "POST_TOKEN";
 export const POST_TOKEN_SUCCESS = "POST_TOKEN_SUCCESS";
 export const POST_TOKEN_ERROR = "POST_TOKEN_ERROR";
@@ -81,11 +85,11 @@ export function runRefreshToken(refreshToken) {
     postToken(refreshToken)
     .then(res => getResponse(res))
     .then((data) => {
-      console.log('обновление токена' + data);
       dispatch({
         type: POST_TOKEN_SUCCESS,
         payload: data
       });
+      console.log('обновление токена' + data);
     }).catch((err) => {
       dispatch({
         type: POST_TOKEN_ERROR
@@ -115,7 +119,24 @@ export function postForgotPass(email) {
     })
   }
 };
-
+export function runLogOut(refreshToken) {
+  return function (dispatch) {
+    dispatch({ type: POST_LOGOUT });
+    postLogOut(refreshToken)
+    .then(res => getResponse(res))
+    .then((data) => {
+      delCookie('token');
+      delCookie('refreshToken');
+      dispatch({
+        type: POST_LOGOUT_SUCCESS,
+      })
+    })
+    .catch(err => {
+        dispatch({ type: POST_LOGOUT_ERROR })
+        console.log('Ошибка. Запрос ВЫХОДА не выполнен: ' + err);
+    });
+  }
+}
 export function requestIngredients() {
   return (dispatch) => {
     dispatch({

@@ -18,12 +18,15 @@ import ForgotPage from '../../pages/forgot-page/forgot-page';
 import ResetPage from '../../pages/reset-page/reset-page';
 import ProfilePage from '../../pages/profile-page/profile-page';
 import { getCookie, setCookie } from '../../utils/cookie'
-import { runRefreshToken } from '../../services/actions/all-actions'
+import { runRefreshToken, runLogOut } from '../../services/actions/all-actions'
+import { Button, EmailInput, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 
 function App() {
   const dispatch = useDispatch();
   const token = getCookie('token');
+  const refreshToken = getCookie('refreshToken');
   const { tokenSuccess, tokenData } = useSelector(store =>  ({tokenSuccess: store.rootAuth.postTokenSuccess, tokenData: store.rootAuth.tokenData}));
+  const { logoutSuccess } = useSelector(store =>  (store.rootAuth.postLogoutSuccess));
 
   useEffect(() => {
     const refreshToken = getCookie('refreshToken');
@@ -45,7 +48,13 @@ function App() {
     setCookie('token', accessToken);
     setCookie('refreshToken', refreshToken);
   }
-
+  const logOut = () => {
+    console.log('выходим');
+    dispatch(runLogOut(refreshToken));
+  }
+  if (logoutSuccess) {
+    console.log("ВЫШЛИ ИЗ ПРИЛОЖЕНИЯ");
+  }
   const arrayIngredients = useSelector(store => (store.rootIngredients.ingredients));
   const ingredientModal = useSelector(store => (store.rootIngredients.ingredientDesc));
   const isOpenModal = useSelector(store => (store.rootIngredients.ingredientModal));
@@ -75,6 +84,10 @@ function App() {
                   <BurgerIngredients onClickDesc={displayDesc}/>
                 )}
                   <BurgerConstructor/>
+                  <Button
+                     onClick={logOut}>
+                     Logout
+                  </Button>
               </main>
             </DndProvider>
           </Route>
