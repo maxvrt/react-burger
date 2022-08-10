@@ -24,9 +24,8 @@ import { Button, EmailInput, PasswordInput} from '@ya.praktikum/react-developer-
 function App() {
   const dispatch = useDispatch();
   const token = getCookie('token');
-  const refreshToken = getCookie('refreshToken');
   const { tokenSuccess, tokenData } = useSelector(store =>  ({tokenSuccess: store.rootAuth.postTokenSuccess, tokenData: store.rootAuth.tokenData}));
-  const { logoutSuccess } = useSelector(store =>  (store.rootAuth.postLogoutSuccess));
+  const logoutSuccess = useSelector(store =>  (store.rootAuth.postLogoutSuccess));
 
   useEffect(() => {
     const refreshToken = getCookie('refreshToken');
@@ -48,8 +47,10 @@ function App() {
     setCookie('token', accessToken);
     setCookie('refreshToken', refreshToken);
   }
+  // Выход
   const logOut = () => {
-    console.log('выходим');
+    const refreshToken = getCookie('refreshToken');
+    console.log('выходим '+ refreshToken);
     dispatch(runLogOut(refreshToken));
   }
   if (logoutSuccess) {

@@ -124,12 +124,12 @@ export function runLogOut(refreshToken) {
     dispatch({ type: POST_LOGOUT });
     postLogOut(refreshToken)
     .then(res => getResponse(res))
-    .then((data) => {
-      delCookie('token');
-      delCookie('refreshToken');
+    .then(() => {
       dispatch({
         type: POST_LOGOUT_SUCCESS,
-      })
+      });
+      delCookie('token');
+      delCookie('refreshToken');
     })
     .catch(err => {
         dispatch({ type: POST_LOGOUT_ERROR })
