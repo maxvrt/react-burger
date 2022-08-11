@@ -16,6 +16,9 @@ import {
   POST_FORGOT_PASS,
   POST_FORGOT_PASS_SUCCESS,
   POST_FORGOT_PASS_ERROR,
+  POST_REQUEST_PASS,
+  POST_REQUEST_PASS_SUCCESS,
+  POST_REQUEST_PASS_ERROR,
   POST_REGISTER,
   POST_REGISTER_SUCCESS,
   POST_REGISTER_ERROR,
@@ -35,6 +38,9 @@ const initialAuth = {
   postForgotPassSuccess: false,
   postForgotPassError: false,
   message: 'nothing',
+  postRequestPass: false,
+  postRequestPassSuccess: false,
+  postRequestPassError: false,
   postRegister: false,
   postRegisterSuccess: false,
   postRegisterError: false,
@@ -87,6 +93,31 @@ export const authReducer = (state = initialAuth, action) => {
         postForgotPass: false,
         postForgotPassSuccess: false,
         postForgotPassError: true
+      }
+    }
+    case POST_REQUEST_PASS:  {
+      return {
+        ...state,
+        postRequestPass: true,
+        postRequestPassSuccess: false,
+        postRequestPassError: false
+      }
+    }
+    case POST_REQUEST_PASS_SUCCESS:  {
+      return {
+        ...state,
+        postRequestPass: false,
+        postRequestPassSuccess: true,
+        postRequestPassError: false,
+        message: action.payload
+      }
+    }
+    case POST_REQUEST_PASS_ERROR:  {
+      return {
+        ...state,
+        postRequestPass: false,
+        postRequestPassSuccess: false,
+        postRequestPassError: true
       }
     }
     case POST_REGISTER:  {

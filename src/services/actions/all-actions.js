@@ -1,4 +1,4 @@
-import {getIngredients, postOrder, getResponse, postForgotPassword, postRegistration, postLoginUser, postToken, postLogOut} from '../../utils/api';
+import {getIngredients, postOrder, getResponse, postForgotPassword, postRegistration, postLoginUser, postToken, postLogOut, postRequestPassword} from '../../utils/api';
 import {delCookie} from '../../utils/cookie';
 
 export const GET_INGREDIENTS = "GET_INGREDIENTS";
@@ -22,6 +22,10 @@ export const UPD = "UPD";
 export const POST_FORGOT_PASS = "POST_FORGOT_PASS";
 export const POST_FORGOT_PASS_SUCCESS = "POST_FORGOT_PASS_SUCCESS";
 export const POST_FORGOT_PASS_ERROR = "POST_FORGOT_PASS_ERROR";
+export const POST_REQUEST_PASS = "POST_REQUEST_PASS";
+export const POST_REQUEST_PASS_SUCCESS = "POST_REQUEST_PASS_SUCCESS";
+export const POST_REQUEST_PASS_ERROR = "POST_REQUEST_PASS_ERROR";
+
 export const POST_REGISTER = "POST_REGISTER";
 export const POST_REGISTER_SUCCESS = "POST_REGISTER_SUCCESS";
 export const POST_REGISTER_ERROR = "POST_REGISTER_ERROR";
@@ -98,7 +102,6 @@ export function runRefreshToken(refreshToken) {
     })
   }
 };
-
 export function postForgotPass(email) {
   return (dispatch) => {
     dispatch({
@@ -116,6 +119,26 @@ export function postForgotPass(email) {
         type: POST_FORGOT_PASS_ERROR
       });
       console.log('Ошибка. Запрос ВОССТАНОВЛЕНИЯ П. не выполнен: ' + err);
+    })
+  }
+};
+export function postRequestPass(password, code) {
+  return (dispatch) => {
+    dispatch({
+      type: POST_REQUEST_PASS
+    });
+    postRequestPassword(password, code)
+    .then(res => getResponse(res))
+    .then((data) => {
+      dispatch({
+        type: POST_REQUEST_PASS_SUCCESS,
+        payload: data.message
+      });
+    }).catch((err) => {
+      dispatch({
+        type: POST_REQUEST_PASS_ERROR
+      });
+      console.log('Ошибка. Запрос ИЗМЕНЕНИЯ П. не выполнен: ' + err);
     })
   }
 };

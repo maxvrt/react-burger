@@ -38,6 +38,14 @@ export function postForgotPassword(email) {
     })
   })
 }
+export function postRequestPassword(password, token) {
+  return fetch(`${config.baseUrl}/password-reset/reset`, { method: 'POST', headers: config.headers,
+     body: JSON.stringify({
+        password: password,
+        token: token
+     })
+  })
+}
 export function postLogOut(refreshToken) {
   return fetch(`${config.baseUrl}/auth/logout`, { method: 'POST', headers: config.headers,
      body: JSON.stringify({

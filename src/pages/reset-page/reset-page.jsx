@@ -1,13 +1,15 @@
 import styles from './reset-page.module.css';
 import { Button, PasswordInput, Input} from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import {postRequestPass} from '../../services/actions/all-actions'
 
-const ForgotPage = () => {
+const ResetPage = () => {
   const [passwordVal, setPasswordVal] = useState('');
   const [codeVal, setCodeVal] = useState('');
-  const successMessage = useSelector(store =>  (store.rootAuth.message));
+  const { resetPassSuccess, successMessage } = useSelector(store =>  ({resetPassSuccess: store.rootAuth.postRequestPassSuccess, successMessage: store.rootAuth.message}));
+  const dispatch = useDispatch();
 
   const onChangePassword = e => {
     setPasswordVal(e.target.value);
@@ -17,6 +19,17 @@ const ForgotPage = () => {
   }
   const submit = e => {
     e.preventDefault();
+    dispatch(postRequestPass(passwordVal, codeVal));
+  }
+  if (resetPassSuccess) {
+    console.log(successMessage);
+    return (
+      <Redirect
+        to={{
+          pathname: '/login'
+        }}
+      />
+    );
   }
 
   return (
@@ -61,4 +74,4 @@ const ForgotPage = () => {
   );
 };
 
-export default ForgotPage;
+export default ResetPage;
