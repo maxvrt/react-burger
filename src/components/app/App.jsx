@@ -20,6 +20,7 @@ import ProfilePage from '../../pages/profile-page/profile-page';
 import { getCookie, setCookie } from '../../utils/cookie'
 import { runRefreshToken, runLogOut } from '../../services/actions/all-actions'
 import { Button, EmailInput, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
+import ProtectedRoute from '../protected-route/ProtectedRoute';
 
 function App() {
   const dispatch = useDispatch();
@@ -45,12 +46,6 @@ function App() {
     console.log("новый токен : " + tokenData.accessToken.split('Bearer ')[1]);
     // setCookie('token', accessToken);
     // setCookie('refreshToken', refreshToken);
-  }
-  // Выход
-  const logOut = () => {
-    const refreshToken = getCookie('refreshToken');
-    console.log('выходим '+ refreshToken);
-    dispatch(runLogOut(refreshToken));
   }
 
   const arrayIngredients = useSelector(store => (store.rootIngredients.ingredients));
@@ -96,9 +91,9 @@ function App() {
           <Route exact path="/reset-password">
             <ResetPage/>
           </Route>
-          <Route exact path="/profile">
+          <ProtectedRoute exact path='/profile'>
             <ProfilePage/>
-          </Route>
+          </ProtectedRoute>
           <Route>
             Page404
           </Route>

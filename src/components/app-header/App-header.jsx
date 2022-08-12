@@ -22,7 +22,9 @@ return (
           </li>
         </ul>
       </nav>
-      <Logo/>
+      <NavLink exact to="/">
+        <Logo/>
+      </NavLink>
       <div className={appHeader.cabinet}>
         <NavLink exact to="/profile" className={appHeader.link}>
           <ProfileIcon type="secondary" />

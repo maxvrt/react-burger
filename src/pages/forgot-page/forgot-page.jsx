@@ -1,14 +1,17 @@
 import styles from './forgot-page.module.css';
 import { Button, EmailInput} from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import {postForgotPass} from '../../services/actions/all-actions'
 import { useDispatch, useSelector } from 'react-redux';
+import { getCookie } from '../../utils/cookie'
 
 const ForgotPage = () => {
   const [emailVal, setEmailVal] = useState('');
   const dispatch = useDispatch();
   const { forgotPassSuccess, successMessage } = useSelector(store =>  ({forgotPassSuccess: store.rootAuth.postForgotPassSuccess, successMessage: store.rootAuth.message}));
+  const location = useLocation();
+  const token = getCookie('token');
 
   const onChangeEmail = e => {
     setEmailVal(e.target.value);
@@ -24,9 +27,16 @@ const ForgotPage = () => {
     return (
       <Redirect
         to={{
-          pathname: '/reset-password'
+          pathname: '/reset-password',
+          state: { forgotPage: location }
         }}
       />
+    );
+  }
+
+  if (token) {
+    return (
+      <Redirect to={location.state?.from || '/'} />
     );
   }
 

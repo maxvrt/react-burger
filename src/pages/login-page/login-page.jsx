@@ -1,9 +1,9 @@
 import styles from './login-page.module.css';
 import { Button, EmailInput, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCookie } from '../../utils/cookie'
+import { setCookie, getCookie } from '../../utils/cookie'
 import { postLogin } from '../../services/actions/all-actions'
 
 const LoginPage = () => {
@@ -11,6 +11,8 @@ const LoginPage = () => {
   const [passwordVal, setPasswordVal] = useState('');
   const dispatch = useDispatch();
   const { loginSuccess, authData } = useSelector(store =>  ({loginSuccess: store.rootAuth.postLoginSuccess, authData: store.rootAuth.authData}));
+  const location = useLocation();
+  const token = getCookie('token');
 
   const onChangeEmail = e => {
     setEmailVal(e.target.value);
@@ -32,13 +34,15 @@ const LoginPage = () => {
     setCookie('refreshToken', refreshToken);
     return (
       <Redirect
-        to={{
-          pathname: '/'
-        }}
+        to={ location.state?.from || '/' }
       />
     );
   }
-
+  if (token) {
+    return (
+      <Redirect to={location.state?.from || '/'} />
+    );
+  }
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={submit}>

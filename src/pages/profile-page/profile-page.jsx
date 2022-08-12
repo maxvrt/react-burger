@@ -24,7 +24,7 @@ const ProfilePage = () => {
   }, [authData.name]);
 
   if (getUserSuccess) {
-    console.log(nameUser+' '+emailUser);
+    //console.log(nameUser+' '+emailUser);
   }
 
   const submit = e => {
@@ -46,7 +46,7 @@ const ProfilePage = () => {
   const onChangePass  = e => {
     setPassword(e.target.value);
   }
-  const logOut = () => {
+  function logOut() {
     const refreshToken = getCookie('refreshToken');
     console.log('выходим '+ refreshToken);
     dispatch(runLogOut(refreshToken));

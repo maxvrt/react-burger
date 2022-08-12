@@ -1,15 +1,19 @@
 import styles from './reset-page.module.css';
 import { Button, PasswordInput, Input} from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {postRequestPass} from '../../services/actions/all-actions'
+import { getCookie } from '../../utils/cookie'
 
 const ResetPage = () => {
   const [passwordVal, setPasswordVal] = useState('');
   const [codeVal, setCodeVal] = useState('');
   const { resetPassSuccess, successMessage } = useSelector(store =>  ({resetPassSuccess: store.rootAuth.postRequestPassSuccess, successMessage: store.rootAuth.message}));
   const dispatch = useDispatch();
+  const location = useLocation();
+  const token = getCookie('token');
+  const fromForgotPage = location.state?.forgotPage;
 
   const onChangePassword = e => {
     setPasswordVal(e.target.value);
@@ -29,6 +33,14 @@ const ResetPage = () => {
           pathname: '/login'
         }}
       />
+    );
+  }
+  if (!fromForgotPage) {
+    return <Redirect to='/forgot-password' />
+  }
+  if (token) {
+    return (
+      <Redirect to={location.state?.from || '/'} />
     );
   }
 

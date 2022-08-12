@@ -1,9 +1,9 @@
 import styles from './register-page.module.css';
 import { Logo, Button, Input, EmailInput, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCookie } from '../../utils/cookie'
+import { setCookie, getCookie } from '../../utils/cookie'
 import { postRegister } from '../../services/actions/all-actions'
 
 const RegisterPage = () => {
@@ -12,6 +12,8 @@ const RegisterPage = () => {
   const [passwordVal, setPasswordVal] = useState('');
   const { registerSuccess, authData } = useSelector(store =>  ({registerSuccess: store.rootAuth.postRegisterSuccess, authData: store.rootAuth.authData}));
   const dispatch = useDispatch();
+  const token = getCookie('token');
+  const location = useLocation();
 
   const onChangeName = e => {
     setNameVal(e.target.value);
@@ -42,7 +44,11 @@ const RegisterPage = () => {
       />
     );
   }
-
+  if (token) {
+    return (
+      <Redirect to={location?.state?.from || '/'} />
+    );
+  }
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={submit}>
