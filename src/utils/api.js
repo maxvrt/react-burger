@@ -60,6 +60,18 @@ export function getUser() {
      }
   })
 }
+export const profileUpdate = (nameUser, email, password) => {
+  return fetch(`${config.baseUrl}/auth/user`, { method: 'PATCH', headers: {
+        "Content-Type": "application/json",
+        Authorization: 'Bearer ' + getCookie('token')
+     },
+     body: JSON.stringify({
+        email: email,
+        name: nameUser,
+        password: password,
+     })
+  })
+}
 export function getIngredients() {
   return fetch(`${config.baseUrl}/ingredients`, {headers: config.headers})
 }

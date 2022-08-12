@@ -25,7 +25,6 @@ function App() {
   const dispatch = useDispatch();
   const token = getCookie('token');
   const { tokenSuccess, tokenData } = useSelector(store =>  ({tokenSuccess: store.rootAuth.postTokenSuccess, tokenData: store.rootAuth.tokenData}));
-  const logoutSuccess = useSelector(store =>  (store.rootAuth.postLogoutSuccess));
 
   useEffect(() => {
     const refreshToken = getCookie('refreshToken');
@@ -53,9 +52,7 @@ function App() {
     console.log('выходим '+ refreshToken);
     dispatch(runLogOut(refreshToken));
   }
-  if (logoutSuccess) {
-    console.log("ВЫШЛИ ИЗ ПРИЛОЖЕНИЯ");
-  }
+
   const arrayIngredients = useSelector(store => (store.rootIngredients.ingredients));
   const ingredientModal = useSelector(store => (store.rootIngredients.ingredientDesc));
   const isOpenModal = useSelector(store => (store.rootIngredients.ingredientModal));
@@ -84,10 +81,6 @@ function App() {
                   <BurgerIngredients onClickDesc={displayDesc}/>
                 )}
                   <BurgerConstructor/>
-                  <Button
-                     onClick={logOut}>
-                     Logout
-                  </Button>
               </main>
             </DndProvider>
           </Route>

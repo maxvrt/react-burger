@@ -33,7 +33,10 @@ import {
   POST_LOGOUT_ERROR,
   GET_USER,
   GET_USER_SUCCESS,
-  GET_USER_ERROR
+  GET_USER_ERROR,
+  UPDATE_PROFILE,
+  UPDATE_PROFILE_SUCCESS,
+  UPDATE_PROFILE_ERROR,
 } from '../actions/all-actions';
 
 const initialAuth = {
@@ -58,6 +61,9 @@ const initialAuth = {
   getUser: false,
   getUserSuccess: false,
   getUserError: false,
+  updateProfile: false,
+  updateProfileSuccess: false,
+  updateProfileError: false,
 };
 
 const initialIngredients = {
@@ -248,6 +254,31 @@ export const authReducer = (state = initialAuth, action) => {
         getUser: false,
         getUserSuccess: false,
         getUserError: true
+      }
+    }
+    case UPDATE_PROFILE:  {
+      return {
+        ...state,
+        updateProfile: true,
+        updateProfileSuccess: false,
+        updateProfileError: false
+      }
+    }
+    case UPDATE_PROFILE_SUCCESS: {
+      return {
+        ...state,
+        updateProfile: false,
+        updateProfileSuccess: true,
+        updateProfileError: false,
+        authData: action.payload
+      }
+    }
+    case UPDATE_PROFILE_ERROR: {
+      return {
+        ...state,
+        updateProfile: false,
+        updateProfileSuccess: false,
+        updateProfileError: true
       }
     }
     default: {

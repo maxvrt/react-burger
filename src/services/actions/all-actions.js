@@ -1,4 +1,4 @@
-import {getIngredients, postOrder, getResponse, postForgotPassword, postRegistration, postLoginUser, postToken, postLogOut, postRequestPassword, getUser} from '../../utils/api';
+import {getIngredients, postOrder, getResponse, postForgotPassword, postRegistration, postLoginUser, postToken, postLogOut, postRequestPassword, getUser, profileUpdate} from '../../utils/api';
 import {delCookie, getCookie, setCookie} from '../../utils/cookie';
 
 export const GET_INGREDIENTS = "GET_INGREDIENTS";
@@ -40,6 +40,10 @@ export const POST_TOKEN_ERROR = "POST_TOKEN_ERROR";
 export const GET_USER = "GET_USER";
 export const GET_USER_SUCCESS = "GET_USER_SUCCESS";
 export const GET_USER_ERROR = "GET_USER_ERROR";
+export const UPDATE_PROFILE = "UPDATE_PROFILE";
+export const UPDATE_PROFILE_SUCCESS = "UPDATE_PROFILE_SUCCESS";
+export const UPDATE_PROFILE_ERROR = "UPDATE_PROFILE_ERROR";
+
 
 export function postRegister(name, email, pass) {
   return (dispatch) => {
@@ -107,7 +111,7 @@ export function runRefreshToken(refreshToken) {
       console.log(err);
     })
   }
-}
+};
 export function getUserProfile() {
   return function (dispatch) {
     dispatch({ type: GET_USER });
@@ -124,13 +128,32 @@ export function getUserProfile() {
         console.log('Ошибка. Запрос ПОЛЬЗОВАТЕЛЯ не выполнен: ' + err);
         const refreshToken = getCookie('refreshToken');
         if (refreshToken) {
+          console.log('Найден токен, обновляем '+refreshToken);
           dispatch(runRefreshToken(refreshToken));
           dispatch(getUserProfile());
-          console.log(refreshToken);
         }
     });
   }
-}
+};
+export function updateProfile(name, email, password) {
+  return function (dispatch) {
+     dispatch({ type: UPDATE_PROFILE })
+     profileUpdate(name, email, password)
+     .then(res => getResponse(res))
+     .then((data) => {
+      console.log('Обновляем пользователя ' + data.user.name);
+      dispatch({
+        type: UPDATE_PROFILE_SUCCESS,
+        payload: data.user
+      });
+    }).catch((err) => {
+      dispatch({
+        type: UPDATE_PROFILE_ERROR
+      });
+      console.log('Ошибка. Обновление ПРОФИЛЯ не выполнено: ' + err);
+    })
+  }
+};
 export function postForgotPass(email) {
   return (dispatch) => {
     dispatch({
@@ -188,7 +211,7 @@ export function runLogOut(refreshToken) {
         console.log('Ошибка. Запрос ВЫХОДА не выполнен: ' + err);
     });
   }
-}
+};
 export function requestIngredients() {
   return (dispatch) => {
     dispatch({
@@ -229,4 +252,4 @@ export function addOrder(arrIds) {
       console.log('Ошибка. Запрос не выполнен: ' + err);
     })
   }
-}
+};
