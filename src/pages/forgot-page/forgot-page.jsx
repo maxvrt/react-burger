@@ -16,7 +16,7 @@ const ForgotPage = () => {
 
   const submit = e => {
     e.preventDefault();
-    dispatch(postForgotPass(emailVal))
+    dispatch(postForgotPass(emailVal));
   }
 
   if (forgotPassSuccess) {

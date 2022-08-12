@@ -41,11 +41,11 @@ function App() {
 
   // обновление токена
   if (tokenSuccess) {
-    const accessToken = tokenData.accessToken.split('Bearer ')[1];
-    const refreshToken = tokenData.refreshToken;
-    console.log("новый токен : " + accessToken);
-    setCookie('token', accessToken);
-    setCookie('refreshToken', refreshToken);
+    // const accessToken = tokenData.accessToken.split('Bearer ')[1];
+    // const refreshToken = tokenData.refreshToken;
+    console.log("новый токен : " + tokenData.accessToken.split('Bearer ')[1]);
+    // setCookie('token', accessToken);
+    // setCookie('refreshToken', refreshToken);
   }
   // Выход
   const logOut = () => {
@@ -76,7 +76,6 @@ function App() {
   return (
     <div className={app.page}>
       <AppHeader/>
-      <Router>
         <Switch>
           <Route exact path="/">
             <DndProvider backend={HTML5Backend}>
@@ -134,7 +133,6 @@ function App() {
           </Modal>
         }
 
-      </Router>
     </div>
   );
 }

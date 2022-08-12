@@ -1,5 +1,6 @@
 import appHeader from './app-header.module.css';
 import { Logo, Typography, Box, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { NavLink, Redirect } from 'react-router-dom';
 
 export default function AppHeader() {
 return (
@@ -23,10 +24,10 @@ return (
       </nav>
       <Logo/>
       <div className={appHeader.cabinet}>
-        <a href="#" className={appHeader.link}>
+        <NavLink exact to="/profile" className={appHeader.link}>
           <ProfileIcon type="secondary" />
           <p className="text text_type_main-default">Личный кабинет</p>
-        </a>
+        </NavLink>
       </div>
     </div>
   </header>

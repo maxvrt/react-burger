@@ -1,9 +1,29 @@
 import styles from './profile-page.module.css';
 import { Button, EmailInput, PasswordInput, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, NavLink } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserProfile } from '../../services/actions/all-actions'
 
 const ProfilePage = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getUserProfile())
+  }, [dispatch])
+
+  const { getUserSuccess, authData } = useSelector(store =>  ({getUserSuccess: store.rootAuth.getUserSuccess, authData: store.rootAuth.authData}));
+  const [nameUser, setName] = useState('111')
+  const [emailUser, setEmail] = useState('111')
+  const [password, setPassword] = useState('')
+
+  useEffect(() => {
+    setName(authData.name);
+    setEmail(authData.email);
+  }, [authData.name]);
+
+  if (getUserSuccess) {
+    console.log(nameUser+' '+emailUser);
+  }
 
   const submit = e => {
     e.preventDefault();
@@ -34,7 +54,7 @@ const ProfilePage = () => {
             size={'default'}
             error={false}
             errorText={'error'}
-            value={'Марк'}
+            value={`${nameUser}`}
             onChange={onChange}
           />
           <EmailInput
@@ -44,7 +64,7 @@ const ProfilePage = () => {
             size={'default'}
             error={false}
             errorText={'error'}
-            value={'mail@mail.ru'}
+            value={`${emailUser}`}
             onChange={onChange}
           />
           <PasswordInput
@@ -54,7 +74,7 @@ const ProfilePage = () => {
             error={false}
             errorText={'error'}
             type={'password'}
-            value={'*******'}
+            value={password}
             onChange={onChange}
           />
       </form>

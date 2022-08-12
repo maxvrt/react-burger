@@ -53,7 +53,13 @@ export function postLogOut(refreshToken) {
      })
   })
 }
-
+export function getUser() {
+  return fetch(`${config.baseUrl}/auth/user`, { method: 'GET',  headers: {
+        "Content-Type": "application/json",
+        Authorization: 'Bearer ' + getCookie('token')
+     }
+  })
+}
 export function getIngredients() {
   return fetch(`${config.baseUrl}/ingredients`, {headers: config.headers})
 }

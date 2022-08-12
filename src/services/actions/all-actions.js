@@ -1,5 +1,5 @@
-import {getIngredients, postOrder, getResponse, postForgotPassword, postRegistration, postLoginUser, postToken, postLogOut, postRequestPassword} from '../../utils/api';
-import {delCookie} from '../../utils/cookie';
+import {getIngredients, postOrder, getResponse, postForgotPassword, postRegistration, postLoginUser, postToken, postLogOut, postRequestPassword, getUser} from '../../utils/api';
+import {delCookie, getCookie, setCookie} from '../../utils/cookie';
 
 export const GET_INGREDIENTS = "GET_INGREDIENTS";
 export const GET_INGREDIENTS_SUCCESS = "GET_INGREDIENTS_SUCCESS";
@@ -25,7 +25,6 @@ export const POST_FORGOT_PASS_ERROR = "POST_FORGOT_PASS_ERROR";
 export const POST_REQUEST_PASS = "POST_REQUEST_PASS";
 export const POST_REQUEST_PASS_SUCCESS = "POST_REQUEST_PASS_SUCCESS";
 export const POST_REQUEST_PASS_ERROR = "POST_REQUEST_PASS_ERROR";
-
 export const POST_REGISTER = "POST_REGISTER";
 export const POST_REGISTER_SUCCESS = "POST_REGISTER_SUCCESS";
 export const POST_REGISTER_ERROR = "POST_REGISTER_ERROR";
@@ -38,6 +37,9 @@ export const POST_LOGOUT_ERROR = "POST_LOGOUT_ERROR";
 export const POST_TOKEN = "POST_TOKEN";
 export const POST_TOKEN_SUCCESS = "POST_TOKEN_SUCCESS";
 export const POST_TOKEN_ERROR = "POST_TOKEN_ERROR";
+export const GET_USER = "GET_USER";
+export const GET_USER_SUCCESS = "GET_USER_SUCCESS";
+export const GET_USER_ERROR = "GET_USER_ERROR";
 
 export function postRegister(name, email, pass) {
   return (dispatch) => {
@@ -93,6 +95,10 @@ export function runRefreshToken(refreshToken) {
         type: POST_TOKEN_SUCCESS,
         payload: data
       });
+      const accessToken = data.accessToken.split('Bearer ')[1];
+      const refreshToken = data.refreshToken;
+      setCookie('token', accessToken);
+      setCookie('refreshToken', refreshToken);
       console.log('обновление токена' + data);
     }).catch((err) => {
       dispatch({
@@ -101,7 +107,30 @@ export function runRefreshToken(refreshToken) {
       console.log(err);
     })
   }
-};
+}
+export function getUserProfile() {
+  return function (dispatch) {
+    dispatch({ type: GET_USER });
+    getUser()
+    .then(res => getResponse(res))
+    .then((data) => {
+      dispatch({
+        type: GET_USER_SUCCESS,
+        payload: data.user
+      });
+    })
+    .catch(err => {
+        dispatch({ type: GET_USER_ERROR });
+        console.log('Ошибка. Запрос ПОЛЬЗОВАТЕЛЯ не выполнен: ' + err);
+        const refreshToken = getCookie('refreshToken');
+        if (refreshToken) {
+          dispatch(runRefreshToken(refreshToken));
+          dispatch(getUserProfile());
+          console.log(refreshToken);
+        }
+    });
+  }
+}
 export function postForgotPass(email) {
   return (dispatch) => {
     dispatch({
