@@ -11,29 +11,37 @@ import { requestIngredients } from "../../services/actions/all-actions";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { INGREDIENT_MODAL_DEL, ORDER_MODAL_DEL, INGREDIENT_MODAL_ADD } from "../../services/actions/all-actions";
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 import RegisterPage from '../../pages/register-page/register-page';
 import LoginPage from '../../pages/login-page/login-page';
 import ForgotPage from '../../pages/forgot-page/forgot-page';
 import ResetPage from '../../pages/reset-page/reset-page';
 import ProfilePage from '../../pages/profile-page/profile-page';
+import IngredientPage from '../../pages/ingredient-page/ingredient-page';
 import { getCookie, setCookie } from '../../utils/cookie'
-import { runRefreshToken, runLogOut } from '../../services/actions/all-actions'
+import { runRefreshToken, runLogOut, getUserProfile } from '../../services/actions/all-actions'
 import { Button, EmailInput, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 import ProtectedRoute from '../protected-route/ProtectedRoute';
 
 function App() {
   const dispatch = useDispatch();
   const token = getCookie('token');
+  const refreshToken = getCookie('refreshToken');
   const { tokenSuccess, tokenData } = useSelector(store =>  ({tokenSuccess: store.rootAuth.postTokenSuccess, tokenData: store.rootAuth.tokenData}));
-
+  const user = useSelector(store =>  (store.rootAuth.authData));
+  const logoutSuccess = useSelector(store =>  (store.rootAuth.postLogoutSuccess));
+  const loginSuccess = useSelector(store =>  (store.rootAuth.postLoginSuccess));
   useEffect(() => {
-    const refreshToken = getCookie('refreshToken');
-    // нужно ли обновление токена?
-    if (!token && refreshToken) {
-      dispatch(runRefreshToken(refreshToken));
-    };
-  }, [token]);
+    // if (!token && refreshToken) {
+    //   dispatch(runRefreshToken(refreshToken));
+    // };
+    if (!user && token && refreshToken) {
+      dispatch(getUserProfile());
+    }
+    if (token && tokenSuccess) {
+      dispatch(getUserProfile())
+    }
+  }, [user,token,refreshToken,tokenSuccess, loginSuccess]);
 
   useEffect(() => {
     dispatch(requestIngredients());
@@ -41,14 +49,14 @@ function App() {
 
   // обновление токена
   if (tokenSuccess) {
-    // const accessToken = tokenData.accessToken.split('Bearer ')[1];
-    // const refreshToken = tokenData.refreshToken;
     console.log("новый токен : " + tokenData.accessToken.split('Bearer ')[1]);
-    // setCookie('token', accessToken);
-    // setCookie('refreshToken', refreshToken);
   }
 
+  const location = useLocation();
+  const background = location.state?.background;
+  const history = useHistory();
   const arrayIngredients = useSelector(store => (store.rootIngredients.ingredients));
+  console.log(arrayIngredients[0]);
   const ingredientModal = useSelector(store => (store.rootIngredients.ingredientDesc));
   const isOpenModal = useSelector(store => (store.rootIngredients.ingredientModal));
 
@@ -58,6 +66,7 @@ function App() {
   const closeAllModals = () => {
     dispatch({type:INGREDIENT_MODAL_DEL});
     dispatch({type:ORDER_MODAL_DEL});
+    history.goBack();
   };
 
   // нажатие по элементу списка
@@ -68,7 +77,7 @@ function App() {
   return (
     <div className={app.page}>
       <AppHeader/>
-        <Switch>
+        <Switch location={background || location}>
           <Route exact path="/">
             <DndProvider backend={HTML5Backend}>
               <main className={app.main}>
@@ -97,7 +106,9 @@ function App() {
           <Route>
             Page404
           </Route>
-
+          <Route path='/ingredient/:id'>
+            <IngredientPage />
+          </Route>
         </Switch>
 
         {isOrderModal &&
@@ -110,6 +121,26 @@ function App() {
             <OrderDetails/>
           </Modal>
         }
+
+        {background &&
+          <Route exact path="/ingredient/:id">
+            <Modal
+              title="Детали ингредиента"
+              onOverlayClick={closeAllModals}
+              onCloseClick={closeAllModals}
+              escCloseModal={closeAllModals}
+            >
+              <IngredientDetails data={ingredientModal}/>
+            </Modal>
+            {/* <Modal
+              title="Детали ингредиента" onClose={onClose}
+            >
+              <IngredientDetails />
+            </Modal> */}
+          </Route>
+        }
+
+        {/*
         {isOpenModal &&
           <Modal
             title="Детали ингредиента"
@@ -120,6 +151,7 @@ function App() {
             <IngredientDetails data={ingredientModal}/>
           </Modal>
         }
+        */}
 
     </div>
   );

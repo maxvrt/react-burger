@@ -6,11 +6,15 @@ import {addOrder} from '../../services/actions/all-actions'
 import { useDrop, useDrag } from "react-dnd";
 import {SET_BUN, ADD_INGREDIENT, DELETE_ITEM, MOVE_ELEMENT}  from '../../services/actions/all-actions';
 import { useInView } from 'react-intersection-observer';
-
+import { useHistory, Redirect } from "react-router-dom";
+import { getCookie } from '../../utils/cookie'
 export default function BurgerConstructor() {
   const oneBun = useSelector(store =>  (store.rootIngredients.bun));
   const arrNoBunOrder = useSelector(store =>  (store.rootIngredients.selectedIngredients));
   const dispatch = useDispatch();
+  const user = useSelector(store =>  (store.rootAuth.authData.name));
+  console.log(user + ' - пользователь, страница BurgerConstructor');
+  const history = useHistory();
 
   const Inner = ({item, index}) => {
     const ref = useRef(null);
@@ -59,8 +63,6 @@ export default function BurgerConstructor() {
         });
 
         item.index = hoverIndex;
-
-
       },
     });
     const [, drag] = useDrag({
@@ -93,7 +95,17 @@ export default function BurgerConstructor() {
     if(oneBun.price>0) totalPrice = totalPrice + oneBun?.price*2;
   };
   const onClickOrder = () => {
-    dispatch(addOrder(arrIds));
+    if (user) {
+      console.log('оформление заказа началось');
+      dispatch(addOrder(arrIds));
+    } else {
+      console.log('Редирект на логин');
+      <Redirect
+      to={{
+        pathname: '/login'
+      }}
+    />
+    }
   };
 
   const [, dropTarget] = useDrop({

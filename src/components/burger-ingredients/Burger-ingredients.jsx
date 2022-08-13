@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrag } from "react-dnd";
 import { useInView } from 'react-hook-inview';
-
+import { Link, useLocation } from 'react-router-dom';
+//{onClickDesc}
 export default function BurgerIngredients({onClickDesc}) {
   const [current, setCurrent] = useState('bun');
   const array = useSelector(store =>  (store.rootIngredients.ingredients));
@@ -16,6 +17,7 @@ export default function BurgerIngredients({onClickDesc}) {
 
   // Элемент в списке ингредиентов
   const Card = ({item}) => {
+    const location = useLocation()
     const handleClick = ()=> onClickDesc(item);
     const [, dragRef] = useDrag({
       type: 'ingredients',
@@ -30,13 +32,16 @@ export default function BurgerIngredients({onClickDesc}) {
         },
       [selectedIngredients, bun]
     );
+    //onClick={handleClick}
     return (
+      <Link className={burgerIngredients.link} to={{ pathname: `/ingredient/${item._id}`, state: { background: location } }} >
       <li className={burgerIngredients.cardItem} onClick={handleClick} ref={dragRef}>
         <img className={burgerIngredients.cardImg} src={item.image} />
         <div className={burgerIngredients.cardPrice}><p className={burgerIngredients.cardPriceDig}>{item.price}</p><CurrencyIcon/></div>
         <p className={burgerIngredients.cardName}>{item.name}</p>
         <Counter count={count()} />
       </li>
+      </Link>
     );
   };
 

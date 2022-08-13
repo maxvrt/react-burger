@@ -1,6 +1,6 @@
 import styles from './profile-page.module.css';
 import { Button, EmailInput, PasswordInput, Input} from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, Redirect, NavLink } from 'react-router-dom';
+import { Link, Redirect, NavLink, useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserProfile, updateProfile, runLogOut } from '../../services/actions/all-actions'
@@ -17,6 +17,7 @@ const ProfilePage = () => {
   const [nameUser, setName] = useState('111')
   const [emailUser, setEmail] = useState('111')
   const [password, setPassword] = useState('')
+  const history = useHistory();
 
   useEffect(() => {
     setName(authData.name);
@@ -53,6 +54,7 @@ const ProfilePage = () => {
   }
   if (logoutSuccess) {
     console.log("ВЫШЛИ ИЗ ПРИЛОЖЕНИЯ");
+    history.push('/login')
   }
 
   return (
@@ -102,7 +104,7 @@ const ProfilePage = () => {
           />
           <div className={styles.save}>
             <Button type="secondary" size="medium" onClick={cancelSave}>Отмена</Button>
-            <Button type="primary" size="medium"  disabled={!nameUser && !emailUser && !password}>Сохранить</Button>
+            <Button type="primary" size="medium" disabled={!nameUser && !emailUser && !password}>Сохранить</Button>
           </div>
       </form>
 

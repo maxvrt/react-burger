@@ -220,7 +220,8 @@ export const authReducer = (state = initialAuth, action) => {
         ...state,
         postLogout: false,
         postLogoutSuccess: true,
-        postLogoutError: false
+        postLogoutError: false,
+        authData: {},
       }
     }
     case POST_LOGOUT_ERROR:  {
