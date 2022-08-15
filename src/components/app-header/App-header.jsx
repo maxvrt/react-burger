@@ -1,24 +1,27 @@
 import appHeader from './app-header.module.css';
 import { Logo, Typography, Box, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import { NavLink, Redirect } from 'react-router-dom';
+import { NavLink, Redirect, useRouteMatch } from 'react-router-dom';
 
 export default function AppHeader() {
+  const isConstructor = !!useRouteMatch({ exact: true, path: "/" });
+  const isProfile = !!useRouteMatch({ exact: true, path: '/profile' });
+  const isOrders = !!useRouteMatch({ exact: true, path: '/profile/orders' });
 return (
   <header className={appHeader.app}>
     <div className={appHeader.wrapper}>
       <nav className={appHeader.menuWrapper}>
         <ul className={appHeader.menuList}>
           <li className={appHeader.menuItem}>
-            <a href="#" className={appHeader.link}>
-              <BurgerIcon type="primary" />
+            <NavLink className={appHeader.link} activeClassName={appHeader.activeLink} exact to='/'>
+              <BurgerIcon type={isConstructor ? 'primary' : 'secondary'} />
               <p className="text text_type_main-default">Конструктор</p>
-            </a>
+            </NavLink>
             </li>
           <li className={appHeader.menuItem}>
-            <a href="#" className={appHeader.link}>
-              <ListIcon type="secondary" />
+            <NavLink className={appHeader.link} activeClassName={appHeader.activeLink} exact to='/profile/orders'>
+              <ListIcon type={isOrders ? 'primary' : 'secondary'} />
               <p className={`${appHeader.lent} text text_type_main-default`}>Лента заказов</p>
-            </a>
+            </NavLink>
           </li>
         </ul>
       </nav>
@@ -26,8 +29,8 @@ return (
         <Logo/>
       </NavLink>
       <div className={appHeader.cabinet}>
-        <NavLink exact to="/profile" className={appHeader.link}>
-          <ProfileIcon type="secondary" />
+        <NavLink exact to='/profile' className={appHeader.link} activeClassName={appHeader.activeLink}>
+          <ProfileIcon type={isProfile ? 'primary' : 'secondary'} />
           <p className="text text_type_main-default">Личный кабинет</p>
         </NavLink>
       </div>

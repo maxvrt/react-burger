@@ -43,7 +43,10 @@
   list-style-type: none;
   box-sizing: border-box;
   padding: 0 10px 0 10px;
-}
-.lent {
   color: #8585AD;
 }
+.activeLink {
+  composes: link;
+  color: #f2f2e5;
+}
+
