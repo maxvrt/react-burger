@@ -43,7 +43,17 @@ export const GET_USER_ERROR = "GET_USER_ERROR";
 export const UPDATE_PROFILE = "UPDATE_PROFILE";
 export const UPDATE_PROFILE_SUCCESS = "UPDATE_PROFILE_SUCCESS";
 export const UPDATE_PROFILE_ERROR = "UPDATE_PROFILE_ERROR";
+export const AUTH_CHECKED = "AUTH_CHECKED";
 
+export const checkUserAuth = () => (dispatch) => {
+  if (getCookie("token")) {
+      console.log('AUTH_CHECKED - true');
+      dispatch({ type: AUTH_CHECKED, payload: true });
+    } else {
+    console.log('AUTH_CHECKED - false');
+    dispatch({ type: AUTH_CHECKED, payload: false });
+  }
+};
 
 export function postRegister(name, email, pass) {
   return (dispatch) => {

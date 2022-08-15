@@ -37,6 +37,7 @@ import {
   UPDATE_PROFILE,
   UPDATE_PROFILE_SUCCESS,
   UPDATE_PROFILE_ERROR,
+  AUTH_CHECKED
 } from '../actions/all-actions';
 
 const initialAuth = {
@@ -58,12 +59,14 @@ const initialAuth = {
   postLogoutError: false,
   authData: {},
   tokenData: {},
+  user: {},
   getUser: false,
   getUserSuccess: false,
   getUserError: false,
   updateProfile: false,
   updateProfileSuccess: false,
   updateProfileError: false,
+  isAuthChecked:false
 };
 
 const initialIngredients = {
@@ -82,6 +85,12 @@ const initialIngredients = {
 
 export const authReducer = (state = initialAuth, action) => {
   switch (action.type) {
+    case AUTH_CHECKED: {
+      return {
+        ...state,
+        isAuthChecked: action.payload,
+      };
+    }
     case POST_FORGOT_PASS:  {
       return {
         ...state,
@@ -171,7 +180,8 @@ export const authReducer = (state = initialAuth, action) => {
         postLogin: false,
         postLoginSuccess: true,
         postLoginError: false,
-        authData: action.payload
+        authData: action.payload,
+        user: action.payload.user
       }
     }
     case POST_LOGIN_ERROR:  {
@@ -212,7 +222,9 @@ export const authReducer = (state = initialAuth, action) => {
         ...state,
         postLogout: true,
         postLogoutSuccess: false,
-        postLogoutError: false
+        postLogoutError: false,
+        authData: {},
+        isAuthChecked: false
       }
     }
     case POST_LOGOUT_SUCCESS:  {
@@ -221,7 +233,7 @@ export const authReducer = (state = initialAuth, action) => {
         postLogout: false,
         postLogoutSuccess: true,
         postLogoutError: false,
-        authData: {},
+        isAuthChecked: false
       }
     }
     case POST_LOGOUT_ERROR:  {

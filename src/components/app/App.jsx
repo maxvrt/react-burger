@@ -7,7 +7,7 @@ import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/Modal';
 import app from './app.module.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { requestIngredients } from "../../services/actions/all-actions";
+import { requestIngredients, checkUserAuth, getUserProfile} from "../../services/actions/all-actions";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { INGREDIENT_MODAL_DEL, ORDER_MODAL_DEL, INGREDIENT_MODAL_ADD } from "../../services/actions/all-actions";
@@ -19,7 +19,6 @@ import ResetPage from '../../pages/reset-page/reset-page';
 import ProfilePage from '../../pages/profile-page/profile-page';
 import IngredientPage from '../../pages/ingredient-page/ingredient-page';
 import { getCookie, setCookie } from '../../utils/cookie'
-import { runRefreshToken, runLogOut, getUserProfile } from '../../services/actions/all-actions'
 import { Button, EmailInput, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 import ProtectedRoute from '../protected-route/ProtectedRoute';
 
@@ -28,29 +27,24 @@ function App() {
   const token = getCookie('token');
   const refreshToken = getCookie('refreshToken');
   const { tokenSuccess, tokenData } = useSelector(store =>  ({tokenSuccess: store.rootAuth.postTokenSuccess, tokenData: store.rootAuth.tokenData}));
-  const user = useSelector(store =>  (store.rootAuth.authData));
+  const user = useSelector(store =>  (store.rootAuth.user));
   const logoutSuccess = useSelector(store =>  (store.rootAuth.postLogoutSuccess));
   const loginSuccess = useSelector(store =>  (store.rootAuth.postLoginSuccess));
   useEffect(() => {
-    // if (!token && refreshToken) {
-    //   dispatch(runRefreshToken(refreshToken));
-    // };
+    dispatch(checkUserAuth());
     if (!user && token && refreshToken) {
       dispatch(getUserProfile());
     }
     if (token && tokenSuccess) {
       dispatch(getUserProfile())
     }
+    console.log(user + ' - пользователь, страница App');
   }, [user,token,refreshToken,tokenSuccess, loginSuccess]);
 
   useEffect(() => {
     dispatch(requestIngredients());
+    dispatch(checkUserAuth());
   }, [dispatch]);
-
-  // обновление токена
-  if (tokenSuccess) {
-    console.log("новый токен : " + tokenData.accessToken.split('Bearer ')[1]);
-  }
 
   const location = useLocation();
   const background = location.state?.background;
@@ -70,10 +64,10 @@ function App() {
   };
 
   // нажатие по элементу списка
-  const displayDesc = (item)=>{
-    dispatch({type:INGREDIENT_MODAL_ADD, payload: item });
-  }
-
+  // const displayDesc = (item)=>{
+  //   dispatch({type:INGREDIENT_MODAL_ADD, payload: item });
+  // }
+  // onClickDesc={displayDesc}
   return (
     <div className={app.page}>
       <AppHeader/>
@@ -82,7 +76,7 @@ function App() {
             <DndProvider backend={HTML5Backend}>
               <main className={app.main}>
                 {arrayIngredients && (
-                  <BurgerIngredients onClickDesc={displayDesc}/>
+                  <BurgerIngredients/>
                 )}
                   <BurgerConstructor/>
               </main>
@@ -103,11 +97,11 @@ function App() {
           <ProtectedRoute exact path='/profile'>
             <ProfilePage/>
           </ProtectedRoute>
+          <Route exact path='/ingredient/:id'>
+            <IngredientPage />
+          </Route>
           <Route>
             Page404
-          </Route>
-          <Route path='/ingredient/:id'>
-            <IngredientPage />
           </Route>
         </Switch>
 

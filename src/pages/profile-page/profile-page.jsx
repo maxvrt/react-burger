@@ -24,10 +24,6 @@ const ProfilePage = () => {
     setEmail(authData.email);
   }, [authData.name]);
 
-  if (getUserSuccess) {
-    //console.log(nameUser+' '+emailUser);
-  }
-
   const submit = e => {
     e.preventDefault();
     dispatch(updateProfile(nameUser, emailUser, password))
@@ -51,12 +47,8 @@ const ProfilePage = () => {
     const refreshToken = getCookie('refreshToken');
     console.log('выходим '+ refreshToken);
     dispatch(runLogOut(refreshToken));
+    history.push('/login');
   }
-  if (logoutSuccess) {
-    console.log("ВЫШЛИ ИЗ ПРИЛОЖЕНИЯ");
-    history.push('/login')
-  }
-
   return (
     <div className={styles.container}>
       <ul className={`${styles.list}`}>
