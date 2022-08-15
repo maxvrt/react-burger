@@ -3,7 +3,7 @@ import { Button, PasswordInput, Input} from '@ya.praktikum/react-developer-burge
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {postRequestPass} from '../../services/actions/all-actions'
+import {postRequestPass} from '../../services/actions/auth-actions'
 import { getCookie } from '../../utils/cookie'
 
 const ResetPage = () => {

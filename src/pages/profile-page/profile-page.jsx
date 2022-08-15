@@ -3,7 +3,7 @@ import { Button, EmailInput, PasswordInput, Input} from '@ya.praktikum/react-dev
 import { Link, Redirect, NavLink, useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserProfile, updateProfile, runLogOut } from '../../services/actions/all-actions'
+import { getUserProfile, updateProfile, runLogOut } from '../../services/actions/auth-actions'
 import { getCookie, setCookie } from '../../utils/cookie'
 
 const ProfilePage = () => {

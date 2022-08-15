@@ -2,7 +2,7 @@ import styles from './forgot-page.module.css';
 import { Button, EmailInput} from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import {postForgotPass} from '../../services/actions/all-actions'
+import { postForgotPass } from '../../services/actions/auth-actions'
 import { useDispatch, useSelector } from 'react-redux';
 import { getCookie } from '../../utils/cookie'
 

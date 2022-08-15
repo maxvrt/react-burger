@@ -4,7 +4,7 @@ import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCookie, getCookie } from '../../utils/cookie'
-import { postRegister } from '../../services/actions/all-actions'
+import { postRegister } from '../../services/actions/auth-actions'
 
 const RegisterPage = () => {
   const [nameVal, setNameVal] = useState('');

@@ -4,7 +4,7 @@ import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCookie, getCookie } from '../../utils/cookie'
-import { postLogin } from '../../services/actions/all-actions'
+import { postLogin } from '../../services/actions/auth-actions'
 
 const LoginPage = () => {
   const [emailVal, setEmailVal] = useState('');

@@ -7,10 +7,10 @@ import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/Modal';
 import app from './app.module.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { requestIngredients, checkUserAuth, getUserProfile} from "../../services/actions/all-actions";
+import { requestIngredients, INGREDIENT_MODAL_DEL, ORDER_MODAL_DEL} from "../../services/actions/burger-actions";
+import { checkUserAuth, getUserProfile} from "../../services/actions/auth-actions";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { INGREDIENT_MODAL_DEL, ORDER_MODAL_DEL, INGREDIENT_MODAL_ADD } from "../../services/actions/all-actions";
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 import RegisterPage from '../../pages/register-page/register-page';
 import LoginPage from '../../pages/login-page/login-page';
@@ -18,8 +18,7 @@ import ForgotPage from '../../pages/forgot-page/forgot-page';
 import ResetPage from '../../pages/reset-page/reset-page';
 import ProfilePage from '../../pages/profile-page/profile-page';
 import IngredientPage from '../../pages/ingredient-page/ingredient-page';
-import { getCookie, setCookie } from '../../utils/cookie'
-import { Button, EmailInput, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
+import { getCookie } from '../../utils/cookie'
 import ProtectedRoute from '../protected-route/ProtectedRoute';
 
 function App() {
@@ -54,12 +53,15 @@ function App() {
   const orderData = useSelector(store =>  (store.rootIngredients.orderData));
   const isOrderModal = useSelector(store =>  (store.rootIngredients.orderModal));
   // Закрытие всех модалок
-  const closeAllModals = () => {
+  const closeModals = () => {
+    dispatch({type:INGREDIENT_MODAL_DEL});
+    dispatch({type:ORDER_MODAL_DEL});
+  };
+  const closeModalIng = () => {
     dispatch({type:INGREDIENT_MODAL_DEL});
     dispatch({type:ORDER_MODAL_DEL});
     history.goBack();
   };
-
   return (
     <div className={app.page}>
       <AppHeader/>
@@ -100,9 +102,9 @@ function App() {
         {isOrderModal &&
           <Modal
             title=""
-            onOverlayClick={closeAllModals}
-            onCloseClick={closeAllModals}
-            escCloseModal={closeAllModals}
+            onOverlayClick={closeModals}
+            onCloseClick={closeModals}
+            escCloseModal={closeModals}
           >
             <OrderDetails/>
           </Modal>
@@ -112,33 +114,14 @@ function App() {
           <Route exact path="/ingredient/:id">
             <Modal
               title="Детали ингредиента"
-              onOverlayClick={closeAllModals}
-              onCloseClick={closeAllModals}
-              escCloseModal={closeAllModals}
+              onOverlayClick={closeModalIng}
+              onCloseClick={closeModalIng}
+              escCloseModal={closeModalIng}
             >
               <IngredientDetails data={ingredientModal}/>
             </Modal>
-            {/* <Modal
-              title="Детали ингредиента" onClose={onClose}
-            >
-              <IngredientDetails />
-            </Modal> */}
           </Route>
         }
-
-        {/*
-        {isOpenModal &&
-          <Modal
-            title="Детали ингредиента"
-            onOverlayClick={closeAllModals}
-            onCloseClick={closeAllModals}
-            escCloseModal={closeAllModals}
-          >
-            <IngredientDetails data={ingredientModal}/>
-          </Modal>
-        }
-        */}
-
     </div>
   );
 }
