@@ -33,7 +33,6 @@ const RegisterPage = () => {
   if (registerSuccess && authData.accessToken) {
     const accessToken = authData.accessToken.split('Bearer ')[1];
     const refreshToken = authData.refreshToken;
-    console.log(accessToken + " и refreshToken: " + refreshToken);
     setCookie('token', accessToken);
     setCookie('refreshToken', refreshToken);
     return (

@@ -38,7 +38,6 @@ function App() {
     if (token && tokenSuccess) {
       dispatch(getUserProfile())
     }
-    console.log(user + ' - пользователь, страница App');
   }, [user,token,refreshToken,tokenSuccess, loginSuccess]);
 
   useEffect(() => {
@@ -50,7 +49,6 @@ function App() {
   const background = location.state?.background;
   const history = useHistory();
   const arrayIngredients = useSelector(store => (store.rootIngredients.ingredients));
-  console.log(arrayIngredients[0]);
   const ingredientModal = useSelector(store => (store.rootIngredients.ingredientDesc));
   const isOpenModal = useSelector(store => (store.rootIngredients.ingredientModal));
 

@@ -14,11 +14,10 @@ export default function BurgerConstructor() {
   const dispatch = useDispatch();
   const user = useSelector(store =>  (store.rootAuth.authData.name));
   const checkAuth = useSelector(store =>  (store.rootAuth.isAuthChecked));
-  console.log(user + ' - пользователь, страница BurgerConstructor');
   const history = useHistory();
 
   useEffect(() => {
-    
+
   }, []);
 
   const Inner = ({item, index}) => {
@@ -39,7 +38,6 @@ export default function BurgerConstructor() {
           return;
         }
         const dragIndex = item.index;
-        //console.log(item);
         const hoverIndex = index;
         // Don't replace items with themselves
         if (dragIndex === hoverIndex) {
@@ -124,7 +122,6 @@ export default function BurgerConstructor() {
           payload: { ...item.item, uuid:idItem },
         });
       }
-      //console.log(item);
     },
   });
 
