@@ -11,6 +11,7 @@ const LoginPage = () => {
   const [passwordVal, setPasswordVal] = useState('');
   const dispatch = useDispatch();
   const { loginSuccess, authData } = useSelector(store =>  ({loginSuccess: store.rootAuth.postLoginSuccess, authData: store.rootAuth.authData}));
+  const checkAuth = useSelector(store =>  (store.rootAuth.isAuthChecked));
   const location = useLocation();
   const token = getCookie('token');
 
@@ -26,18 +27,18 @@ const LoginPage = () => {
     dispatch(postLogin(emailVal, passwordVal));
   }
 
-  if (loginSuccess && authData.accessToken) {
-    const accessToken = authData.accessToken.split('Bearer ')[1];
-    const refreshToken = authData.refreshToken;
-    setCookie('token', accessToken);
-    setCookie('refreshToken', refreshToken);
-    return (
-      <Redirect
-        to={ location.state?.from || '/' }
-      />
-    );
-  }
-  if (token) {
+  // if (loginSuccess && authData.accessToken) {
+  //   const accessToken = authData.accessToken.split('Bearer ')[1];
+  //   const refreshToken = authData.refreshToken;
+  //   setCookie('token', accessToken);
+  //   setCookie('refreshToken', refreshToken);
+  //   return (
+  //     <Redirect
+  //       to={ location.state?.from || '/' }
+  //     />
+  //   );
+  // }
+  if (token || checkAuth) {
     return (
       <Redirect to={location.state?.from || '/'} />
     );

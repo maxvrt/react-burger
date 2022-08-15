@@ -12,6 +12,7 @@ const ForgotPage = () => {
   const { forgotPassSuccess, successMessage } = useSelector(store =>  ({forgotPassSuccess: store.rootAuth.postForgotPassSuccess, successMessage: store.rootAuth.message}));
   const location = useLocation();
   const token = getCookie('token');
+  const checkAuth = useSelector(store =>  (store.rootAuth.isAuthChecked));
 
   const onChangeEmail = e => {
     setEmailVal(e.target.value);
@@ -34,7 +35,7 @@ const ForgotPage = () => {
     );
   }
 
-  if (token) {
+  if (checkAuth || token) {
     return (
       <Redirect to={location.state?.from || '/'} />
     );

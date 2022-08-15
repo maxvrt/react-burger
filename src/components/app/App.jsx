@@ -28,7 +28,6 @@ function App() {
   const refreshToken = getCookie('refreshToken');
   const { tokenSuccess, tokenData } = useSelector(store =>  ({tokenSuccess: store.rootAuth.postTokenSuccess, tokenData: store.rootAuth.tokenData}));
   const user = useSelector(store =>  (store.rootAuth.user));
-  const logoutSuccess = useSelector(store =>  (store.rootAuth.postLogoutSuccess));
   const loginSuccess = useSelector(store =>  (store.rootAuth.postLoginSuccess));
   useEffect(() => {
     dispatch(checkUserAuth());
@@ -42,7 +41,7 @@ function App() {
 
   useEffect(() => {
     dispatch(requestIngredients());
-    dispatch(checkUserAuth());
+    //dispatch(checkUserAuth());
   }, [dispatch]);
 
   const location = useLocation();
@@ -61,11 +60,6 @@ function App() {
     history.goBack();
   };
 
-  // нажатие по элементу списка
-  // const displayDesc = (item)=>{
-  //   dispatch({type:INGREDIENT_MODAL_ADD, payload: item });
-  // }
-  // onClickDesc={displayDesc}
   return (
     <div className={app.page}>
       <AppHeader/>

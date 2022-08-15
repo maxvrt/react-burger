@@ -14,6 +14,7 @@ const ResetPage = () => {
   const location = useLocation();
   const token = getCookie('token');
   const fromForgotPage = location.state?.forgotPage;
+  const checkAuth = useSelector(store =>  (store.rootAuth.isAuthChecked));
 
   const onChangePassword = e => {
     setPasswordVal(e.target.value);
@@ -38,7 +39,7 @@ const ResetPage = () => {
   if (!fromForgotPage) {
     return <Redirect to='/forgot-password' />
   }
-  if (token) {
+  if (token || checkAuth) {
     return (
       <Redirect to={location.state?.from || '/'} />
     );

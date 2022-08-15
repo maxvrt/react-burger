@@ -36,7 +36,7 @@ export default function BurgerIngredients() {
     return (
       <Link className={burgerIngredients.link} to={{ pathname: `/ingredient/${item._id}`, state: { background: location } }} >
       <li className={burgerIngredients.cardItem} ref={dragRef}>
-        <img className={burgerIngredients.cardImg} src={item.image} />
+        <img className={burgerIngredients.cardImg} alt={item.name} src={item.image} />
         <div className={burgerIngredients.cardPrice}><p className={burgerIngredients.cardPriceDig}>{item.price}</p><CurrencyIcon/></div>
         <p className={burgerIngredients.cardName}>{item.name}</p>
         <Counter count={count()} />

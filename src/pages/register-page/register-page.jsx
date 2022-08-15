@@ -14,6 +14,7 @@ const RegisterPage = () => {
   const dispatch = useDispatch();
   const token = getCookie('token');
   const location = useLocation();
+  const checkAuth = useSelector(store =>  (store.rootAuth.isAuthChecked));
 
   const onChangeName = e => {
     setNameVal(e.target.value);
@@ -30,20 +31,7 @@ const RegisterPage = () => {
     dispatch(postRegister(nameVal, emailVal, passwordVal))
   }
 
-  if (registerSuccess && authData.accessToken) {
-    const accessToken = authData.accessToken.split('Bearer ')[1];
-    const refreshToken = authData.refreshToken;
-    setCookie('token', accessToken);
-    setCookie('refreshToken', refreshToken);
-    return (
-      <Redirect
-        to={{
-          pathname: '/'
-        }}
-      />
-    );
-  }
-  if (token) {
+  if (checkAuth || (registerSuccess && authData.accessToken)) {
     return (
       <Redirect to={location?.state?.from || '/'} />
     );

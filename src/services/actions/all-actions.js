@@ -67,6 +67,10 @@ export function postRegister(name, email, pass) {
         type: POST_REGISTER_SUCCESS,
         payload: data
       });
+      const accessToken = data.accessToken.split('Bearer ')[1];
+      const refreshToken = data.refreshToken;
+      setCookie('token', accessToken);
+      setCookie('refreshToken', refreshToken);
     }).catch((err) => {
       dispatch({
         type: POST_REGISTER_ERROR
@@ -88,6 +92,10 @@ export function postLogin(email, pass) {
         type: POST_LOGIN_SUCCESS,
         payload: data
       });
+      const accessToken = data.accessToken.split('Bearer ')[1];
+      const refreshToken = data.refreshToken;
+      setCookie('token', accessToken);
+      setCookie('refreshToken', refreshToken);
     }).catch((err) => {
       dispatch({
         type: POST_LOGIN_ERROR

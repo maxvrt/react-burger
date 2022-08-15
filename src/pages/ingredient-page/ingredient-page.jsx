@@ -6,14 +6,6 @@ const IngredientPage = () => {
      <div className={styles.wrapper}>
         <h1 className={styles.title}>Детали ингредиента</h1>
         <IngredientDetails/>
-
-        {/* data={ingredientModal} <Modal
-        title="Детали ингредиента"
-        onOverlayClick={closeAllModals}
-        onCloseClick={closeAllModals}
-        escCloseModal={closeAllModals}
-        >
-        </Modal> */}
      </div>
   )
 }

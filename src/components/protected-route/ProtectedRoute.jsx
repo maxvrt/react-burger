@@ -4,8 +4,8 @@ import { getCookie, setCookie } from '../../utils/cookie'
 
 export function ProtectedRoute({ children, ...rest }) {
   const location = useLocation();
-  const token = getCookie('token');
-  if (!token) {
+  const checkAuth = useSelector(store =>  (store.rootAuth.isAuthChecked));
+  if (!checkAuth) {
     return (
       <Redirect to={{
         pathname: '/login',
