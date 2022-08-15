@@ -7,13 +7,33 @@
 .singleEl {
   margin-left: 42px;
 }
-
+.empty {
+  margin-left: 42px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90px;
+  width: 540px;
+  background: #2f2f37;
+  font-family: 'JetBrainsMono';
+  font-size: 26px;
+  line-height: 40px;
+}
+.emptyTop {
+  composes: empty;
+  border-radius: 90px 90px 50px 50px;
+}
+.emptyBottom {
+  composes: empty;
+  border-radius: 50px 50px 90px 90px;
+}
 .scrollBlock {
   display: flex;
   flex-direction: column;
   row-gap: 16px;
   width: 600px;
-  height: 470px;
+  height: 370px;
   overflow: auto;
 }
 .scrollBlock::-webkit-scrollbar {
@@ -48,4 +68,15 @@
   align-items: center;
   justify-content: center;
   column-gap: 9.5px;
+}
+.disableOrder {
+  font-family: 'Jet Brains Mono';
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: normal;
+  padding: 20px 40px;
+  border: none;
+  outline: none;
+  border-radius: 64px;
+  background: #2f2f37;
 }
