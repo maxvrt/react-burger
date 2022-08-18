@@ -20,6 +20,7 @@ import ProfilePage from '../../pages/profile-page/profile-page';
 import IngredientPage from '../../pages/ingredient-page/ingredient-page';
 import { getCookie } from '../../utils/cookie'
 import ProtectedRoute from '../protected-route/ProtectedRoute';
+import FeedPage from '../../pages/feed-page/feed-page';
 
 function App() {
   const dispatch = useDispatch();
@@ -93,6 +94,9 @@ function App() {
           </ProtectedRoute>
           <Route exact path='/ingredient/:id'>
             <IngredientPage />
+          </Route>
+          <Route exact path='/feed'>
+            <FeedPage />
           </Route>
           <Route>
             Page404
