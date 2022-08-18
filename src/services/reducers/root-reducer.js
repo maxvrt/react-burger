@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { ingredientsReducer } from './reducers';
+import { authReducer } from './auth-reducers';
+import { ingredientsReducer } from './burger-reducers';
 
-
-export const rootReducer = combineReducers({ rootIngredients: ingredientsReducer });
+export const rootReducer = combineReducers({ rootIngredients: ingredientsReducer, rootAuth: authReducer });

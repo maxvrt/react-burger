@@ -2,89 +2,18 @@ import React, { useEffect,useRef, useMemo, useState } from 'react';
 import burgerConstructor from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon, LockIcon, DragIcon, DeleteIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useSelector, useDispatch } from 'react-redux';
-import {addOrder} from '../../services/actions/all-actions'
+import { addOrder, SET_BUN, ADD_INGREDIENT, DELETE_ITEM, MOVE_ELEMENT } from '../../services/actions/burger-actions'
 import { useDrop, useDrag } from "react-dnd";
-import {SET_BUN, ADD_INGREDIENT, DELETE_ITEM, MOVE_ELEMENT}  from '../../services/actions/all-actions';
 import { useInView } from 'react-intersection-observer';
-
+import { useHistory, Redirect, Route } from "react-router-dom";
+import BurgerConstructorElement from '../burger-constructor-element/Burger-constructor-element';
 export default function BurgerConstructor() {
   const oneBun = useSelector(store =>  (store.rootIngredients.bun));
   const arrNoBunOrder = useSelector(store =>  (store.rootIngredients.selectedIngredients));
   const dispatch = useDispatch();
-
-  const Inner = ({item, index}) => {
-    const ref = useRef(null);
-    const itemId = item.uuid;
-
-    const deleteItem = (id) => {
-      dispatch({
-        type: DELETE_ITEM,
-        payload: id,
-      });
-    };
-
-    const [, drop] = useDrop({
-      accept: 'el',
-      hover(item, monitor) {
-        if (!ref.current) {
-          return;
-        }
-        const dragIndex = item.index;
-        //console.log(item);
-        const hoverIndex = index;
-        // Don't replace items with themselves
-        if (dragIndex === hoverIndex) {
-          return;
-        }
-        // Determine rectangle on screen
-        const hoverBoundingRect = ref.current?.getBoundingClientRect();
-        // Get vertical middle
-        const hoverMiddleY =
-          (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-        // Determine mouse position
-        const clientOffset = monitor.getClientOffset();
-        // Get pixels to the top
-        const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-          return;
-        }
-        // Dragging upwards
-        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-          return;
-        }
-
-        dispatch({
-          type: MOVE_ELEMENT,
-          payload: { from: dragIndex, to: hoverIndex },
-        });
-
-        item.index = hoverIndex;
-
-
-      },
-    });
-    const [, drag] = useDrag({
-      type: 'el',
-      item: { itemId, index },
-    });
-    drag(drop(ref));
-
-    return (
-      <React.Fragment>
-      <div className={burgerConstructor.scrollElement} ref={ref}>
-        <DragIcon/>
-        <ConstructorElement
-        isLocked={false}
-        text={item.name}
-        price={item.price}
-        thumbnail={item.image_mobile}
-        handleClose={() => deleteItem(itemId)}
-        />
-      </div>
-      </React.Fragment>
-    );
-  };
-
+  const user = useSelector(store =>  (store.rootAuth.authData.name));
+  const checkAuth = useSelector(store =>  (store.rootAuth.isAuthChecked));
+  const history = useHistory();
   let arrIds = [];
   let totalPrice = 0;
   if (arrNoBunOrder.length > 0 || JSON.stringify(oneBun) !== '{}'){
@@ -93,7 +22,13 @@ export default function BurgerConstructor() {
     if(oneBun.price>0) totalPrice = totalPrice + oneBun?.price*2;
   };
   const onClickOrder = () => {
-    dispatch(addOrder(arrIds));
+    if (checkAuth) {
+      console.log('оформление заказа началось');
+      dispatch(addOrder(arrIds));
+    } else {
+      console.log('Редирект на логин');
+      history.push("/login");
+    }
   };
 
   const [, dropTarget] = useDrop({
@@ -111,7 +46,6 @@ export default function BurgerConstructor() {
           payload: { ...item.item, uuid:idItem },
         });
       }
-      //console.log(item);
     },
   });
 
@@ -134,7 +68,8 @@ export default function BurgerConstructor() {
           <div className={burgerConstructor.scrollBlock}>
             {
               arrNoBunOrder.map((item, index)=>{
-                return <Inner item={item} index={index} key={`${item.uuid}`}/>
+                //return <Inner item={item} index={index} key={`${item.uuid}`}/>
+                return <BurgerConstructorElement item={item} index={index} key={`${item.uuid}`}/>
               })
             }
           </div>

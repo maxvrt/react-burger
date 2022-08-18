@@ -1,4 +1,4 @@
-import {getIngredients, postOrder, getResponse, catchError} from '../../utils/api';
+import {getIngredients, postOrder, getResponse} from '../../utils/api';
 
 export const GET_INGREDIENTS = "GET_INGREDIENTS";
 export const GET_INGREDIENTS_SUCCESS = "GET_INGREDIENTS_SUCCESS";
@@ -58,4 +58,4 @@ export function addOrder(arrIds) {
       console.log('Ошибка. Запрос не выполнен: ' + err);
     })
   }
-}
+};

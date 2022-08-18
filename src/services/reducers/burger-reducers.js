@@ -10,13 +10,10 @@ import {
   ORDER_MODAL_ADD,
   ORDER_MODAL_DEL,
   GET_ORDER_NUMBER,
-  UPD_ORDER_NUMBER,
-  ORDER_ERROR,
   DELETE_ITEM,
   MOVE_ELEMENT,
-  UPD
-} from '../actions/all-actions';
-
+  UPD,
+} from '../actions/burger-actions';
 
 const initialIngredients = {
   ingredients: [],
@@ -31,7 +28,6 @@ const initialIngredients = {
   orderData: {},
   upd:0,
 };
-
 
 export const ingredientsReducer = (state = initialIngredients, action) => {
   switch (action.type) {

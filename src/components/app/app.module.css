@@ -1,23 +1,23 @@
 @font-face {
-  font-family: 'JetBrainsMono';
+  font-family: 'Jet Brains Mono';
   font-style: normal;
   font-weight: 400;
   src: url("../../fonts/JetBrainsMono-Regular.woff") format("woff");
 }
 @font-face {
-  font-family: 'JetBrainsMono';
+  font-family: 'Jet Brains Mono';
   font-style: normal;
   font-weight: 400;
   src: url("../../fonts/JetBrainsMono-Regular.woff2") format("woff2");
 }
 @font-face {
-  font-family: 'JetBrainsMono';
+  font-family: 'Jet Brains Mono';
   font-style: normal;
   font-weight: bold;
   src: url("../../fonts/JetBrainsMono-Bold.woff") format("woff");
 }
 @font-face {
-  font-family: 'JetBrainsMono';
+  font-family: 'Jet Brains Mono';
   font-style: normal;
   font-weight: bold;
   src: url("../../fonts/JetBrainsMono-Bold.woff2") format("woff2");
@@ -30,8 +30,6 @@
   justify-content: center;
   margin-bottom: 40px;
 }
-.test {
-  display: flex;
-  width: 500px;
-  justify-content: flex-start;
+.page {
+  font-family: 'Jet Brains Mono';
 }
