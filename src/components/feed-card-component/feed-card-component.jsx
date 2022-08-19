@@ -8,7 +8,10 @@ export default function FeedCardComponent() {
     <div className={styles.container}>
       <div className={styles.topLeft}>#52346</div>
       <div className={styles.topRight}>Сегодня, 16:20 i-GMT</div>
-      <div className={styles.mid}>Death StarShip Main бургер</div>
+      <div className={styles.mid}>
+        <p className={styles.midTitle}>Death StarShip Main бургер</p>
+        <p className={styles.midStatus}>Создан</p>
+      </div>
       <div className={styles.bottomLeft}>картинки картинки</div>
       <div className={styles.bottomRight}>
         <p className={styles.price}>460</p>

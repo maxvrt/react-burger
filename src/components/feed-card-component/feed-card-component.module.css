@@ -19,6 +19,21 @@
   font-size: 24px;
   line-height: 30px;
 }
+.midTitle {
+  margin: 0;
+  padding: 0;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+}
+.midStatus {
+  margin: 0;
+  padding: 0;
+  padding-top: 8px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
 .topRight {
   grid-area: topRight;
   text-align: end;
@@ -34,6 +49,7 @@
   font-weight: 400;
   font-size: 28px;
   line-height: 24px;
+  padding-bottom: 24px;
 }
 .bottomLeft { grid-area: bottomLeft; display: flex; align-items: center;}
 .bottomRight {

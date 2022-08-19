@@ -21,6 +21,8 @@ import IngredientPage from '../../pages/ingredient-page/ingredient-page';
 import { getCookie } from '../../utils/cookie'
 import ProtectedRoute from '../protected-route/ProtectedRoute';
 import FeedPage from '../../pages/feed-page/feed-page';
+import OrderPage from '../../pages/order-page/order-page';
+import UserOrdersPage from '../../pages/user-orders-page/user-orders-page';
 
 function App() {
   const dispatch = useDispatch();
@@ -97,6 +99,12 @@ function App() {
           </Route>
           <Route exact path='/feed'>
             <FeedPage />
+          </Route>
+          <Route exact path='/order'>
+            <OrderPage />
+          </Route>
+          <Route exact path='/profile/orders'>
+            <UserOrdersPage />
           </Route>
           <Route>
             Page404
