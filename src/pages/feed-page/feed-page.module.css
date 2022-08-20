@@ -47,11 +47,11 @@ padding-bottom: 24px;
   padding: 0;
 }
 .columnsDigitsLeft {
-  width: 100px;
+  padding-left: 8px;
   color: #00CCCC;
 }
 .columnsDigitsRight {
-  width: 100px;
+  padding-left: 8px;
 }
 .resultsInner {
   display: flex;

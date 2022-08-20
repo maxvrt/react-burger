@@ -8,12 +8,18 @@ import thunk from 'redux-thunk';
 import { rootReducer } from './services/reducers/root-reducer';
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from 'react-router-dom';
+import { socketMiddleware } from './services/actions/websocket-actions';
 
+// указать для socketMiddleware accessToken без Bearer в качестве query-параметра.
+// wss://norma.nomoreparties.space/orders/all !!
+// wss://norma.nomoreparties.space/api/orders
 const composeEnhancers =
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
     : compose;
-const enhancer = composeEnhancers(applyMiddleware(thunk));
+
+const wsUrl = 'wss://norma.nomoreparties.space/orders/all';
+const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware(wsUrl)));
 const store = createStore(rootReducer, enhancer);
 
 ReactDOM.render(

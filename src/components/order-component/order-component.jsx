@@ -1,9 +1,12 @@
 import styles from './order-component.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { Routes, Route, useParams } from 'react-router-dom';
 
 //{ number, date, name, ingredients, status = '' }
 const OrderComponent = () => {
+  const {id} = useParams();
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Black Hole Burger острый Black Hole</h1>
