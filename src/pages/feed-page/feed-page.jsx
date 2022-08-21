@@ -1,79 +1,72 @@
 import styles from './feed-page.module.css';
 import FeedCardComponent from '../../components/feed-card-component/feed-card-component'
 import { useDispatch, useSelector } from 'react-redux';
-import { getCookie } from '../../utils/cookie'
+import { getCookie } from '../../utils/cookie';
+import { Link, useLocation, useRouteMatch } from 'react-router-dom'
 import {
   WS_CONNECTION_START,
   WS_CONNECTION_SUCCESS,
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE } from '../../services/actions/websocket-actions'
-  import { useEffect } from 'react'
-  import { useMemo } from 'react'
+  import { useEffect } from 'react';
 
 const FeedPage = () => {
   const dispatch = useDispatch();
-
+  const location = useLocation();
   useEffect(() => {
     dispatch({type: WS_CONNECTION_START});
   }, [dispatch]);
-
   const { data  } = useSelector(store => ({
     data: store.rootWs.data
   }));
-  const dataOrders = data.orders;
+  let dataOrders = data.orders;
   const total = data.total;
   const totalToday = data.totalToday;
-  if (data.orders) {
-      console.log(data);
+  let unDone = [];
+
+  if (dataOrders) {
+    console.log(dataOrders);
+    unDone = dataOrders.filter(item => item.status !== 'done').slice(0,26);
+    dataOrders = dataOrders.filter(item => item.status === 'done').slice(0,26);
   }
-  const ordersDone = useMemo(() => {
-    if (dataOrders) {
-       return dataOrders.filter(item => item.status === 'done').slice(0,26)
-    }
-  }, [dataOrders])
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Лента заказов</h1>
       <div className={styles.feedWrap}>
         <div className={styles.feed}>
-          <FeedCardComponent />
-          <FeedCardComponent />
-          <FeedCardComponent />
-          <FeedCardComponent />
-          <FeedCardComponent />
-          <FeedCardComponent />
-          <FeedCardComponent />
-          <FeedCardComponent />
-          <FeedCardComponent />
+        { dataOrders && dataOrders.map((item) => (
+            <Link key={item._id}
+            className={styles.link}
+              to={{
+                  pathname: `/feed/${item._id}`,
+                  state: { background: location }
+              }}>
+                  <FeedCardComponent
+                  name={item.name}
+                  number={item.number}
+                  ingredientIds={item.ingredients}
+                  date={item.createdAt} />
+            </Link>
+          ))
+        }
         </div>
         <div className={styles.statistics}>
           <div className={styles.columns}>
             <ul className={styles.columnsWrap}>
               <li className={styles.resultsTitleTop}>Готовы:</li>
-            { ordersDone && ordersDone.map(item => (
-                <li className={styles.columnsDigitsLeft} key={item.number}>{item.number}</li>
+            { dataOrders && dataOrders.map(item => (
+                <li className={styles.columnsDigitsLeft} key={item._id}>{item.number}</li>
               ))
             }
             </ul>
             <ul className={styles.columnsWrap}>
               <li className={styles.resultsTitleTop}>В работе:</li>
-              <li className={styles.columnsDigitsRight}>11111111</li>
-              <li className={styles.columnsDigitsRight}>11111111</li>
-              <li className={styles.columnsDigitsRight}>11111111</li>
-              <li className={styles.columnsDigitsRight}>11111111</li>
-              <li className={styles.columnsDigitsRight}>11111111</li>
-              <li className={styles.columnsDigitsRight}>11111111</li>
-              <li className={styles.columnsDigitsRight}>11111111</li>
-              <li className={styles.columnsDigitsRight}>11111111</li>
-              <li className={styles.columnsDigitsRight}>11111111</li>
-              <li className={styles.columnsDigitsRight}>11111111</li>
-              <li className={styles.columnsDigitsRight}>11111111</li>
-              <li className={styles.columnsDigitsRight}>11111111</li>
-              <li className={styles.columnsDigitsRight}>11111111</li>
-              <li className={styles.columnsDigitsRight}>11111111</li>
-              <li className={styles.columnsDigitsRight}>11111111</li>
+              { unDone && unDone.map(item => (
+                <li className={styles.columnsDigitsRight} key={item._id}>{item.number}</li>
+              ))
+            }
             </ul>
           </div>
           <div className={styles.results}>
