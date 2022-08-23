@@ -3,20 +3,18 @@ import FeedCardComponent from '../../components/feed-card-component/feed-card-co
 import { useDispatch, useSelector } from 'react-redux';
 import { getCookie } from '../../utils/cookie';
 import { Link, useLocation, useRouteMatch } from 'react-router-dom'
-import {
-  WS_CONNECTION_START,
-  WS_CONNECTION_SUCCESS,
-  WS_CONNECTION_ERROR,
-  WS_CONNECTION_CLOSED,
-  WS_GET_MESSAGE } from '../../services/actions/websocket-actions'
-  import { useEffect } from 'react';
+import { WS_CONNECTION_START, WS_CONNECTION_CLOSED } from '../../services/actions/websocket-actions';
+import { useEffect } from 'react';
 
 const FeedPage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   useEffect(() => {
     dispatch({type: WS_CONNECTION_START});
-  }, [dispatch]);
+    return () => {
+      dispatch(WS_CONNECTION_CLOSED)
+   }
+  }, []);
   const { data  } = useSelector(store => ({
     data: store.rootWs.data
   }));

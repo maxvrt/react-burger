@@ -8,13 +8,15 @@ export default function FeedCardComponent({ name, number, ingredientIds, date, s
   const ingredients = useSelector(store => (store.rootIngredients.ingredients));
   let orderIngredients;
   let isLong;
+  let price;
   if (ingredients) {
-    isLong = Object.keys(ingredientIds).length;
+    isLong = Object.keys(ingredientIds).length > 6;
     orderIngredients = ingredientIds.map(elem => {
       return ingredients.filter(item => item._id === elem)[0];
-    }) //console.log(orderIngredients);
+    }).reverse()
+    price = orderIngredients.reduce((accumulator, item) => accumulator + item.price, 0);
   }
-  const price = orderIngredients.reduce((accumulator, item) => accumulator + item.price, 0);
+
 
   return (
     <div className={styles.container}>
@@ -24,7 +26,34 @@ export default function FeedCardComponent({ name, number, ingredientIds, date, s
         <p className={styles.midTitle}>{name}</p>
         <p className={styles.midStatus}>Создан</p>
       </div>
-      <div className={styles.bottomLeft}>{isLong+''}</div>
+      <ul className={styles.bottomLeft}>
+        { !isLong &&
+          orderIngredients.map((elem, index) => (
+            <li className={styles.imgBack} key={index}>
+              <img className={styles.img} src={elem.image_mobile} alt={elem.name}/>
+            </li>
+          ))
+        }
+        { isLong &&
+          orderIngredients.slice(5, 6).map((elem, index) => (
+            <li className={styles.imgBack} key={index}>
+              <div className={styles.boxLast}>
+                <img className={styles.imgLast} src={elem.image_mobile} alt={elem.name}/>
+                <div className={styles.numberLast}>{`+${ingredientIds.length - 6}`}</div>
+              </div>
+
+            </li>
+          ))
+        }
+        { isLong &&
+          orderIngredients.slice(0, 5).map((elem, index) => (
+            <li className={styles.imgBack} key={index}>
+              <img className={styles.img} src={elem.image_mobile} alt={elem.name}/>
+            </li>
+          ))
+        }
+
+      </ul>
       <div className={styles.bottomRight}>
         <p className={styles.price}>{price}</p>
         <CurrencyIcon type="primary" />

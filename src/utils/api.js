@@ -76,10 +76,10 @@ export function getIngredients() {
   return fetch(`${config.baseUrl}/ingredients`, {headers: config.headers})
 }
 export function postOrder(arr) {
-  return fetch(`${config.baseUrl}/orders`, {method: 'POST', headers: config.headers,
-    body: JSON.stringify({
-      ingredients: arr
-    })
+  return fetch(`${config.baseUrl}/orders`, {method: 'POST', headers: {...config.headers, Authorization: 'Bearer ' + getCookie('token')},
+  body: JSON.stringify({
+    ingredients: arr
+  })
   })
 }
 

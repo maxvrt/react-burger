@@ -10,7 +10,7 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getUserProfile())
-  }, [dispatch])
+  }, [])
 
   const { getUserSuccess, authData } = useSelector(store =>  ({getUserSuccess: store.rootAuth.getUserSuccess, authData: store.rootAuth.authData}));
   const logoutSuccess = useSelector(store =>  (store.rootAuth.postLogoutSuccess));

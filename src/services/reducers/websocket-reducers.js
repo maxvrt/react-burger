@@ -2,13 +2,23 @@ import {
   WS_CONNECTION_SUCCESS,
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
-  WS_GET_MESSAGE
+  WS_GET_MESSAGE,
+  WS_AUTH_CONNECTION_SUCCESS,
+  WS_AUTH_CONNECTION_ERROR,
+  WS_AUTH_CONNECTION_CLOSED,
+  WS_AUTH_GET_MESSAGE,
 } from '../actions/websocket-actions';
 
 const initialState = {
   wsConnected: false,
   data: {},
-  isData:false,
+  isData: false,
+  error: undefined
+};
+const initialStateAuth = {
+  wsUserConnected: false,
+  userData: {},
+  isUserData: false,
   error: undefined
 };
 export const wsReducer = (state = initialState, action) => {
@@ -40,6 +50,38 @@ export const wsReducer = (state = initialState, action) => {
         error: undefined,
         data: action.payload,
         isData: true
+      };
+
+    default:
+      return state;
+  }
+};
+export const wsAuthReducer = (state = initialStateAuth, action) => {
+  switch (action.type) {
+    case WS_AUTH_CONNECTION_SUCCESS:
+      return {
+        ...state,
+        error: undefined,
+        wsUserConnected: true
+      };
+    case WS_AUTH_CONNECTION_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+        wsUserConnected: false
+      };
+    case WS_AUTH_CONNECTION_CLOSED:
+      return {
+        ...state,
+        error: undefined,
+        wsUserConnected: false
+      };
+    case WS_AUTH_GET_MESSAGE:
+      return {
+        ...state,
+        error: undefined,
+        userData: action.payload,
+        isUserData: true
       };
     default:
       return state;
