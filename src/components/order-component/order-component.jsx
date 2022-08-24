@@ -5,7 +5,6 @@ import { Routes, Route, useParams, useRouteMatch  } from 'react-router-dom';
 import { useEffect, useMemo  } from 'react';
 
 const OrderComponent = () => {
-  const dispatch = useDispatch();
   const {id} = useParams();
   const idNum = Number(id);
   const { userData, data, ingredients } = useSelector(store => ({
@@ -15,7 +14,6 @@ const OrderComponent = () => {
   }));
 
   const match = useRouteMatch()
-  // только с присвоением переменной
   const isUser = match.path === '/profile/orders/:id';
   let newData = isUser ? userData : data;
   let oneOrder;
@@ -23,10 +21,10 @@ const OrderComponent = () => {
   let countOrderIds = [];
   let newIngredients;
   let price = 0 ;
-  if (newData && Object.keys(newData).length > 0) {
-    oneOrder = newData.orders.find((order) => order.number === idNum);
-    console.log('внутри');
+  if (newData.orders && Object.keys(newData.orders).length > 0) {
+    console.log('заказы:');
     console.log(newData.orders);
+    oneOrder = newData.orders.find((order) => order.number === idNum);
     date = new Date(oneOrder?.createdAt).toISOString().slice(0, 16);
     // уникальные ингредиенты и их кол-во
     for (let elem of oneOrder.ingredients) {
@@ -42,7 +40,6 @@ const OrderComponent = () => {
         return ingredient._id === id;
       });
     });
-    console.log('PRICE =  ' +price);
   }
 
   return (
