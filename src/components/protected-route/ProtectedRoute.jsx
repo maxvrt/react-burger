@@ -14,7 +14,7 @@ export function ProtectedRoute({ children, ...rest }) {
       />
    )
   }
-  console.log('пробуем перейти в профиль');
+  
   return (
     <Route
       {...rest}

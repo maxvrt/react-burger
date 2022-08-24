@@ -23,6 +23,8 @@ import ProtectedRoute from '../protected-route/ProtectedRoute';
 import FeedPage from '../../pages/feed-page/feed-page';
 import OrderPage from '../../pages/order-page/order-page';
 import UserOrdersPage from '../../pages/user-orders-page/user-orders-page';
+import OrderComponent from '../../components/order-component/order-component';
+import OrderSecond from '../../pages/order-second/order-second';
 
 function App() {
   const dispatch = useDispatch();
@@ -69,6 +71,7 @@ function App() {
     <div className={app.page}>
       <AppHeader/>
         <Switch location={background || location}>
+
           <Route exact path="/">
             <DndProvider backend={HTML5Backend}>
               <main className={app.main}>
@@ -100,11 +103,15 @@ function App() {
           <Route exact path='/feed'>
             <FeedPage />
           </Route>
-          <Route exact path='/order'>
-            <OrderPage />
-          </Route>
+
           <Route exact path='/profile/orders'>
             <UserOrdersPage />
+          </Route>
+          <Route exact path='/feed/:id'>
+            <OrderSecond />
+          </Route>
+          <Route exact path='/profile/orders/:id'>
+            <OrderSecond />
           </Route>
           <Route>
             Page404
@@ -123,6 +130,7 @@ function App() {
         }
 
         {background &&
+        <>
           <Route exact path="/ingredient/:id">
             <Modal
               title="Детали ингредиента"
@@ -133,6 +141,25 @@ function App() {
               <IngredientDetails data={ingredientModal}/>
             </Modal>
           </Route>
+          <Route exact path="/profile/orders/:id">
+            <Modal
+              onOverlayClick={closeModalIng}
+              onCloseClick={closeModalIng}
+              escCloseModal={closeModalIng}
+            >
+              <OrderComponent/>
+            </Modal>
+          </Route>
+          <Route exact path="/feed/:id">
+            <Modal
+              onOverlayClick={closeModalIng}
+              onCloseClick={closeModalIng}
+              escCloseModal={closeModalIng}
+            >
+              <OrderComponent/>
+            </Modal>
+          </Route>
+        </>
         }
     </div>
   );

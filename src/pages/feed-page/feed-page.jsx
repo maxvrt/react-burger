@@ -24,7 +24,6 @@ const FeedPage = () => {
   let unDone = [];
 
   if (dataOrders) {
-    console.log(dataOrders);
     unDone = dataOrders.filter(item => item.status !== 'done').slice(0,26);
     dataOrders = dataOrders.filter(item => item.status === 'done').slice(0,26);
   }
@@ -35,10 +34,10 @@ const FeedPage = () => {
       <div className={styles.feedWrap}>
         <div className={styles.feed}>
         { dataOrders && dataOrders.map((item) => (
-            <Link key={item._id}
+            <Link key={item.number}
             className={styles.link}
               to={{
-                  pathname: `/feed/${item._id}`,
+                  pathname: `/feed/${item.number}`,
                   state: { background: location }
               }}>
                   <FeedCardComponent

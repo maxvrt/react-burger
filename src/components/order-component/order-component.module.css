@@ -41,20 +41,25 @@
   display: flex;
   flex-direction: row;
   column-gap: 9px;
+  justify-content: space-between;
 }
 .img {
   padding: 0;
   margin: 0;
+  border: 2px solid #442584;
+  border-radius: 100px;
   width: 64px;
   height: 64px;
-  padding-right: 7px;
+  object-fit: cover;
+  padding: 3px;
 }
 .desc {
   padding: 0;
   margin: 0;
-  padding-right: 110px;
+  font-family: 'Jet Brains Mono';
+  padding-right: 40px;
   align-self: center;
-  width: 320px;
+  width: 340px;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
@@ -105,6 +110,15 @@
 }
 .icon {
   align-self: center;
+  padding-right: 5px;
+}
+.data {
+  padding: 0;
+  margin: 0;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #8585AD;
 }
 .data {
   padding: 0;
@@ -115,6 +129,10 @@
   color: #8585AD;
 }
 
-
-
+.number {
+  margin: 0;
+  align-self: flex-start;
+  margin-top: -10px;
+  padding-bottom: 50px;
+}
 

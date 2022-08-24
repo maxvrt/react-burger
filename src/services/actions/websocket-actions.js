@@ -43,9 +43,9 @@ export const socketMiddleware = (wsUrl, wsActions) => {
         };
         // получаем orders и прочее с сервера
         socket.onmessage = event => {
-          console.log(event);
           const { data } = event;
           const parsed = JSON.parse(data);
+          console.log(parsed);
           dispatch({ type: wsOnMessage, payload: parsed });
         };
         // функция, которая вызывается при закрытии соединения

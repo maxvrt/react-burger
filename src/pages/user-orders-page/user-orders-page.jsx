@@ -49,9 +49,9 @@ const UserOrdersPage = () => {
 
       <div className={styles.feed}>
         { dataOrders && dataOrders.map((item) => (
-            <Link key={item._id} className={styles.linkComponent}
+            <Link key={item.number} className={styles.linkComponent}
               to={{
-                  pathname: `/profile/orders/${item._id}`,
+                  pathname: `/profile/orders/${item.number}`,
                   state: { background: location }
               }}>
                   <FeedCardComponent
