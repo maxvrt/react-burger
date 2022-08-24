@@ -8,8 +8,8 @@ import { WS_CONNECTION_START, WS_AUTH_CONNECTION_START, WS_CONNECTION_CLOSED, WS
 const OrderSecond = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch({type: WS_CONNECTION_START});
     dispatch({type: WS_AUTH_CONNECTION_START});
+    dispatch({type: WS_CONNECTION_START});
    }, [dispatch]);
 
   return (
