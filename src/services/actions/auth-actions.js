@@ -99,6 +99,8 @@ export function runRefreshToken(refreshToken) {
         type: POST_TOKEN_SUCCESS,
         payload: data
       });
+      delCookie('token');
+      delCookie('refreshToken');
       const accessToken = data.accessToken.split('Bearer ')[1];
       const refreshToken = data.refreshToken;
       setCookie('token', accessToken);

@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from "prop-types";
 
 export default function FeedCardComponent({ name, number, ingredientIds, date, status = '' }) {
-  const date2 = new Date(date).toISOString().slice(0, 16);
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour:'numeric' ,minute:'numeric' };
+  const date2 = new Date(date).toLocaleDateString('ru-RU', options);
   const ingredients = useSelector(store => (store.rootIngredients.ingredients));
   let orderIngredients;
   let isLong;

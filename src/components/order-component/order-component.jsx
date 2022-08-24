@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Routes, Route, useParams, useRouteMatch  } from 'react-router-dom';
 import { useEffect, useMemo  } from 'react';
-
+import Spinner from '../spinner/spinner'
 const OrderComponent = () => {
   const {id} = useParams();
   const idNum = Number(id);
@@ -80,7 +80,7 @@ const OrderComponent = () => {
         </div>
       </div>
       ) ||
-      <div className={styles.footer}>НЕТ ДАННЫХ</div>
+      <Spinner/>
   );
 };
 

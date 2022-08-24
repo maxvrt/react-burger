@@ -8,7 +8,7 @@ import thunk from 'redux-thunk';
 import { rootReducer } from './services/reducers/root-reducer';
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from 'react-router-dom';
-import { socketMiddleware } from './services/actions/websocket-actions';
+import { socketMiddleware } from './services/middleWares/socketMiddleWare';
 import {
   WS_CONNECTION_START,
   WS_SEND_MESSAGE,
