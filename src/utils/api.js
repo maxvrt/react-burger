@@ -1,6 +1,6 @@
 import { getCookie, setCookie } from './cookie'
 
-const config = {
+export const config = {
   baseUrl: "https://norma.nomoreparties.space/api",
   headers: {
     "Content-Type": "application/json",
@@ -86,9 +86,12 @@ export function postOrder(arr) {
 // ответ и ошибка
 export function getResponse(res) {
   if (res.ok) {
+    console.log('if (res.ok) res:');
+    console.log(res);
     return res.json();
+  } else {
+    return res.json().then((err) => Promise.reject(err));
   }
-  return Promise.reject(`Ошибка: ${res.status}: ${res}`);
 }
 export function catchError(err) {
   console.log('Ошибка. Запрос не выполнен: ', err);

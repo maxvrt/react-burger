@@ -46,13 +46,15 @@ const initialAuth = {
   authData: {},
   tokenData: {},
   user: {},
+  tokenRefreshData: {},
   getUser: false,
   getUserSuccess: false,
   getUserError: false,
   updateProfile: false,
   updateProfileSuccess: false,
   updateProfileError: false,
-  isAuthChecked:false
+  isAuthChecked:false,
+  errorMessage: 'nothing'
 };
 
 export const authReducer = (state = initialAuth, action) => {
@@ -238,7 +240,8 @@ export const authReducer = (state = initialAuth, action) => {
         ...state,
         getUser: false,
         getUserSuccess: false,
-        getUserError: true
+        getUserError: true,
+        errorMessage: action.payload
       }
     }
     case UPDATE_PROFILE:  {
