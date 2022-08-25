@@ -8,7 +8,7 @@ import Modal from '../modal/Modal';
 import app from './app.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { requestIngredients, INGREDIENT_MODAL_DEL, ORDER_MODAL_DEL} from "../../services/actions/burger-actions";
-import { checkUserAuth, getUserProfile} from "../../services/actions/auth-actions";
+import { checkUserAuth, getUserProfile, runRefreshToken} from "../../services/actions/auth-actions";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
@@ -20,12 +20,17 @@ import ProfilePage from '../../pages/profile-page/profile-page';
 import IngredientPage from '../../pages/ingredient-page/ingredient-page';
 import { getCookie } from '../../utils/cookie'
 import ProtectedRoute from '../protected-route/ProtectedRoute';
+import FeedPage from '../../pages/feed-page/feed-page';
+import OrderPage from '../../pages/order-page/order-page';
+import UserOrdersPage from '../../pages/user-orders-page/user-orders-page';
+import OrderComponent from '../../components/order-component/order-component';
+import OrderSecond from '../../pages/order-second/order-second';
 
 function App() {
   const dispatch = useDispatch();
   const token = getCookie('token');
   const refreshToken = getCookie('refreshToken');
-  const { tokenSuccess, tokenData } = useSelector(store =>  ({tokenSuccess: store.rootAuth.postTokenSuccess, tokenData: store.rootAuth.tokenData}));
+  const { tokenSuccess, tokenData, userError, errorMess } = useSelector(store =>  ({tokenSuccess: store.rootAuth.postTokenSuccess, tokenData: store.rootAuth.tokenData, userError: store.rootAuth.getUserError, errorMess: store.rootAuth.errorMessage}));
   const user = useSelector(store =>  (store.rootAuth.user));
   const loginSuccess = useSelector(store =>  (store.rootAuth.postLoginSuccess));
   useEffect(() => {
@@ -36,6 +41,19 @@ function App() {
     if (token && tokenSuccess) {
       dispatch(getUserProfile())
     }
+    // if (!token && tokenSuccess) {
+    //   dispatch(runRefreshToken())
+    // }
+    // if (userError) {
+    //   console.log('Обновляем юзера из-за ошибки: ');
+    //   console.log(errorMess);
+    //   if (refreshToken) {
+    //     console.log('Найден токен, обновляем '+refreshToken);
+    //     dispatch(runRefreshToken(refreshToken));
+    //     dispatch(getUserProfile());
+    //   }
+    // }
+    // , userError
   }, [user,token,refreshToken,tokenSuccess, loginSuccess]);
 
   useEffect(() => {
@@ -66,6 +84,7 @@ function App() {
     <div className={app.page}>
       <AppHeader/>
         <Switch location={background || location}>
+
           <Route exact path="/">
             <DndProvider backend={HTML5Backend}>
               <main className={app.main}>
@@ -94,6 +113,19 @@ function App() {
           <Route exact path='/ingredient/:id'>
             <IngredientPage />
           </Route>
+          <Route exact path='/feed'>
+            <FeedPage />
+          </Route>
+
+          <Route exact path='/profile/orders'>
+            <UserOrdersPage />
+          </Route>
+          <Route exact path='/feed/:id'>
+            <OrderSecond />
+          </Route>
+          <Route exact path='/profile/orders/:id'>
+            <OrderSecond />
+          </Route>
           <Route>
             Page404
           </Route>
@@ -111,6 +143,7 @@ function App() {
         }
 
         {background &&
+        <>
           <Route exact path="/ingredient/:id">
             <Modal
               title="Детали ингредиента"
@@ -121,6 +154,25 @@ function App() {
               <IngredientDetails data={ingredientModal}/>
             </Modal>
           </Route>
+          <Route exact path="/profile/orders/:id">
+            <Modal
+              onOverlayClick={closeModalIng}
+              onCloseClick={closeModalIng}
+              escCloseModal={closeModalIng}
+            >
+              <OrderComponent/>
+            </Modal>
+          </Route>
+          <Route exact path="/feed/:id">
+            <Modal
+              onOverlayClick={closeModalIng}
+              onCloseClick={closeModalIng}
+              escCloseModal={closeModalIng}
+            >
+              <OrderComponent/>
+            </Modal>
+          </Route>
+        </>
         }
     </div>
   );

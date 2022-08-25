@@ -1,6 +1,5 @@
-import {getResponse, postForgotPassword, postRegistration, postLoginUser, postToken, postLogOut, postRequestPassword, getUser, profileUpdate} from '../../utils/api';
+import {getResponse, postForgotPassword, postRegistration, postLoginUser, postToken, postLogOut, postRequestPassword, getUser, profileUpdate, config} from '../../utils/api';
 import {delCookie, getCookie, setCookie} from '../../utils/cookie';
-
 export const POST_FORGOT_PASS = "POST_FORGOT_PASS";
 export const POST_FORGOT_PASS_SUCCESS = "POST_FORGOT_PASS_SUCCESS";
 export const POST_FORGOT_PASS_ERROR = "POST_FORGOT_PASS_ERROR";
@@ -27,6 +26,71 @@ export const UPDATE_PROFILE_SUCCESS = "UPDATE_PROFILE_SUCCESS";
 export const UPDATE_PROFILE_ERROR = "UPDATE_PROFILE_ERROR";
 export const AUTH_CHECKED = "AUTH_CHECKED";
 
+export const getWithRefresh = async(url, options) => {
+  try {
+    const response = await fetch(url, options);
+    return await getResponse(response)
+  } catch (err) {
+    if (err.message === 'jwt expired') {
+      console.log('внутри обновления токена: '+ err.message);
+      const refreshData = await runRefreshToken();
+      console.log(refreshData);
+      options.headers.authorization = refreshData.accessToken;
+      const response = await fetch(url, options);
+      return await getResponse(response);
+    } else {
+      return Promise.reject(err);
+    }
+  }
+}
+export function runRefreshToken() {
+  return fetch(`${config.baseUrl}/auth/token`, {
+    method: 'POST',
+    headers: config.headers,
+    body: JSON.stringify({
+      token: getCookie('refreshToken')
+    })
+  })
+  .then(res => getResponse(res))
+  .then((response) => {
+    if (!response.success) {
+      return Promise.reject(response)
+    }
+    delCookie('token');
+    delCookie('refreshToken');
+    setCookie('refreshToken', response.refreshToken)
+    setCookie('token', response.accessToken.split('Bearer ')[1])
+    return response
+  })
+  // return (dispatch) => {
+  //   dispatch({
+  //     type: POST_TOKEN
+  //   });
+  //   const refreshToken = getCookie('refreshToken');
+  //   console.log('получаем refreshToken');
+  //   postToken(refreshToken)
+  //   .then(res => getResponse(res))
+  //   .then((data) => {
+  //     dispatch({
+  //       type: POST_TOKEN_SUCCESS,
+  //       payload: data
+  //     });
+  //     delCookie('token');
+  //     delCookie('refreshToken');
+  //     const accessToken = data.accessToken.split('Bearer ')[1];
+  //     const refreshToken = data.refreshToken;
+  //     setCookie('token', accessToken);
+  //     setCookie('refreshToken', refreshToken);
+  //     console.log('обновление токена' + data.accessToken);
+  //     return data
+  //   }).catch((err) => {
+  //     console.log('ошибка внутри runRefreshToken ' + err.message);
+  //     dispatch({
+  //       type: POST_TOKEN_ERROR
+  //     });
+  //   })
+  // }
+};
 export const checkUserAuth = () => (dispatch) => {
   if (getCookie("token")) {
       console.log('AUTH_CHECKED - true');
@@ -87,54 +151,31 @@ export function postLogin(email, pass) {
   }
 };
 
-export function runRefreshToken(refreshToken) {
-  return (dispatch) => {
-    dispatch({
-      type: POST_TOKEN
-    });
-    postToken(refreshToken)
-    .then(res => getResponse(res))
-    .then((data) => {
-      dispatch({
-        type: POST_TOKEN_SUCCESS,
-        payload: data
-      });
-      const accessToken = data.accessToken.split('Bearer ')[1];
-      const refreshToken = data.refreshToken;
-      setCookie('token', accessToken);
-      setCookie('refreshToken', refreshToken);
-      console.log('обновление токена' + data);
-    }).catch((err) => {
-      dispatch({
-        type: POST_TOKEN_ERROR
-      });
-      console.log(err);
-    })
-  }
-};
+
 export function getUserProfile() {
   return function (dispatch) {
-    dispatch({ type: GET_USER });
-    getUser()
-    .then(res => getResponse(res))
+    dispatch({ type: GET_USER });//getUser()
+    getWithRefresh(`${config.baseUrl}/auth/user`, {
+      headers: {
+        ...config.headers,
+        'authorization': `Bearer ${getCookie('token')}`
+      }
+    })
     .then((data) => {
+      console.log(data);
       dispatch({
         type: GET_USER_SUCCESS,
         payload: data.user
       });
     })
     .catch(err => {
-        dispatch({ type: GET_USER_ERROR });
-        console.log('Ошибка. Запрос ПОЛЬЗОВАТЕЛЯ не выполнен: ' + err);
-        const refreshToken = getCookie('refreshToken');
-        if (refreshToken) {
-          console.log('Найден токен, обновляем '+refreshToken);
-          dispatch(runRefreshToken(refreshToken));
-          dispatch(getUserProfile());
-        }
+        dispatch({ type: GET_USER_ERROR, payload: err });
+        console.log('Ошибка. Запрос ПОЛЬЗОВАТЕЛЯ не выполнен:');
+        console.log(err);
     });
   }
 };
+
 export function updateProfile(name, email, password) {
   return function (dispatch) {
      dispatch({ type: UPDATE_PROFILE })

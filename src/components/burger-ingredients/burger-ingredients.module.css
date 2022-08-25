@@ -70,6 +70,7 @@
   object-fit: cover;
 }
 .cardPrice {
+  margin: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -79,9 +80,11 @@
   line-height: 24px;
 }
 .cardPriceDig {
+  margin: 0;
   padding-right: 8px;
 }
 .cardName {
+  margin: 0;
   font-family: 'Jet Brains Mono';
   font-style: normal;
   font-weight: 400;
@@ -91,4 +94,5 @@
 }
 .link {
   color: #F2F2F3;
+  text-decoration: none;
 }

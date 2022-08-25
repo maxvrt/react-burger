@@ -5,7 +5,7 @@ import { NavLink, Redirect, useRouteMatch } from 'react-router-dom';
 export default function AppHeader() {
   const isConstructor = !!useRouteMatch({ exact: true, path: "/" });
   const isProfile = !!useRouteMatch({ exact: true, path: '/profile' });
-  const isOrders = !!useRouteMatch({ exact: true, path: '/profile/orders' });
+  const isOrders = !!useRouteMatch({ exact: true, path: '/feed' });
 return (
   <header className={appHeader.app}>
     <div className={appHeader.wrapper}>
@@ -18,9 +18,9 @@ return (
             </NavLink>
             </li>
           <li className={appHeader.menuItem}>
-            <NavLink className={appHeader.link} activeClassName={appHeader.activeLink} exact to='/profile/orders'>
+            <NavLink className={appHeader.link} activeClassName={appHeader.activeLink} exact to='/feed'>
               <ListIcon type={isOrders ? 'primary' : 'secondary'} />
-              <p className={`${appHeader.lent} text text_type_main-default`}>Лента заказов</p>
+              <p className={`text text_type_main-default`}>Лента заказов</p>
             </NavLink>
           </li>
         </ul>

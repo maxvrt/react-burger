@@ -13,5 +13,5 @@ export default function OrderDetails() {
       <p className={orderDetails.cooking}>Ваш заказ начали готовить</p>
       <p className={orderDetails.waiting}>Дождитесь готовности на орбитальной станции</p>
     </div>
-)
+  )
 }

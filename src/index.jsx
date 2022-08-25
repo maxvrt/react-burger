@@ -8,12 +8,51 @@ import thunk from 'redux-thunk';
 import { rootReducer } from './services/reducers/root-reducer';
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from 'react-router-dom';
+import { socketMiddleware } from './services/middleWares/socketMiddleWare';
+import {
+  WS_CONNECTION_START,
+  WS_SEND_MESSAGE,
+  WS_CONNECTION_SUCCESS,
+  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_ERROR,
+  WS_GET_MESSAGE,
+  WS_AUTH_CONNECTION_START,
+  WS_AUTH_CONNECTION_SUCCESS,
+  WS_AUTH_CONNECTION_ERROR,
+  WS_AUTH_CONNECTION_CLOSED,
+  WS_AUTH_GET_MESSAGE,
+  WS_AUTH_SEND_MESSAGE
+} from './services/actions/websocket-actions';
+
+
+// указать для socketMiddleware accessToken без Bearer в качестве query-параметра.
+// wss://norma.nomoreparties.space/orders/all
+const wsActions = {
+  wsInit: WS_CONNECTION_START,
+  wsSendMessage: WS_SEND_MESSAGE,
+  wsOnOpen: WS_CONNECTION_SUCCESS,
+  wsOnClose: WS_CONNECTION_CLOSED,
+  wsOnError: WS_CONNECTION_ERROR,
+  wsOnMessage: WS_GET_MESSAGE
+}
+const wsUserActions = {
+  wsAuthInit: WS_AUTH_CONNECTION_START,
+  wsSendMessage: WS_AUTH_SEND_MESSAGE,
+  wsOnOpen: WS_AUTH_CONNECTION_SUCCESS,
+  wsOnClose: WS_AUTH_CONNECTION_CLOSED,
+  wsOnError: WS_AUTH_CONNECTION_ERROR,
+  wsOnMessage: WS_AUTH_GET_MESSAGE
+};
 
 const composeEnhancers =
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
     : compose;
-const enhancer = composeEnhancers(applyMiddleware(thunk));
+
+const wsUrl = 'wss://norma.nomoreparties.space/orders/all';
+const wsAuthUrl = 'wss://norma.nomoreparties.space/orders';
+
+const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware(wsUrl, wsActions), socketMiddleware(wsAuthUrl, wsUserActions)));
 const store = createStore(rootReducer, enhancer);
 
 ReactDOM.render(
