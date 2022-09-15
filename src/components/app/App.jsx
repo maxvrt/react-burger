@@ -41,19 +41,6 @@ function App() {
     if (token && tokenSuccess) {
       dispatch(getUserProfile())
     }
-    // if (!token && tokenSuccess) {
-    //   dispatch(runRefreshToken())
-    // }
-    // if (userError) {
-    //   console.log('Обновляем юзера из-за ошибки: ');
-    //   console.log(errorMess);
-    //   if (refreshToken) {
-    //     console.log('Найден токен, обновляем '+refreshToken);
-    //     dispatch(runRefreshToken(refreshToken));
-    //     dispatch(getUserProfile());
-    //   }
-    // }
-    // , userError
   }, [user,token,refreshToken,tokenSuccess, loginSuccess]);
 
   useEffect(() => {
