@@ -19,12 +19,14 @@ export interface IWsConnectionSuccess{
 }
 export interface IWsConnectionError{
   readonly type: typeof WS_CONNECTION_ERROR;
+  readonly payload: object;
 }
 export interface IWsConnectionClosed{
   readonly type: typeof WS_CONNECTION_CLOSED;
 }
 export interface IWsGetMessage{
   readonly type: typeof WS_GET_MESSAGE;
+  readonly payload: object;
 }
 export interface IWsSendMessage{
   readonly type: typeof WS_SEND_MESSAGE;
@@ -43,9 +45,11 @@ export interface IWsAuthConnectionClosed{
 }
 export interface IWsAuthConnectionError{
   readonly type: typeof WS_AUTH_CONNECTION_ERROR;
+  readonly payload: object;
 }
 export interface IWsAuthGetMessage{
   readonly type: typeof WS_AUTH_GET_MESSAGE;
+  readonly payload: object;
 }
 
 

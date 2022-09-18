@@ -8,26 +8,40 @@ import {
   WS_AUTH_CONNECTION_CLOSED,
   WS_AUTH_GET_MESSAGE,
 } from '../actions/websocket-actions';
+import type { TWebsocketActions } from '../actions/websocket-actions';
 
-const initialState = {
+type TInitialState = {
+  wsConnected: boolean,
+  data: object,
+  isData: boolean,
+  error: object
+};
+type TInitialStateAuth = {
+  wsUserConnected: boolean,
+  userData: object,
+  isUserData: boolean,
+  error: object
+};
+
+const initialState:TInitialState = {
   wsConnected: false,
   data: {},
   isData: false,
-  error: undefined
+  error: {}
 };
-const initialStateAuth = {
+const initialStateAuth:TInitialStateAuth = {
   wsUserConnected: false,
   userData: {},
   isUserData: false,
-  error: undefined
+  error: {}
 };
-export const wsReducer = (state = initialState, action) => {
+export const wsReducer = (state = initialState, action:TWebsocketActions):TInitialState => {
   switch (action.type) {
     // Установим флаг wsConnected в состояние true
     case WS_CONNECTION_SUCCESS:
       return {
         ...state,
-        error: undefined,
+        error: {},
         wsConnected: true
       };
     case WS_CONNECTION_ERROR:
@@ -39,7 +53,7 @@ export const wsReducer = (state = initialState, action) => {
     case WS_CONNECTION_CLOSED:
       return {
         ...state,
-        error: undefined,
+        error: {},
         wsConnected: false
       };
     // Обработка происходит, когда с сервера возвращаются данные
@@ -47,7 +61,7 @@ export const wsReducer = (state = initialState, action) => {
     case WS_GET_MESSAGE:
       return {
         ...state,
-        error: undefined,
+        error: {},
         data: action.payload,
         isData: true
       };
@@ -56,7 +70,7 @@ export const wsReducer = (state = initialState, action) => {
       return state;
   }
 };
-export const wsAuthReducer = (state = initialStateAuth, action) => {
+export const wsAuthReducer = (state = initialStateAuth, action:TWebsocketActions) => {
   switch (action.type) {
     case WS_AUTH_CONNECTION_SUCCESS:
       return {
