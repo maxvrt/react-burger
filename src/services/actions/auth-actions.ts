@@ -189,7 +189,7 @@ export interface CustomResponse<T> {
   readonly type: ResponseType;
   readonly url: string;
   accessToken: string;
-  response: Response;
+  response: T;
 }
 export type TResponseBody = {
   success: boolean;
@@ -197,7 +197,7 @@ export type TResponseBody = {
   headers?: Headers;
 };
 
-export function runRefreshToken() {
+export function runRefreshToken():Promise<CustomResponse<TResponseBody>> {
   return fetch(`${config.baseUrl}/auth/token`, {
     method: 'POST',
     headers: config.headers,
