@@ -1,6 +1,6 @@
 import {getResponse, postForgotPassword, postRegistration, postLoginUser, postToken, postLogOut, postRequestPassword, getUser, profileUpdate, config} from '../../utils/api';
 import {delCookie, getCookie, setCookie} from '../../utils/cookie';
-import type { TUser, AppThunk, AppDispatch } from '../../types/types';
+import type { TUser, AppThunk, AppDispatch, CustomResponse, TResponseBody } from '../../types/types';
 
 export const POST_FORGOT_PASS: 'POST_FORGOT_PASS' = 'POST_FORGOT_PASS';
 export const POST_FORGOT_PASS_SUCCESS: 'POST_FORGOT_PASS_SUCCESS' = 'POST_FORGOT_PASS_SUCCESS';
@@ -183,20 +183,19 @@ export const getWithRefresh = async(url:string, options:{headers:{authorization:
     }
   }
 }
-export interface CustomResponse<T> {
-  readonly headers: Headers;
-  readonly ok: boolean;
-  readonly type: ResponseType;
-  readonly url: string;
-  accessToken: string;
-  response: T;
-}
-export type TResponseBody = {
-  success: boolean;
-  message?: string;
-  headers?: Headers;
-};
-
+// export type TResponseBody = {
+//   success: boolean;
+//   message?: string;
+//   headers?: Headers;
+//   data:{data:object}
+// };export interface CustomResponse<T> {
+//   readonly headers: Headers;
+//   readonly ok: boolean;
+//   readonly type: ResponseType;
+//   readonly url: string;
+//   accessToken: string;
+//   response: T;
+// }
 export function runRefreshToken():Promise<CustomResponse<TResponseBody>> {
   return fetch(`${config.baseUrl}/auth/token`, {
     method: 'POST',

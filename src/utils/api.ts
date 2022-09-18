@@ -1,5 +1,5 @@
 import { getCookie, setCookie } from './cookie'
-
+import type { CustomResponse, TResponseBody } from '../types/types';
 export const config = {
   baseUrl: "https://norma.nomoreparties.space/api",
   headers: {
@@ -157,7 +157,7 @@ export function postOrder(arr: Array<string>) {
 }
 
 //ответ и ошибка
-export const getResponse = <TRegResponse>(res: Response): Promise<TRegResponse> => {
+export const getResponse = <TResponseBody>(res: Response): Promise<CustomResponse<TResponseBody>> => {
   if (res.ok) {
     console.log('if (res.ok) res:');
     console.log(res);
