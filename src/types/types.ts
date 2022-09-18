@@ -1,14 +1,18 @@
 import { TAuthActions } from  '../services/actions/auth-actions';
 import { TBurgerActions } from  '../services/actions/burger-actions';
+import { TWebsocketActions } from  '../services/actions/websocket-actions';
 import { ThunkAction } from 'redux-thunk';
 import { Action, ActionCreator, Dispatch } from 'redux';
 import { TRootState } from '../index';
 
+export type ObjectItem = {
+  uuid?:number
+}
 export type TUser = {
   email: string;
   name: string;
 };
-export type Actions = TAuthActions | TBurgerActions;
+export type Actions = TAuthActions | TBurgerActions | TWebsocketActions;
 export type AppThunk<TReturn = void> = ActionCreator<ThunkAction<TReturn, Action, TRootState, Actions>>;
 export type AppDispatch = Dispatch<Actions>;
 
@@ -33,5 +37,4 @@ export interface CustomResponse<T> {
   data: {data:object};
   clone(): Response;
   json(): Promise<T>;
-
 }

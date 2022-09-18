@@ -8,13 +8,13 @@ export const socketMiddleware = (wsUrl, wsActions) => {
       const { type, payload } = action;
       const { wsInit, wsAuthInit, wsOnOpen, wsSendMessage, wsOnClose, wsOnError, wsOnMessage } = wsActions;
       if (type === wsInit) {
-        console.log('запускаем вебсокет');
+        console.log('запускаем веб-сокет');
         socket = new WebSocket(wsUrl);
       }
       if (type === wsAuthInit) {
         const token = getCookie('token');
         if (token) {
-          console.log('запускаем авторизованный вебсокет');
+          console.log('запускаем авторизованный веб-сокет');
           socket = new WebSocket(`${wsUrl}?token=${token}`);
         }
       }

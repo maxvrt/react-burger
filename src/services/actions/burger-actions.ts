@@ -1,5 +1,5 @@
 import {getIngredients, postOrder, getResponse} from '../../utils/api';
-import type { TUser, AppThunk, AppDispatch } from '../../types/types';
+import type { AppThunk, AppDispatch, ObjectItem } from '../../types/types';
 
 export const GET_INGREDIENTS: 'GET_INGREDIENTS' = "GET_INGREDIENTS";
 export const GET_INGREDIENTS_SUCCESS: 'GET_INGREDIENTS_SUCCESS' = "GET_INGREDIENTS_SUCCESS";
@@ -31,15 +31,19 @@ export interface IGetIngredientsError{
 }
 export interface ISetBun{
   readonly type: typeof SET_BUN;
+  readonly payload: object;
 }
 export interface IMassAddIngredients{
   readonly type: typeof MASS_ADD_INGREDIENTS;
+  readonly payload: Array<ObjectItem>;
 }
 export interface IAddIngredient{
   readonly type: typeof ADD_INGREDIENT;
+  readonly payload: object;
 }
 export interface IIngredientModalAdd{
   readonly type: typeof INGREDIENT_MODAL_ADD;
+  readonly payload: object;
 }
 export interface IIngredientModalDel{
   readonly type: typeof INGREDIENT_MODAL_DEL;
@@ -55,6 +59,7 @@ export interface IIngredientDescDel{
 }
 export interface IGetOrderNumber{
   readonly type: typeof GET_ORDER_NUMBER;
+  readonly payload: object;
 }
 export interface IUpdOrderNumber{
   readonly type: typeof UPD_ORDER_NUMBER;
@@ -64,9 +69,11 @@ export interface IOrderError{
 }
 export interface IMoveElement{
   readonly type: typeof MOVE_ELEMENT;
+  readonly payload: {to:number, from:number};
 }
 export interface IDeleteItem{
   readonly type: typeof DELETE_ITEM;
+  readonly payload: number;
 }
 export interface IUpd{
   readonly type: typeof UPD;

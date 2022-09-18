@@ -1,3 +1,5 @@
+import type { TBurgerActions } from '../actions/burger-actions';
+import type { ObjectItem } from '../../types/types';
 import {
   GET_INGREDIENTS,
   GET_INGREDIENTS_SUCCESS,
@@ -15,8 +17,23 @@ import {
   UPD,
 } from '../actions/burger-actions';
 
-const initialIngredients = {
-  ingredients: [],
+type TBurgerState = {
+  ingredients: object,
+  ingredientsError: boolean,
+  selectedIngredients: Array<ObjectItem>,
+  bun: object,
+  ingredientObject: object,
+  ingredientModal: boolean,
+  ingredientDesc: object,
+  orderModal: boolean,
+  orderError: boolean,
+  orderData: object,
+  upd:boolean,
+  ingredientsLoading:boolean,
+};
+
+const initialIngredients:TBurgerState = {
+  ingredients: {},
   ingredientsError: false,
   selectedIngredients: [],
   bun: {},
@@ -26,10 +43,11 @@ const initialIngredients = {
   orderModal: false,
   orderError: false,
   orderData: {},
-  upd:0,
+  upd:false,
+  ingredientsLoading: false
 };
 
-export const ingredientsReducer = (state = initialIngredients, action) => {
+export const ingredientsReducer = (state = initialIngredients, action:TBurgerActions):TBurgerState => {
   switch (action.type) {
     case UPD: {
       return {

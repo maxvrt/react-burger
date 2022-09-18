@@ -183,19 +183,7 @@ export const getWithRefresh = async(url:string, options:{headers:{authorization:
     }
   }
 }
-// export type TResponseBody = {
-//   success: boolean;
-//   message?: string;
-//   headers?: Headers;
-//   data:{data:object}
-// };export interface CustomResponse<T> {
-//   readonly headers: Headers;
-//   readonly ok: boolean;
-//   readonly type: ResponseType;
-//   readonly url: string;
-//   accessToken: string;
-//   response: T;
-// }
+
 export function runRefreshToken():Promise<CustomResponse<TResponseBody>> {
   return fetch(`${config.baseUrl}/auth/token`, {
     method: 'POST',
