@@ -147,7 +147,6 @@ export const postRegister:AppThunk = (name:string, email:string, pass:string) =>
       type: POST_REGISTER
     });
     postRegistration(name, email, pass)
-    .then(res => getResponse(res))
     .then((data) => {
       dispatch({
         type: POST_REGISTER_SUCCESS,
@@ -166,13 +165,14 @@ export const postRegister:AppThunk = (name:string, email:string, pass:string) =>
   }
 };
 
-export const getWithRefresh = async(url, options) => {
+export const getWithRefresh = async(url:string, options:{headers:{authorization:string}}):Promise<{user:object}> => {
   try {
     const response = await fetch(url, options);
     return await getResponse(response)
   } catch (err) {
-    if (err.message === 'jwt expired') {
-      console.log('внутри обновления токена: '+ err.message);
+    const error = err as Error;
+    if (error.message === 'jwt expired') {
+      console.log('внутри обновления токена: '+ error.message);
       const refreshData = await runRefreshToken();
       console.log(refreshData);
       options.headers.authorization = refreshData.accessToken;
@@ -183,6 +183,20 @@ export const getWithRefresh = async(url, options) => {
     }
   }
 }
+export interface CustomResponse<T> {
+  readonly headers: Headers;
+  readonly ok: boolean;
+  readonly type: ResponseType;
+  readonly url: string;
+  accessToken: string;
+  response: Response;
+}
+export type TResponseBody = {
+  success: boolean;
+  message?: string;
+  headers?: Headers;
+};
+
 export function runRefreshToken() {
   return fetch(`${config.baseUrl}/auth/token`, {
     method: 'POST',
@@ -190,8 +204,13 @@ export function runRefreshToken() {
     body: JSON.stringify({
       token: getCookie('refreshToken')
     })
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    } else {
+      return res.json().then((err:string) => Promise.reject(err));
+    }
   })
-  .then(res => getResponse(res))
   .then((response) => {
     if (!response.success) {
       return Promise.reject(response)
@@ -213,13 +232,12 @@ export const checkUserAuth:AppThunk = () => (dispatch:AppDispatch) => {
   }
 };
 
-export function postLogin(email, pass) {
-  return (dispatch) => {
+export function postLogin(email: string, pass: string) {
+  return (dispatch:AppDispatch) => {
     dispatch({
       type: POST_LOGIN
     });
     postLoginUser(email, pass)
-    .then(res => getResponse(res))
     .then((data) => {
       dispatch({
         type: POST_LOGIN_SUCCESS,
@@ -240,7 +258,7 @@ export function postLogin(email, pass) {
 
 
 export function getUserProfile() {
-  return function (dispatch) {
+  return function (dispatch:AppDispatch) {
     dispatch({ type: GET_USER });//getUser()
     getWithRefresh(`${config.baseUrl}/auth/user`, {
       headers: {
@@ -263,11 +281,10 @@ export function getUserProfile() {
   }
 };
 
-export function updateProfile(name, email, password) {
-  return function (dispatch) {
+export function updateProfile(name: string, email: string, password: string) {
+  return function (dispatch:AppDispatch) {
      dispatch({ type: UPDATE_PROFILE })
      profileUpdate(name, email, password)
-     .then(res => getResponse(res))
      .then((data) => {
       console.log('Обновляем пользователя ' + data.user.name);
       dispatch({
@@ -282,13 +299,12 @@ export function updateProfile(name, email, password) {
     })
   }
 };
-export function postForgotPass(email) {
-  return (dispatch) => {
+export function postForgotPass(email: string) {
+  return (dispatch:AppDispatch) => {
     dispatch({
       type: POST_FORGOT_PASS
     });
     postForgotPassword(email)
-    .then(res => getResponse(res))
     .then((data) => {
       dispatch({
         type: POST_FORGOT_PASS_SUCCESS,
@@ -302,13 +318,12 @@ export function postForgotPass(email) {
     })
   }
 };
-export function postRequestPass(password, code) {
-  return (dispatch) => {
+export function postRequestPass(password: string, code: string) {
+  return (dispatch:AppDispatch) => {
     dispatch({
       type: POST_REQUEST_PASS
     });
     postRequestPassword(password, code)
-    .then(res => getResponse(res))
     .then((data) => {
       dispatch({
         type: POST_REQUEST_PASS_SUCCESS,
@@ -322,11 +337,10 @@ export function postRequestPass(password, code) {
     })
   }
 };
-export function runLogOut(refreshToken) {
-  return function (dispatch) {
+export function runLogOut(refreshToken: string) {
+  return function (dispatch:AppDispatch) {
     dispatch({ type: POST_LOGOUT });
     postLogOut(refreshToken)
-    .then(res => getResponse(res))
     .then(() => {
       dispatch({
         type: POST_LOGOUT_SUCCESS,
