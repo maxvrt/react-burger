@@ -23,7 +23,7 @@ import ProtectedRoute from '../protected-route/ProtectedRoute';
 import FeedPage from '../../pages/feed-page/feed-page';
 import OrderPage from '../../pages/order-page/order-page';
 import UserOrdersPage from '../../pages/user-orders-page/user-orders-page';
-import OrderComponent from '../../components/order-component/order-component';
+import OrderComponent from '../order-component/order-component';
 import OrderSecond from '../../pages/order-second/order-second';
 
 function App() {
