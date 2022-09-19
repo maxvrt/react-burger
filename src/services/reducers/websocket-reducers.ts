@@ -9,16 +9,16 @@ import {
   WS_AUTH_GET_MESSAGE,
 } from '../actions/websocket-actions';
 import type { TWebsocketActions } from '../actions/websocket-actions';
-
+import type { TOrder } from '../../types/types';
 type TInitialState = {
   wsConnected: boolean,
-  data: object,
+  data: {orders?:Array<TOrder>},
   isData: boolean,
-  error: object
+  error: object,
 };
 type TInitialStateAuth = {
   wsUserConnected: boolean,
-  userData: object,
+  userData: {orders?:Array<TOrder>},
   isUserData: boolean,
   error: object
 };
@@ -70,12 +70,12 @@ export const wsReducer = (state = initialState, action:TWebsocketActions):TIniti
       return state;
   }
 };
-export const wsAuthReducer = (state = initialStateAuth, action:TWebsocketActions) => {
+export const wsAuthReducer = (state = initialStateAuth, action:TWebsocketActions):TInitialStateAuth => {
   switch (action.type) {
     case WS_AUTH_CONNECTION_SUCCESS:
       return {
         ...state,
-        error: undefined,
+        error: {},
         wsUserConnected: true
       };
     case WS_AUTH_CONNECTION_ERROR:
@@ -87,13 +87,13 @@ export const wsAuthReducer = (state = initialStateAuth, action:TWebsocketActions
     case WS_AUTH_CONNECTION_CLOSED:
       return {
         ...state,
-        error: undefined,
+        error: {},
         wsUserConnected: false
       };
     case WS_AUTH_GET_MESSAGE:
       return {
         ...state,
-        error: undefined,
+        error: {},
         userData: action.payload,
         isUserData: true
       };

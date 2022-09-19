@@ -74,8 +74,8 @@ const wsUrl = 'wss://norma.nomoreparties.space/orders/all';
 const wsAuthUrl = 'wss://norma.nomoreparties.space/orders';
 
 const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware(wsUrl, wsActions), socketMiddleware(wsAuthUrl, wsUserActions)));
-const store = createStore(rootReducer, enhancer);
-export type TRootState = ReturnType<typeof store.getState>;
+export const store = createStore(rootReducer, enhancer);
+export type TRootState = ReturnType<typeof rootReducer>;
 
 ReactDOM.render(
   <React.StrictMode>

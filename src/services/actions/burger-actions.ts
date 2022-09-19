@@ -1,5 +1,5 @@
 import {getIngredients, postOrder, getResponse} from '../../utils/api';
-import type { AppThunk, AppDispatch, ObjectItem } from '../../types/types';
+import type { AppThunk, AppDispatch, TIngItem } from '../../types/types';
 
 export const GET_INGREDIENTS: 'GET_INGREDIENTS' = "GET_INGREDIENTS";
 export const GET_INGREDIENTS_SUCCESS: 'GET_INGREDIENTS_SUCCESS' = "GET_INGREDIENTS_SUCCESS";
@@ -24,7 +24,7 @@ export interface IGetIngredients{
 }
 export interface IGetIngredientsSuccess{
   readonly type: typeof GET_INGREDIENTS_SUCCESS;
-  readonly payload: object;
+  readonly payload: Array<TIngItem>;
 }
 export interface IGetIngredientsError{
   readonly type: typeof GET_INGREDIENTS_ERROR;
@@ -35,11 +35,11 @@ export interface ISetBun{
 }
 export interface IMassAddIngredients{
   readonly type: typeof MASS_ADD_INGREDIENTS;
-  readonly payload: Array<ObjectItem>;
+  readonly payload: Array<TIngItem>;
 }
 export interface IAddIngredient{
   readonly type: typeof ADD_INGREDIENT;
-  readonly payload: object;
+  readonly payload: TIngItem;
 }
 export interface IIngredientModalAdd{
   readonly type: typeof INGREDIENT_MODAL_ADD;
@@ -103,7 +103,6 @@ export const requestIngredients:AppThunk = () => {
       type: GET_INGREDIENTS
     });
     getIngredients()
-    .then(res => getResponse(res))
     .then((data) => {
       dispatch({
         type: GET_INGREDIENTS_SUCCESS,
@@ -120,7 +119,6 @@ export const requestIngredients:AppThunk = () => {
 export const addOrder:AppThunk = (arrIds) => {
   return (dispatch:AppDispatch) => {
     postOrder(arrIds) // сохраняем ингредиенты на сервер
-    .then(res => getResponse(res))
     .then(data => {
       dispatch({
         type: GET_ORDER_NUMBER,

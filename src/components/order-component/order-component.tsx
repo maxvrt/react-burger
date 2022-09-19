@@ -1,11 +1,15 @@
 import styles from './order-component.module.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../types/types';
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Routes, Route, useParams, useRouteMatch  } from 'react-router-dom';
-import { useEffect, useMemo  } from 'react';
+import { Route, useParams, useRouteMatch  } from 'react-router-dom';
 import Spinner from '../spinner/spinner'
+import type { TOrder, TIngItem } from '../../types/types';
+import React, { FC } from 'react';
+type TIngParam = {
+  id: string;
+};
 const OrderComponent = () => {
-  const {id} = useParams();
+  const {id} = useParams<TIngParam>();
   const idNum = Number(id);
   const { userData, data, ingredients } = useSelector(store => ({
     userData: store.rootWsAuth.userData,
@@ -16,30 +20,35 @@ const OrderComponent = () => {
   const match = useRouteMatch()
   const isUser = match.path === '/profile/orders/:id';
   let newData = isUser ? userData : data;
-  let oneOrder;
-  let date;
-  let countOrderIds = [];
-  let newIngredients;
+  let oneOrder:TOrder|undefined;
+  let date:string = '';
+  let countOrderIds:number[] = [];
+  let newIngredients:Array<TIngItem|undefined> = [];
   let price = 0 ;
   if (newData.orders && Object.keys(newData.orders).length > 0) {
     console.log('заказы:');
     console.log(newData.orders);
-    oneOrder = newData.orders.find((order) => order.number === idNum);
-    date = new Date(oneOrder?.createdAt).toISOString().slice(0, 16);
-    // уникальные ингредиенты и их кол-во
-    for (let elem of oneOrder.ingredients) {
-      if (!countOrderIds[elem]) {
-        countOrderIds[elem] = 1;
-      } else {
-        countOrderIds[elem]++;
-      }
-    };
+    oneOrder = newData.orders.find((order:TOrder) => order.number === idNum);
+    if (oneOrder!==undefined) {
+      date = new Date(oneOrder.createdAt).toISOString().slice(0, 16);
+      // уникальные ингредиенты и их кол-во
+      let elem:any;
+      for (elem of oneOrder.ingredients) {
+        if (!countOrderIds[elem]) {
+          countOrderIds[elem] = 1;
+        } else {
+          countOrderIds[elem]++;
+        }
+      };
+    }
+
     newIngredients = Object.keys(countOrderIds).map(id => {
       return ingredients.find(function (ingredient) {
-        if (ingredient._id === id)  price = price + ingredient.price*countOrderIds[ingredient._id];
+        if (ingredient._id === id)  price = price + ingredient.price*countOrderIds[Number(ingredient._id)];
         return ingredient._id === id;
       });
     });
+
   }
 
   return (
@@ -58,9 +67,9 @@ const OrderComponent = () => {
           newIngredients.map((item, index) => {
             return (
             <li className={styles.element} key={index}>
-              <img className={styles.img} src={item.image_mobile} alt={item.name} />
-              <p className={styles.desc}>{item.name}</p>
-              <p className={styles.priceDigit}>{countOrderIds[item._id]} x {item.price}</p>
+              <img className={styles.img} src={item?.image_mobile} alt={item?.name} />
+              <p className={styles.desc}>{item?.name}</p>
+              <p className={styles.priceDigit}>{countOrderIds[item?._id]} x {item?.price}</p>
               <div className={styles.icon}>
                 <CurrencyIcon type="primary"/>
               </div>

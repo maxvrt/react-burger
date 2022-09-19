@@ -1,5 +1,5 @@
 import type { TBurgerActions } from '../actions/burger-actions';
-import type { ObjectItem } from '../../types/types';
+import type { TIngItem } from '../../types/types';
 import {
   GET_INGREDIENTS,
   GET_INGREDIENTS_SUCCESS,
@@ -18,9 +18,9 @@ import {
 } from '../actions/burger-actions';
 
 type TBurgerState = {
-  ingredients: object,
+  ingredients: TIngItem[],
   ingredientsError: boolean,
-  selectedIngredients: Array<ObjectItem>,
+  selectedIngredients: TIngItem[],
   bun: object,
   ingredientObject: object,
   ingredientModal: boolean,
@@ -33,7 +33,7 @@ type TBurgerState = {
 };
 
 const initialIngredients:TBurgerState = {
-  ingredients: {},
+  ingredients: [],
   ingredientsError: false,
   selectedIngredients: [],
   bun: {},
