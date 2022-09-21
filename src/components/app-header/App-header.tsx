@@ -1,5 +1,5 @@
 import appHeader from './app-header.module.css';
-import { Logo, Typography, Box, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { NavLink, Redirect, useRouteMatch } from 'react-router-dom';
 
 export default function AppHeader() {

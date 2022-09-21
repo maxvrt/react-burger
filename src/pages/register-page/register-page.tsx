@@ -2,7 +2,7 @@ import styles from './register-page.module.css';
 import { Logo, Button, Input, EmailInput, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, TLocation } from '../../types/types';
 import { setCookie, getCookie } from '../../utils/cookie'
 import { postRegister } from '../../services/actions/auth-actions'
 
@@ -13,20 +13,20 @@ const RegisterPage = () => {
   const { registerSuccess, authData } = useSelector(store =>  ({registerSuccess: store.rootAuth.postRegisterSuccess, authData: store.rootAuth.authData}));
   const dispatch = useDispatch();
   const token = getCookie('token');
-  const location = useLocation();
+  const location = useLocation<TLocation>();
   const checkAuth = useSelector(store =>  (store.rootAuth.isAuthChecked));
 
-  const onChangeName = e => {
+  const onChangeName = (e: { target: HTMLInputElement }) => {
     setNameVal(e.target.value);
   };
-  const onChangeEmail = e => {
+  const onChangeEmail = (e: { target: HTMLInputElement }) => {
     setEmailVal(e.target.value);
   };
-  const onChangePassword = e => {
+  const onChangePassword = (e: { target: HTMLInputElement }) => {
     setPasswordVal(e.target.value);
   };
 
-  const submit = e => {
+  const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(postRegister(nameVal, emailVal, passwordVal))
   }
@@ -50,21 +50,14 @@ const RegisterPage = () => {
             onChange={onChangeName}
           />
           <EmailInput
-            placeholder={'E-mail'}
             name={'email'}
-            type={'email'}
             size={'default'}
-            errorText={'error'}
             value={emailVal}
             onChange={onChangeEmail}
           />
           <PasswordInput
-            placeholder={'Пароль'}
             name={'password'}
             size={'default'}
-            error={false}
-            errorText={'error'}
-            type={'password'}
             value={passwordVal}
             onChange={onChangePassword}
           />

@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from '../../types/types';
 import { useEffect } from 'react';
 import OrderComponent from '../../components/order-component/order-component';
 import styles from './order-second.module.css'

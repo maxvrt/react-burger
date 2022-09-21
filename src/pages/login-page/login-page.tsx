@@ -2,7 +2,7 @@ import styles from './login-page.module.css';
 import { Button, EmailInput, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, TLocation } from '../../types/types';
 import { setCookie, getCookie } from '../../utils/cookie'
 import { postLogin } from '../../services/actions/auth-actions'
 
@@ -12,17 +12,17 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const { loginSuccess, authData } = useSelector(store =>  ({loginSuccess: store.rootAuth.postLoginSuccess, authData: store.rootAuth.authData}));
   const checkAuth = useSelector(store =>  (store.rootAuth.isAuthChecked));
-  const location = useLocation();
+  const location = useLocation<TLocation>();
   const token = getCookie('token');
 
-  const onChangeEmail = e => {
-    setEmailVal(e.target.value);
+  const onChangeEmail = (e: { target: HTMLInputElement }) => {
+    setEmailVal(e.target?.value);
   };
-  const onChangePassword = e => {
-    setPasswordVal(e.target.value);
+  const onChangePassword = (e: { target: HTMLInputElement }) => {
+    setPasswordVal(e.target?.value);
   };
 
-  const submit = e => {
+  const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(postLogin(emailVal, passwordVal));
   }
@@ -48,21 +48,14 @@ const LoginPage = () => {
       <form className={styles.form} onSubmit={submit}>
           <h2 className={styles.title}>Вход</h2>
           <EmailInput
-            placeholder={'E-mail'}
             name={'email'}
-            type={'email'}
             size={'default'}
-            errorText={'error'}
             value={emailVal}
             onChange={onChangeEmail}
           />
           <PasswordInput
-            placeholder={'Пароль'}
             name={'password'}
             size={'default'}
-            error={false}
-            errorText={'error'}
-            type={'password'}
             value={passwordVal}
             onChange={onChangePassword}
           />

@@ -12,7 +12,7 @@ import type { TWebsocketActions } from '../actions/websocket-actions';
 import type { TOrder } from '../../types/types';
 type TInitialState = {
   wsConnected: boolean,
-  data: {orders?:Array<TOrder>},
+  data: {orders?:Array<TOrder>; total?: number; totalToday?: number},
   isData: boolean,
   error: object,
 };

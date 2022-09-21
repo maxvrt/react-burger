@@ -1,23 +1,24 @@
-import React, { useEffect} from 'react';
+import React, { useEffect, FC} from 'react';
 import { createPortal } from 'react-dom';
 import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/ModalOverlay';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from "prop-types";
+import { IModal } from '../../types/types';
 
-const modalsContainer = document.querySelector('#modals');
+const modalsContainer:any = document.querySelector('#modals');
 
-const Modal = ({title = '', onOverlayClick, children, onCloseClick, escCloseModal}) => {
+const Modal:FC<IModal> = ({title = '', onOverlayClick, children, onCloseClick, escCloseModal}:IModal) => {
   useEffect(() => {
     document.addEventListener('keydown', onEscKeydown);
     return () => {
       document.removeEventListener('keydown', onEscKeydown);
     }
   }, [])
-  const onEscKeydown = (event) => {
+  const onEscKeydown = (event: KeyboardEvent) => {
     // пробрасывание ф-ции в родительский компонент
     if (event.key === "Escape"){
-      escCloseModal();
+      if (escCloseModal) escCloseModal();
     }
   };
   return createPortal(

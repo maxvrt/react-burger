@@ -1,5 +1,5 @@
 import {getIngredients, postOrder, getResponse} from '../../utils/api';
-import type { AppThunk, AppDispatch, TIngItem } from '../../types/types';
+import type { AppThunk, AppDispatch, TIngItem, TOrder } from '../../types/types';
 
 export const GET_INGREDIENTS: 'GET_INGREDIENTS' = "GET_INGREDIENTS";
 export const GET_INGREDIENTS_SUCCESS: 'GET_INGREDIENTS_SUCCESS' = "GET_INGREDIENTS_SUCCESS";
@@ -31,7 +31,7 @@ export interface IGetIngredientsError{
 }
 export interface ISetBun{
   readonly type: typeof SET_BUN;
-  readonly payload: object;
+  readonly payload: TIngItem;
 }
 export interface IMassAddIngredients{
   readonly type: typeof MASS_ADD_INGREDIENTS;

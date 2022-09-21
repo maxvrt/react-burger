@@ -1,5 +1,5 @@
 import type { TAuthActions } from '../actions/auth-actions';
-
+import { TUser } from '../../types/types';
 import {
   POST_FORGOT_PASS,
   POST_FORGOT_PASS_SUCCESS,
@@ -45,7 +45,7 @@ type TAuthState = {
   postLogout: boolean,
   postLogoutSuccess: boolean,
   postLogoutError: boolean,
-  authData: object,
+  authData: TUser,
   tokenData: object,
   user: object,
   tokenRefreshData: object,
@@ -194,7 +194,7 @@ export const authReducer = (state = initialAuth, action:TAuthActions):TAuthState
         postLoginSuccess: true,
         postLoginError: false,
         authData: action.payload,
-        user: action.payload.user
+        user: action.payload
       }
     }
     case POST_LOGIN_ERROR:  {

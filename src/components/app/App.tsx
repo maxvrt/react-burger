@@ -6,7 +6,7 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/Modal';
 import app from './app.module.css';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from '../../types/types';
 import { requestIngredients, INGREDIENT_MODAL_DEL, ORDER_MODAL_DEL} from "../../services/actions/burger-actions";
 import { checkUserAuth, getUserProfile, runRefreshToken} from "../../services/actions/auth-actions";
 import { DndProvider } from "react-dnd";
@@ -25,6 +25,13 @@ import OrderPage from '../../pages/order-page/order-page';
 import UserOrdersPage from '../../pages/user-orders-page/user-orders-page';
 import OrderComponent from '../order-component/order-component';
 import OrderSecond from '../../pages/order-second/order-second';
+import { Location } from "history";
+
+declare module 'react' {
+  interface FunctionComponent<P = {}> {
+    (props: PropsWithChildren<P>, context?: any): ReactElement<any, any> | null;
+  }
+}
 
 function App() {
   const dispatch = useDispatch();
@@ -48,8 +55,7 @@ function App() {
     //dispatch(checkUserAuth());
   }, [dispatch]);
 
-  const location = useLocation();
-  const background = location.state?.background;
+
   const history = useHistory();
   const arrayIngredients = useSelector(store => (store.rootIngredients.ingredients));
   const ingredientModal = useSelector(store => (store.rootIngredients.ingredientDesc));
@@ -67,6 +73,10 @@ function App() {
     dispatch({type:ORDER_MODAL_DEL});
     history.goBack();
   };
+
+  const location =  useLocation<{background: Location}>();
+  const background =  location.state?.background;
+
   return (
     <div className={app.page}>
       <AppHeader/>
@@ -138,7 +148,8 @@ function App() {
               onCloseClick={closeModalIng}
               escCloseModal={closeModalIng}
             >
-              <IngredientDetails data={ingredientModal}/>
+              <IngredientDetails/>
+              {/* data={ingredientModal} */}
             </Modal>
           </Route>
           <Route exact path="/profile/orders/:id">

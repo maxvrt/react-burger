@@ -3,22 +3,22 @@ import { Button, EmailInput} from '@ya.praktikum/react-developer-burger-ui-compo
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { postForgotPass } from '../../services/actions/auth-actions'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, TLocation } from '../../types/types';
 import { getCookie } from '../../utils/cookie'
 
 const ForgotPage = () => {
   const [emailVal, setEmailVal] = useState('');
   const dispatch = useDispatch();
   const { forgotPassSuccess, successMessage } = useSelector(store =>  ({forgotPassSuccess: store.rootAuth.postForgotPassSuccess, successMessage: store.rootAuth.message}));
-  const location = useLocation();
+  const location = useLocation<TLocation>();
   const token = getCookie('token');
   const checkAuth = useSelector(store =>  (store.rootAuth.isAuthChecked));
 
-  const onChangeEmail = e => {
+  const onChangeEmail = (e: { target: HTMLInputElement }) => {
     setEmailVal(e.target.value);
   };
 
-  const submit = e => {
+  const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(postForgotPass(emailVal));
   }
@@ -46,11 +46,8 @@ const ForgotPage = () => {
       <form className={styles.form} onSubmit={submit}>
           <h2 className={styles.title}>Восстановление пароля</h2>
           <EmailInput
-            placeholder={'Укажите e-mail'}
             name={'email'}
-            type={'email'}
             size={'default'}
-            errorText={'error'}
             value={emailVal}
             onChange={onChangeEmail}
           />

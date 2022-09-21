@@ -1,17 +1,20 @@
 import React, { useRef } from 'react';
 import burgerConstructor from './burger-constructor-element.module.css';
-import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useDispatch } from 'react-redux';
+import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrop, useDrag } from "react-dnd";
 import { DELETE_ITEM, MOVE_ELEMENT}  from '../../services/actions/burger-actions';
+import { useDispatch, useSelector, TIngItem } from '../../types/types';
 
-
-export default function BurgerConstructorElement ({item, index}) {
+type TBurgerConstructorElement = {
+  item: TIngItem;
+  index: number;
+};
+export default function BurgerConstructorElement ({item, index}:TBurgerConstructorElement) {
     const dispatch = useDispatch();
-    const ref = useRef(null);
-    const itemId = item.uuid;
+    const ref = useRef<HTMLInputElement>(null);
+    const itemId = item?.uuid;
 
-    const deleteItem = (id) => {
+    const deleteItem = (id:number) => {
       dispatch({
         type: DELETE_ITEM,
         payload: id,
@@ -25,7 +28,7 @@ export default function BurgerConstructorElement ({item, index}) {
           handlerId: monitor.getHandlerId(),
         };
       },
-      hover(item, monitor) {
+      hover(item:any, monitor) {
         if (!ref.current) {
           return;
         }
@@ -44,7 +47,8 @@ export default function BurgerConstructorElement ({item, index}) {
         // Determine mouse position
         const clientOffset = monitor.getClientOffset();
         // Get pixels to the top
-        const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+        if (!clientOffset) return;
+        const hoverClientY = clientOffset?.y - hoverBoundingRect.top;
         if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
           return;
         }
@@ -61,7 +65,7 @@ export default function BurgerConstructorElement ({item, index}) {
         item.index = hoverIndex;
       },
     });
-    const [{ }, drag] = useDrag({
+    const [{ }, drag]:any = useDrag({
       type: "SORT_INGREDIENT",
       item: () => {
         return { item, index };
@@ -70,18 +74,20 @@ export default function BurgerConstructorElement ({item, index}) {
 
     drag(drop(ref));
 
-    return (
+    return  (
       <React.Fragment>
-      <div className={burgerConstructor.scrollElement} data-handler-id={handlerId} ref={ref}>
-        <DragIcon/>
-        <ConstructorElement
-        isLocked={false}
-        text={item.name}
-        price={item.price}
-        thumbnail={item.image_mobile}
-        handleClose={() => deleteItem(itemId)}
-        />
-      </div>
+        { item && itemId ? (
+                <div className={burgerConstructor.scrollElement} data-handler-id={handlerId} ref={ref}>
+                <DragIcon type='primary'/>
+                <ConstructorElement
+                isLocked={false}
+                text={item.name}
+                price={item.price}
+                thumbnail={item.image_mobile}
+                handleClose={() => deleteItem(itemId)}
+                />
+              </div> ): null
+        }
       </React.Fragment>
     );
   };

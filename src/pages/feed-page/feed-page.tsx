@@ -1,6 +1,6 @@
 import styles from './feed-page.module.css';
 import FeedCardComponent from '../../components/feed-card-component/feed-card-component'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, TOrder } from '../../types/types';
 import { getCookie } from '../../utils/cookie';
 import { Link, useLocation, useRouteMatch } from 'react-router-dom'
 import { WS_CONNECTION_START, WS_CONNECTION_CLOSED } from '../../services/actions/websocket-actions';
@@ -21,7 +21,7 @@ const FeedPage = () => {
   let dataOrders = data.orders;
   const total = data.total;
   const totalToday = data.totalToday;
-  let unDone = [];
+  let unDone:TOrder[] = [];
 
   if (dataOrders) {
     unDone = dataOrders.filter(item => item.status !== 'done').slice(0,26);

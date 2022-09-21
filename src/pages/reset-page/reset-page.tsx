@@ -2,7 +2,7 @@ import styles from './reset-page.module.css';
 import { Button, PasswordInput, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, TLocation } from '../../types/types';
 import {postRequestPass} from '../../services/actions/auth-actions'
 import { getCookie } from '../../utils/cookie'
 
@@ -11,18 +11,18 @@ const ResetPage = () => {
   const [codeVal, setCodeVal] = useState('');
   const { resetPassSuccess, successMessage } = useSelector(store =>  ({resetPassSuccess: store.rootAuth.postRequestPassSuccess, successMessage: store.rootAuth.message}));
   const dispatch = useDispatch();
-  const location = useLocation();
+  const location = useLocation<TLocation>();
   const token = getCookie('token');
   const fromForgotPage = location.state?.forgotPage;
   const checkAuth = useSelector(store =>  (store.rootAuth.isAuthChecked));
 
-  const onChangePassword = e => {
+  const onChangePassword = (e: { target: HTMLInputElement }) => {
     setPasswordVal(e.target.value);
   };
-  const onChangeCode = (e) => {
+  const onChangeCode = (e: { target: HTMLInputElement }) => {
     setCodeVal(e.target.value)
   }
-  const submit = e => {
+  const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(postRequestPass(passwordVal, codeVal));
   }
@@ -50,11 +50,8 @@ const ResetPage = () => {
       <form className={styles.form} onSubmit={submit}>
           <h2 className={styles.title}>Восстановление пароля</h2>
           <PasswordInput
-            placeholder={'Введите новый пароль'}
             name={'password'}
             size={'default'}
-            errorText={'error'}
-            type={'password'}
             value={passwordVal}
             onChange={onChangePassword}
           />

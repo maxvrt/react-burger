@@ -3,11 +3,9 @@ import { useDispatch, useSelector } from '../../types/types';
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Route, useParams, useRouteMatch  } from 'react-router-dom';
 import Spinner from '../spinner/spinner'
-import type { TOrder, TIngItem } from '../../types/types';
+import type { TOrder, TIngItem, TIngParam } from '../../types/types';
 import React, { FC } from 'react';
-type TIngParam = {
-  id: string;
-};
+
 const OrderComponent = () => {
   const {id} = useParams<TIngParam>();
   const idNum = Number(id);
@@ -44,7 +42,7 @@ const OrderComponent = () => {
 
     newIngredients = Object.keys(countOrderIds).map(id => {
       return ingredients.find(function (ingredient) {
-        if (ingredient._id === id)  price = price + ingredient.price*countOrderIds[Number(ingredient._id)];
+        if (ingredient._id === id && ingredient.price)  price = price + ingredient.price*countOrderIds[Number(ingredient._id)];
         return ingredient._id === id;
       });
     });

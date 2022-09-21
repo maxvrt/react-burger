@@ -2,7 +2,7 @@ import styles from './profile-page.module.css';
 import { Button, EmailInput, PasswordInput, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, NavLink, useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../types/types';
 import { getUserProfile, updateProfile, runLogOut } from '../../services/actions/auth-actions'
 import { getCookie, setCookie } from '../../utils/cookie'
 
@@ -18,35 +18,34 @@ const ProfilePage = () => {
   const [emailUser, setEmail] = useState('111')
   const [password, setPassword] = useState('')
   const history = useHistory();
-
   useEffect(() => {
-    setName(authData.name);
-    setEmail(authData.email);
+    if (authData.name) setName(authData.name);
+    if (authData.email) setEmail(authData.email);
   }, [authData.name]);
 
-  const submit = e => {
+  const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(updateProfile(nameUser, emailUser, password))
   }
-  const cancelSave = e => {
+  const cancelSave = (e: React.FormEvent) => {
     e.preventDefault();
-    setName(authData.name);
-    setEmail(authData.email);
+    if (authData.name) setName(authData.name);
+    if (authData.email) setEmail(authData.email);
     setPassword('');
   }
-  const onChangeName  = e => {
+  const onChangeName  = (e: { target: HTMLInputElement }) => {
     setName(e.target.value);
   }
-  const onChangeEmail  = e => {
+  const onChangeEmail  = (e: { target: HTMLInputElement }) => {
     setEmail(e.target.value);
   }
-  const onChangePass  = e => {
+  const onChangePass  = (e: { target: HTMLInputElement }) => {
     setPassword(e.target.value);
   }
   function logOut() {
     const refreshToken = getCookie('refreshToken');
     console.log('выходим '+ refreshToken);
-    dispatch(runLogOut(refreshToken));
+    if (refreshToken) dispatch(runLogOut(refreshToken));
     history.push('/login');
   }
   return (
@@ -75,22 +74,14 @@ const ProfilePage = () => {
             onChange={onChangeName}
           />
           <EmailInput
-            placeholder={'Логин'}
             name={'email'}
-            type={'email'}
             size={'default'}
-            error={false}
-            errorText={'error'}
             value={`${emailUser}`}
             onChange={onChangeEmail}
           />
           <PasswordInput
-            placeholder={'Пароль'}
             name={'password'}
             size={'default'}
-            error={false}
-            errorText={'error'}
-            type={'password'}
             value={password}
             onChange={onChangePass}
           />

@@ -1,6 +1,6 @@
 import styles from './user-orders-page.module.css';
 import { useLocation, useRouteMatch, NavLink, useHistory, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../types/types';
 import { runLogOut } from '../../services/actions/auth-actions';
 import { getCookie, setCookie } from '../../utils/cookie';
 import { useEffect } from 'react';
@@ -30,7 +30,7 @@ const UserOrdersPage = () => {
  function logOut() {
    const refreshToken = getCookie('refreshToken');
    console.log('выходим '+ refreshToken);
-   dispatch(runLogOut(refreshToken));
+   if (refreshToken) dispatch(runLogOut(refreshToken));
    history.push('/login');
  }
   return (

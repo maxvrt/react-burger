@@ -1,25 +1,31 @@
 import React, { useEffect,useRef, useMemo, useState } from 'react';
 import burgerConstructor from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon, LockIcon, DragIcon, DeleteIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector, TIngItem } from '../../types/types';
 import { addOrder, SET_BUN, ADD_INGREDIENT, DELETE_ITEM, MOVE_ELEMENT } from '../../services/actions/burger-actions'
 import { useDrop, useDrag } from "react-dnd";
 import { useInView } from 'react-intersection-observer';
 import { useHistory, Redirect, Route } from "react-router-dom";
 import BurgerConstructorElement from '../burger-constructor-element/Burger-constructor-element';
+
 export default function BurgerConstructor() {
-  const oneBun = useSelector(store =>  (store.rootIngredients.bun));
+  const oneBun:TIngItem = useSelector(store =>  (store.rootIngredients.bun));
   const arrNoBunOrder = useSelector(store =>  (store.rootIngredients.selectedIngredients));
   const dispatch = useDispatch();
   const user = useSelector(store =>  (store.rootAuth.authData.name));
   const checkAuth = useSelector(store =>  (store.rootAuth.isAuthChecked));
   const history = useHistory();
-  let arrIds = [];
-  let totalPrice = 0;
+  let arrIds:number[] = [];
+  let totalPrice:number|undefined=0;
   if (arrNoBunOrder.length > 0 || JSON.stringify(oneBun) !== '{}'){
     arrIds = arrNoBunOrder.map(item=> item._id);
-    totalPrice = arrNoBunOrder.reduce(function (sum, item) {return sum + item.price},0);
-    if(oneBun.price>0) totalPrice = totalPrice + oneBun?.price*2;
+    totalPrice = arrNoBunOrder.reduce(function (sum, item):number {
+      if (item.price) return sum + item.price
+      return 0;
+    },0);
+    if(oneBun.price && totalPrice && oneBun.price>0) {
+      totalPrice = totalPrice + oneBun.price*2;
+    }
   };
   const onClickOrder = () => {
     if (checkAuth) {
@@ -33,7 +39,7 @@ export default function BurgerConstructor() {
 
   const [, dropTarget] = useDrop({
     accept: 'ingredients',
-    drop(item) {
+    drop(item:any) {
       if (item.item.type === 'bun') {
         dispatch({
           type: SET_BUN,

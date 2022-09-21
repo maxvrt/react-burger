@@ -63,7 +63,7 @@ export interface IPostLogin {
 }
 export interface IPostLoginSuccess {
   readonly type: typeof POST_LOGIN_SUCCESS;
-  readonly payload: {user:TUser};
+  readonly payload: TUser;
 }
 export interface IPostLoginError {
   readonly type: typeof POST_LOGIN_ERROR;
@@ -228,7 +228,7 @@ export function postLogin(email: string, pass: string) {
     .then((data) => {
       dispatch({
         type: POST_LOGIN_SUCCESS,
-        payload: data
+        payload: data.user
       });
       const accessToken = data.accessToken.split('Bearer ')[1];
       const refreshToken = data.refreshToken;

@@ -11,22 +11,38 @@ import {
 } from 'react-redux';
 import 'redux-thunk/extend-redux';
 import { store } from  '../index';
+import { Location } from 'history';
 
 export type TIngItem = {
   // _id для разметки в order-component.tsx
-  _id: any;
-  uuid: number;
+  _id?: any;
+  uuid?: number;
   name: string;
-  proteins: number;
-  fat: number;
-  carbohydrates: number;
-  calories: number;
+  proteins?: number;
+  fat?: number;
+  carbohydrates?: number;
+  calories?: number;
   price: number;
-  image: string;
+  image?: string;
   image_mobile: string;
-  image_large: string;
+  image_large?: string;
+  type?: string;
 };
 
+export type TProtectedRoute = {
+  exact?: boolean;
+  path?: string;
+  children?: React.ReactNode;
+};
+
+export type TFeedCard = {
+  ingredients?: Array<TIngItem>;
+  number: number;
+  date: string;
+  name: string;
+  ingredientIds?:TIngItem[];
+  status?: 'created' | 'pending' | 'done' | '';
+};
 export type TOrder = {
   _id: string;
   ingredients: Array<TIngItem>;
@@ -36,12 +52,28 @@ export type TOrder = {
   name: string;
   status: 'created' | 'pending' | 'done';
 };
-// export type ObjectItem = {
-//   uuid?:number
-// }
+export type TLocation = {
+  background?: Location;
+  from?: Location;
+  pathname?: string;
+  forgotPage?:string;
+};
+export interface IModal {
+  onClick?: () => void;
+  onOverlayClick?: () => void;
+  onCloseClick?: () => void;
+  escCloseModal?: () => void;
+  children?: React.ReactNode;
+  title?: string;
+}
+export type TIngParam = {
+  id: string;
+};
 export type TUser = {
-  email: string;
-  name: string;
+  email?: string;
+  name?: string;
+  refreshToken?: string;
+  accessToken?: string;
 };
 export type Actions = TAuthActions | TBurgerActions | TWebsocketActions;
 export type AppDispatch = typeof store.dispatch;
@@ -62,11 +94,6 @@ export const useDispatch = () => dispatchHook<AppDispatch | AppThunk>();
 // >;
 //export type AppThunk<ReturnType = Promise<any> | void> = ActionCreator< ThunkAction<ReturnType, Action, TRootState, Actions> >;
 //export type AppDispatch = ThunkDispatch<TRootState, never, Actions>;
-
-
-
-
-
 
 export type TResponseBody = {
   success: boolean;

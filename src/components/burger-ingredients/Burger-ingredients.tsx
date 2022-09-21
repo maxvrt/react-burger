@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useMemo } from 'react';
 import burgerIngredients from './burger-ingredients.module.css';
 import { Counter, Tab, CurrencyIcon  } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector, TIngItem } from '../../types/types';
 import { useDrag } from "react-dnd";
 import { useInView } from 'react-hook-inview';
 import { Link, useLocation } from 'react-router-dom';
@@ -16,7 +16,7 @@ export default function BurgerIngredients() {
   const [mainRef, inViewMain] = useInView();
 
   // Элемент в списке ингредиентов
-  const Card = ({item}) => {
+  const Card = ({item}:{item:TIngItem}) => {
     const location = useLocation()
     //const handleClick = ()=> onClickDesc(item);
     const [, dragRef] = useDrag({
@@ -37,7 +37,7 @@ export default function BurgerIngredients() {
       <Link className={burgerIngredients.link} to={{ pathname: `/ingredient/${item._id}`, state: { background: location } }} >
       <li className={burgerIngredients.cardItem} ref={dragRef}>
         <img className={burgerIngredients.cardImg} alt={item.name} src={item.image} />
-        <div className={burgerIngredients.cardPrice}><p className={burgerIngredients.cardPriceDig}>{item.price}</p><CurrencyIcon/></div>
+        <div className={burgerIngredients.cardPrice}><p className={burgerIngredients.cardPriceDig}>{item.price}</p><CurrencyIcon type="primary"/></div>
         <p className={burgerIngredients.cardName}>{item.name}</p>
         <Counter count={count()} />
       </li>
@@ -56,10 +56,10 @@ export default function BurgerIngredients() {
     }
   }, [inViewBun, inViewSauce, inViewMain]);
 
-  const clickCategory = (tabElement) => {
+  const clickCategory = (tabElement:any) => {
     setCurrent(tabElement);
-    const category = document.getElementById(tabElement);
-    category.scrollIntoView({block: 'start', behavior: 'smooth' });
+    const category:HTMLElement|null = document.getElementById(tabElement);
+    category?.scrollIntoView({block: 'start', behavior: 'smooth' });
   }
 
   return (
