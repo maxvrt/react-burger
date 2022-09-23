@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import burgerIngredients from './burger-ingredients.module.css';
 import { Counter, Tab, CurrencyIcon  } from '@ya.praktikum/react-developer-burger-ui-components'
-import PropTypes from 'prop-types';
 import { useDispatch, useSelector, TIngItem } from '../../types/types';
 import { useDrag } from "react-dnd";
 import { useInView } from 'react-hook-inview';
@@ -107,6 +106,3 @@ export default function BurgerIngredients() {
   )
 };
 
-// BurgerIngredients.propTypes = {
-//   onClickDesc: PropTypes.func.isRequired
-// };

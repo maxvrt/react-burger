@@ -27,13 +27,7 @@ export function postRegistration(name:string, email:string, pass:string): Promis
       password: pass,
       name: name
     })
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return res.json().then((err:string) => Promise.reject(err));
-    }
-  })
+  }).then(checkResponse)
 }
 export const postLoginUser = (email:string, pass:string) => {
   return fetch(`${config.baseUrl}/auth/login`, { method: 'POST', headers: config.headers,
@@ -41,39 +35,23 @@ export const postLoginUser = (email:string, pass:string) => {
         email: email,
         password: pass
      }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return res.json().then((err:string) => Promise.reject(err));
-    }
-  })
+  }).then(checkResponse)
 }
-export const postToken = (refreshToken:string) => {
-  return fetch(`${config.baseUrl}/auth/token`, { method: 'POST', headers: config.headers,
-     body: JSON.stringify({
+export const postToken = (refreshToken:string|undefined) => {
+  return fetch(`${config.baseUrl}/auth/token`, {
+    method: 'POST',
+    headers: config.headers,
+    body: JSON.stringify({
       token: refreshToken
-     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return res.json().then((err:string) => Promise.reject(err));
-    }
-  })
+    }),
+  }).then(checkResponse)
 }
 export function postForgotPassword(email:string) {
   return fetch(`${config.baseUrl}/password-reset`, { method: 'POST', headers: config.headers,
     body: JSON.stringify({
       email: email
     })
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return res.json().then((err:string) => Promise.reject(err));
-    }
-  })
+  }).then(checkResponse)
 }
 export function postRequestPassword(password:string, token:string) {
   return fetch(`${config.baseUrl}/password-reset/reset`, { method: 'POST', headers: config.headers,
@@ -81,39 +59,21 @@ export function postRequestPassword(password:string, token:string) {
         password: password,
         token: token
      })
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return res.json().then((err:string) => Promise.reject(err));
-    }
-  })
+  }).then(checkResponse)
 }
 export function postLogOut(refreshToken:string) {
   return fetch(`${config.baseUrl}/auth/logout`, { method: 'POST', headers: config.headers,
      body: JSON.stringify({
         token: refreshToken
      })
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return res.json().then((err:string) => Promise.reject(err));
-    }
-  })
+  }).then(checkResponse)
 }
 export function getUser() {
   return fetch(`${config.baseUrl}/auth/user`, { method: 'GET',  headers: {
         "Content-Type": "application/json",
         Authorization: 'Bearer ' + getCookie('token')
      }
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return res.json().then((err:string) => Promise.reject(err));
-    }
-  })
+  }).then(checkResponse)
 }
 export const profileUpdate = (nameUser:string, email:string, password:string) => {
   return fetch(`${config.baseUrl}/auth/user`, { method: 'PATCH', headers: {
@@ -125,35 +85,18 @@ export const profileUpdate = (nameUser:string, email:string, password:string) =>
         name: nameUser,
         password: password,
      })
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return res.json().then((err:string) => Promise.reject(err));
-    }
-  })
+  }).then(checkResponse)
 }
 export function getIngredients() {
-  return fetch(`${config.baseUrl}/ingredients`, {headers: config.headers}).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return res.json().then((err:string) => Promise.reject(err));
-    }
-  })
+  return fetch(`${config.baseUrl}/ingredients`, {headers: config.headers})
+  .then(checkResponse)
 }
-export function postOrder(arr: Array<string>) {
+export function postOrder(arr:number[]) {
   return fetch(`${config.baseUrl}/orders`, {method: 'POST', headers: {...config.headers, Authorization: 'Bearer ' + getCookie('token')},
     body: JSON.stringify({
       ingredients: arr
     })
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return res.json().then((err:string) => Promise.reject(err));
-    }
-  })
+  }).then(checkResponse)
 }
 
 //ответ и ошибка
@@ -166,6 +109,13 @@ export const getResponse = <TResponseBody>(res: Response): Promise<CustomRespons
     return res.json().then((err:string) => Promise.reject(err));
   }
 }
-// export function catchError(err:string) {
-//   console.log('Ошибка. Запрос не выполнен: ', err);
-// }
+
+function checkResponse(res:Response) {
+  if (res.ok) {
+    console.log('if (res.ok) res:');
+    console.log(res);
+    return res.json();
+  } else {
+    return res.json().then((err:string) => Promise.reject(err));
+  }
+}

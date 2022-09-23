@@ -116,7 +116,7 @@ export const requestIngredients:AppThunk = () => {
     })
   }
 };
-export const addOrder:AppThunk = (arrIds) => {
+export const addOrder:AppThunk = (arrIds:number[]) => {
   return (dispatch:AppDispatch) => {
     postOrder(arrIds) // сохраняем ингредиенты на сервер
     .then(data => {

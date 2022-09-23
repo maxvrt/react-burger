@@ -16,13 +16,13 @@ const RegisterPage = () => {
   const location = useLocation<TLocation>();
   const checkAuth = useSelector(store =>  (store.rootAuth.isAuthChecked));
 
-  const onChangeName = (e: { target: HTMLInputElement }) => {
+  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNameVal(e.target.value);
   };
-  const onChangeEmail = (e: { target: HTMLInputElement }) => {
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmailVal(e.target.value);
   };
-  const onChangePassword = (e: { target: HTMLInputElement }) => {
+  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPasswordVal(e.target.value);
   };
 
