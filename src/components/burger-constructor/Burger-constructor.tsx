@@ -109,7 +109,3 @@ export default function BurgerConstructor() {
       </section>
   )
 };
-
-BurgerConstructor.propTypes = {
-  //oneBun: PropTypes.object.isRequired
-};

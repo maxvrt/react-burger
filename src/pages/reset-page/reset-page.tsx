@@ -16,10 +16,10 @@ const ResetPage = () => {
   const fromForgotPage = location.state?.forgotPage;
   const checkAuth = useSelector(store =>  (store.rootAuth.isAuthChecked));
 
-  const onChangePassword = (e: { target: HTMLInputElement }) => {
+  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPasswordVal(e.target.value);
   };
-  const onChangeCode = (e: { target: HTMLInputElement }) => {
+  const onChangeCode = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCodeVal(e.target.value)
   }
   const submit = (e: React.FormEvent<HTMLFormElement>) => {

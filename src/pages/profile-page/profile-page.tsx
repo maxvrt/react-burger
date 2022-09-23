@@ -33,13 +33,13 @@ const ProfilePage = () => {
     if (authData.email) setEmail(authData.email);
     setPassword('');
   }
-  const onChangeName  = (e: { target: HTMLInputElement }) => {
+  const onChangeName  = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
   }
-  const onChangeEmail  = (e: { target: HTMLInputElement }) => {
+  const onChangeEmail  = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   }
-  const onChangePass  = (e: { target: HTMLInputElement }) => {
+  const onChangePass  = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   }
   function logOut() {

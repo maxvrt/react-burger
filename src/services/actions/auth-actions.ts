@@ -185,19 +185,8 @@ export const getWithRefresh = async(url:string, options:{headers:{authorization:
 }
 
 export function runRefreshToken():Promise<CustomResponse<TResponseBody>> {
-  return fetch(`${config.baseUrl}/auth/token`, {
-    method: 'POST',
-    headers: config.headers,
-    body: JSON.stringify({
-      token: getCookie('refreshToken')
-    })
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return res.json().then((err:string) => Promise.reject(err));
-    }
-  })
+  const token = getCookie('refreshToken');
+  return postToken(token)
   .then((response) => {
     if (!response.success) {
       return Promise.reject(response)

@@ -1,7 +1,6 @@
 import styles from './feed-card-component.module.css';
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from '../../types/types';
-import PropTypes from "prop-types";
 import type { TFeedCard, TIngItem } from '../../types/types';
 
 export default function FeedCardComponent({ name, number, ingredientIds, date, status = '' }:TFeedCard) {
@@ -71,12 +70,3 @@ export default function FeedCardComponent({ name, number, ingredientIds, date, s
     </div>
   );
 };
-
-FeedCardComponent.propTypes = {
-  date: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  number: PropTypes.number.isRequired,
-  ingredientIds: PropTypes.array.isRequired,
-  status: PropTypes.string
-
-}

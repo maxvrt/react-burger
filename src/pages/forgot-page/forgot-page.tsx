@@ -14,7 +14,7 @@ const ForgotPage = () => {
   const token = getCookie('token');
   const checkAuth = useSelector(store =>  (store.rootAuth.isAuthChecked));
 
-  const onChangeEmail = (e: { target: HTMLInputElement }) => {
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmailVal(e.target.value);
   };
 

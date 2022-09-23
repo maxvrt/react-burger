@@ -1,16 +1,23 @@
 import { getCookie } from '../../utils/cookie'
 import type { Middleware, MiddlewareAPI } from 'redux';
-import type {TWsActions} from '../../index'
-import { AppDispatch } from '../../types/types';
-import { TRootState } from '../../index';
+//import type {TWsActions} from '../../index'
 
+export type TWsActions = {
+  wsInit?: string;
+  wsAuthInit?:string;
+  wsSendMessage: string;
+  wsOnOpen: string;
+  wsOnClose: string;
+  wsOnError: string;
+  wsOnMessage: string;
+};
 export const socketMiddleware = (wsUrl:string, wsActions:TWsActions): Middleware => {
   return (store:MiddlewareAPI) => {
     let socket:WebSocket | null = null;
     return next => action => {
       const { dispatch } = store;
       const { type, payload } = action;
-      const { wsInit, wsAuthInit, wsOnOpen, wsSendMessage, wsOnClose, wsOnError, wsOnMessage, wsAuthOnMessage } = wsActions;
+      const { wsInit, wsAuthInit, wsOnOpen, wsSendMessage, wsOnClose, wsOnError, wsOnMessage } = wsActions;
       if (type && type === wsInit) {
         console.log('запускаем веб-сокет');
         socket = new WebSocket(wsUrl);
@@ -35,7 +42,7 @@ export const socketMiddleware = (wsUrl:string, wsActions:TWsActions): Middleware
         socket.onmessage = event => {
           const { data } = event;
           const parsed = JSON.parse(data);
-          if (wsAuthOnMessage) dispatch({ type: wsAuthOnMessage, payload: parsed });
+          //if (wsAuthOnMessage) dispatch({ type: wsAuthOnMessage, payload: parsed });
           if (wsOnMessage) dispatch({ type: wsOnMessage, payload: parsed });
         };
         // функция, которая вызывается при закрытии соединения

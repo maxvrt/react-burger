@@ -30,6 +30,7 @@ declare global {
 
 // указать для socketMiddleware accessToken без Bearer в качестве query-параметра.
 // wss://norma.nomoreparties.space/orders/all
+// фикс ошибки 'Actions may not have an undefined "type" property.'
 const wsActions = {
   wsInit: WS_CONNECTION_START,
   wsSendMessage: WS_SEND_MESSAGE,
@@ -40,28 +41,28 @@ const wsActions = {
 }
 const wsUserActions = {
   wsAuthInit: WS_AUTH_CONNECTION_START,
-  wsAuthSendMessage: WS_AUTH_SEND_MESSAGE,
-  wsAuthOnOpen: WS_AUTH_CONNECTION_SUCCESS,
-  wsAuthOnClose: WS_AUTH_CONNECTION_CLOSED,
-  wsAuthOnError: WS_AUTH_CONNECTION_ERROR,
-  wsAuthOnMessage: WS_AUTH_GET_MESSAGE
+  wsSendMessage: WS_AUTH_SEND_MESSAGE,
+  wsOnOpen: WS_AUTH_CONNECTION_SUCCESS,
+  wsOnClose: WS_AUTH_CONNECTION_CLOSED,
+  wsOnError: WS_AUTH_CONNECTION_ERROR,
+  wsOnMessage: WS_AUTH_GET_MESSAGE
 };
 
-export type TWsActions = {
-  readonly wsInit?: typeof WS_CONNECTION_START,
-  readonly wsSendMessage?: typeof WS_SEND_MESSAGE,
-  readonly wsOnOpen?: typeof WS_CONNECTION_SUCCESS,
-  readonly wsOnClose?: typeof WS_CONNECTION_CLOSED,
-  readonly wsOnError?: typeof WS_CONNECTION_ERROR,
-  readonly wsOnMessage?: typeof WS_GET_MESSAGE
+// export type TWsActions = {
+//   readonly wsInit?: typeof WS_CONNECTION_START,
+//   readonly wsSendMessage?: typeof WS_SEND_MESSAGE,
+//   readonly wsOnOpen?: typeof WS_CONNECTION_SUCCESS,
+//   readonly wsOnClose?: typeof WS_CONNECTION_CLOSED,
+//   readonly wsOnError?: typeof WS_CONNECTION_ERROR,
+//   readonly wsOnMessage?: typeof WS_GET_MESSAGE
 
- readonly wsAuthInit?: typeof WS_AUTH_CONNECTION_START,
- readonly wsAuthSendMessage?: typeof WS_AUTH_SEND_MESSAGE,
- readonly wsAuthOnOpen?: typeof WS_AUTH_CONNECTION_SUCCESS,
- readonly wsAuthOnClose?: typeof WS_AUTH_CONNECTION_CLOSED,
- readonly wsAuthOnError?: typeof WS_AUTH_CONNECTION_ERROR,
- readonly wsAuthOnMessage?: typeof WS_AUTH_GET_MESSAGE
-};
+//  readonly wsAuthInit?: typeof WS_AUTH_CONNECTION_START,
+//  readonly wsAuthSendMessage?: typeof WS_AUTH_SEND_MESSAGE,
+//  readonly wsAuthOnOpen?: typeof WS_AUTH_CONNECTION_SUCCESS,
+//  readonly wsAuthOnClose?: typeof WS_AUTH_CONNECTION_CLOSED,
+//  readonly wsAuthOnError?: typeof WS_AUTH_CONNECTION_ERROR,
+//  readonly wsAuthOnMessage?: typeof WS_AUTH_GET_MESSAGE
+// };
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 // const composeEnhancers =

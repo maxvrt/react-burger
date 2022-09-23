@@ -15,10 +15,10 @@ const LoginPage = () => {
   const location = useLocation<TLocation>();
   const token = getCookie('token');
 
-  const onChangeEmail = (e: { target: HTMLInputElement }) => {
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmailVal(e.target?.value);
   };
-  const onChangePassword = (e: { target: HTMLInputElement }) => {
+  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPasswordVal(e.target?.value);
   };
 
