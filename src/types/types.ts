@@ -9,9 +9,9 @@ import {
   useDispatch as dispatchHook,
   useSelector as selectorHook
 } from 'react-redux';
-import 'redux-thunk/extend-redux';
 import { store } from  '../index';
 import { Location } from 'history';
+import type {} from 'redux-thunk/extend-redux';
 
 export type TIngItem = {
   // _id для разметки в order-component.tsx
@@ -44,7 +44,7 @@ export type TFeedCard = {
   status?: 'created' | 'pending' | 'done' | '';
 };
 export type TOrder = {
-  _id: string;
+  _id: any;
   ingredients: Array<TIngItem>;
   number: number;
   createdAt: string;

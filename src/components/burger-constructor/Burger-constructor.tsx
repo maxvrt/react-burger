@@ -57,7 +57,7 @@ export default function BurgerConstructor() {
 
   return (
       <section className={burgerConstructor.container} ref={dropTarget}>
-        {JSON.stringify(oneBun) !== '{}' ? (
+        {oneBun.name !== '' ? (
           <div className={burgerConstructor.singleEl}>
             <ConstructorElement
               type="top"
@@ -82,7 +82,7 @@ export default function BurgerConstructor() {
         ) : (
             <div className={burgerConstructor.empty}>Ингредиенты</div>
         )}
-        {JSON.stringify(oneBun) !== '{}' ? (
+        {oneBun.name !== '' ? (
           <div className={burgerConstructor.singleEl}>
             <ConstructorElement
               type="bottom"

@@ -10,12 +10,12 @@ export const socketMiddleware = (wsUrl:string, wsActions:TWsActions): Middleware
     return next => action => {
       const { dispatch } = store;
       const { type, payload } = action;
-      const { wsInit, wsAuthInit, wsOnOpen, wsSendMessage, wsOnClose, wsOnError, wsOnMessage } = wsActions;
-      if (type === wsInit) {
+      const { wsInit, wsAuthInit, wsOnOpen, wsSendMessage, wsOnClose, wsOnError, wsOnMessage, wsAuthOnMessage } = wsActions;
+      if (type && type === wsInit) {
         console.log('запускаем веб-сокет');
         socket = new WebSocket(wsUrl);
       }
-      if (type === wsAuthInit) {
+      if (type && type === wsAuthInit) {
         const token = getCookie('token');
         if (token) {
           console.log('запускаем авторизованный веб-сокет');
@@ -35,8 +35,8 @@ export const socketMiddleware = (wsUrl:string, wsActions:TWsActions): Middleware
         socket.onmessage = event => {
           const { data } = event;
           const parsed = JSON.parse(data);
-          console.log(parsed);
-          dispatch({ type: wsOnMessage, payload: parsed });
+          if (wsAuthOnMessage) dispatch({ type: wsAuthOnMessage, payload: parsed });
+          if (wsOnMessage) dispatch({ type: wsOnMessage, payload: parsed });
         };
         // функция, которая вызывается при закрытии соединения
         socket.onclose = event => {

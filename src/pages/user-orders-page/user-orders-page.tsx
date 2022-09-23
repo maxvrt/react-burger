@@ -20,8 +20,9 @@ const UserOrdersPage = () => {
 
   let dataOrders;
   if (data) {
-   dataOrders = data.orders;
-   console.log(dataOrders);
+    console.log('UserOrdersPage -> data:');
+    console.log(data);
+    dataOrders = data.orders;
   }
  const location = useLocation();
 

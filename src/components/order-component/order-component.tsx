@@ -42,7 +42,8 @@ const OrderComponent = () => {
 
     newIngredients = Object.keys(countOrderIds).map(id => {
       return ingredients.find(function (ingredient) {
-        if (ingredient._id === id && ingredient.price)  price = price + ingredient.price*countOrderIds[Number(ingredient._id)];
+        if (ingredient._id === id && ingredient.price)
+          price = price + ingredient.price*countOrderIds[ingredient._id];
         return ingredient._id === id;
       });
     });

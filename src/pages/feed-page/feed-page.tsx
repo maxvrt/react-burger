@@ -12,7 +12,7 @@ const FeedPage = () => {
   useEffect(() => {
     dispatch({type: WS_CONNECTION_START});
     return () => {
-      dispatch(WS_CONNECTION_CLOSED)
+      dispatch({type:WS_CONNECTION_CLOSED});
    }
   }, []);
   const { data  } = useSelector(store => ({
